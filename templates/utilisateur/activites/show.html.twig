@@ -1,0 +1,24 @@
+{% extends 'base-utilisateur.html.twig' %}
+
+{% block breadcrumbs %}
+	<a href="{{ path('utilisateur_activites_index') }}">Activités</a> / Détails de l'activité
+{% endblock %}
+
+{% block content %}
+    <h1>Détails de l'activité</h1>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>{{ activite.titre }}</h2>
+			<p>
+				{{ activite.texte|raw }}
+			</p>
+			<p>
+				Ajouté le {{ activite.created|date('d/m/Y H:i') }} | Mise à jour le {{ activite.updated|date('d/m/Y
+				H:i') }}
+			</p>
+		</div>
+	</div>
+
+	{{ include('Utilisateur/footer-show.html.twig', {var: 'activites', obj: activite.id}) }}
+{% endblock %}

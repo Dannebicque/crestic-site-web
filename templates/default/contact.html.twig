@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+	<!-- Begin Map -->
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-8 no-padding" style="margin-bottom: -7px;">
+			<iframe src="https://www.google.com/maps/d/u/0/embed?mid=18t_E65jB84eZcKoQGLJlI4ISc9A"
+			        style="border: 0px none; border-color:#fff; width:100%;" height="350"></iframe>
+		</div>
+		<div class="col-sm-4 mt30-xs">
+			<div class="panel panel-primary no-margin">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+								<span class="ion-android-system-home">
+								</span>
+						{{ 'visiteur.contact.information'|trans }}
+					</h3>
+				</div>
+				<div class="panel-body">
+					<address class="no-margin">
+						<strong>
+							CReSTIC
+						</strong>
+						<br/>
+						<br/>
+						{{ settings('adresse')|raw }}
+						<br/>
+						{{ 'visiteur.contact.tel.court'|trans }}
+						{{ settings('telephonePrincipal') }}
+						<br/>
+						{{ 'visiteur.contact.fax.court'|trans }}
+						{{ settings('fax') }}
+						<br/>
+						{{ 'visiteur.contact.email'|trans }}
+						<a href="mailto:{{ settings('mail') }}" target="_blank">
+							{{ settings('mail') }}</a>
+					</address>
+					<p>
+						<a href="#modalCommentVenir" data-slug="venir-reims" data-site="null" class="commentVenir btn btn-info" title="{{ 'visiteur.contact.commentVenir'|trans }}" data-toggle="modal"><i class="fa fa-road"></i> {{ 'visiteur.contact.commentVenir'|trans }}</a>
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- End Map -->
+
+	<!-- Begin Contact -->
+	<br/>
+	<!-- Form + Sidebar -->
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>{{ 'visiteur.contact.autresSites'|trans }}</h3>
+
+			<ul class="nav nav-tabs nav-justified " role="tablist">
+				{% for site in sites %}
+					<li {% if loop.first %}class="active"{% endif %}><a href="#site_{{ site.id }}" role="tab"
+					                                                    data-toggle="tab">{{ site.titre }}</a></li>
+				{% endfor %}
+			</ul>
+			<div class="tab-content tab-default">
+				{% for site in sites %}
+					<div class="tab-pane {% if loop.first %}active{% endif %}" id="site_{{ site.id }}">
+						<div class="row">
+							<div class="col-sm-8">
+								{{ site.map|raw }}
+							</div>
+							<div class="col-sm-4">
+								<h4>{{ 'visiteur.contact.information'|trans }}</h4>
+								<dl class="dl-horizontal">
+									<dt>{{ 'visiteur.contact.ContactSite'|trans }}</dt>
+									<dd>
+										{% if site.membreCrestic != null %}
+											<a href="{{ path('public_membres_profil', {slug: site.membreCrestic.slug})
+											}}"
+											   title="Profil du membre {{ site.membreCrestic.display }}"
+											   target="_blank">{{ site.membreCrestic.display }}</a>
+										{% else %}
+											-
+										{% endif %}
+									<dt>{{ 'visiteur.contact.telephone'|trans }}</dt>
+									<dd>{{ site.tel }}</dd>
+									<dt>{{ 'visiteur.contact.fax.court'|trans }}</dt>
+									<dd>{{ site.fax }}</dd>
+									<dt>{{ 'visiteur.contact.email'|trans }}</dt>
+									<dd>
+										<a href="mailto:{{ site.mail }}" target="_blank">{{ site.mail }}</a>
+									</dd>
+								</dl>
+								<p>
+									{{ site.adresse }}<br/>
+									{{ site.cp }} {{ site.ville }}
+								</p>
+								{% if site.cms != null %}
+									<p>
+										<a href="#modalCommentVenir" data-slug="{{ site.cms.slug }}" data-site="{{ site.id }}" class="commentVenir btn btn-info" title="{{ 'visiteur.contact.commentVenir'|trans }}" data-toggle="modal"><i class="fa fa-road"></i> {{ 'visiteur.contact.commentVenir'|trans }}</a>
+									</p>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+<br />
+
+
+<!-- Default Modal -->
+	<div class="modal fade" id="modalCommentVenir" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{{ 'fermer'|trans }}</span></button>
+					<h4 class="modal-title" id="defaultModalLabel">{{ 'visiteur.contact.commentVenir'|trans }}</h4>
+				</div>
+				<div class="modal-body" id="body-commentVenir">
+					Content
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-rw btn-success" data-dismiss="modal">{{ 'fermer'|trans }}</button>
+				</div>
+			</div><!-- /modal content -->
+		</div><!-- /modal dialog -->
+	</div><!-- /modal holder -->
+	<!-- End Default Modal -->
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(document).ready(function(e){
+		    $('.commentVenir').click(function(){
+			            $('#body-commentVenir').empty().load("{{ path('public_contact_comment_venir') }}", {'slug': $(this).data('slug'), 'site': $(this).data('site')});
+		    });
+		});
+	</script>
+{% endblock %}

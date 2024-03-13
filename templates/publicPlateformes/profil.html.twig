@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.plateforme.title'|trans }} | {{ plateforme.nom }} {% endblock %}
+
+{% block content %}
+    <!-- Begin Content Section -->
+    <section class="content-40mg">
+        <div class="container">
+            <p class="lead text-center fadeInLeft-animated mb40">
+                {{ 'visiteur.plateforme.title'|trans }}
+                <b>
+                    {{ plateforme.nom }}
+                </b>
+            </p>
+            {{ include('includes/inc.slider.html.twig', {image: plateforme.image, titre:plateforme.nom, sliders:
+                sliders, type:'plateformes'}) }}
+
+
+            <div class="row mt40">
+                <div class="col-sm-6">
+                    <div class="heading mt15-xs">
+                        <h4>
+                            {{ 'visiteur.plateforme.description'|trans }}
+                        </h4>
+                    </div>
+                    {{ plateforme.description|raw }}
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="heading text-center mt30-xs">
+                                <h4>
+                                    {{ 'visiteur.plateforme.informations'|trans }}
+                                </h4>
+                            </div>
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    {{ 'visiteur.plateforme.responsable'|trans }}
+                                </dt>
+                                <dd>
+                                    {% if plateforme.responsable != null %}
+                                        <a href="{{ path('public_membres_profil', {slug: plateforme.responsable.slug}) }}"
+                                           title="Profil de {{ plateforme.responsable.display }}"
+                                           target="_blank">{{ plateforme.responsable.display }}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}                        </dd>
+                                <dt>
+                                    {{ 'visiteur.plateforme.localisation'|trans }}
+                                </dt>
+                                <dd>
+                                    {{ plateforme.localisation }}
+                                </dd>
+                                <dt>
+                                    {{ 'visiteur.plateforme.contact'|trans }}
+                                </dt>
+                                <dd>
+                                    {% if plateforme.responsable != null %}
+                                        <a href="mailto:{{ plateforme.responsable.email }}" target="_blank">
+                                            {{ plateforme.responsable.email }}
+                                        </a>
+                                    {% endif %}
+                                </dd>
+                                <dt>
+                                    {{ 'visiteur.plateforme.url'|trans }}
+                                </dt>
+                                <dd>
+                                    <a href="{{ plateforme.url }}" target="_blank">{{ plateforme.url }}
+                                    </a>
+                                </dd>
+                            </dl>
+                        </div>
+
+
+                        <div class="col-sm-12">
+                            <div class="heading">
+                                <h4>
+                                    {{ 'visiteur.plateforme.projetsrecherches'|trans }}
+                                </h4>
+                            </div>
+                            <ul>
+                                {% for projet in plateforme.projets %}
+                                    <li>
+                                        <a href="{{ path('public_projet_profil', {slug:projet.projet.slug}) }}" target="_blank">{{ projet.projet.titre }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

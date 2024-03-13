@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.documentation.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .blog-post .blog-post-holder {
+            border: 0;
+            padding-top: 3px;
+        }
+
+        .dateactualite {
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            background-color: #fafafa;
+            border: 1px dotted #d2d2d2;
+        }
+
+        .dateactualite p {
+            margin: 0;
+        }
+
+        .titre {
+            text-transform: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="heading mb20">
+            <h2>
+                {{ 'visiteur.documentation.title'|trans }}
+            </h2>
+        </div>
+        <br/><br/>
+        {% for document in documents %}
+        <div class="row mb15">
+            <div class="col-sm-10">
+                <div class="heading mb10">
+                    <h2 class="titre">
+                        {{ document.titre }}
+                    </h2>
+                </div>
+                <p style="text-align: justify">{{ document.description|raw }}</p>
+                <p>
+                    <a href="{{ asset('uploads/documents/'~document.pdf) }}" target="_blank">
+                        Télécharger le document. Version du {{ document.updated|date('d/m/Y H:i') }}
+                    </a>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

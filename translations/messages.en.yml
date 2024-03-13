@@ -1,0 +1,289 @@
+
+acces.profl: Access to the profile of
+
+top_bar:
+    address:
+        university: ' Reims Champagne-Ardenne University'
+        departement: 'Centre de Recherche en STIC'
+    login:
+        login: 'Intranet connection'
+        welcom: Welcome
+        prenom: First name
+        acces_intranet: 'Intranet access'
+        acces_utilisateur: 'Access to my space'
+        acces_responsable: 'Responsible Space Access'
+        acces_administrateur: 'Admin Area Access'
+        logout: Logout
+        window.connection: Connection
+        window.close: Logout
+        window.error: Error
+        window.username_email: 'Email (ou nickname)'
+        window.password: 'Password'
+        window.remember_me: 'Remember me'
+        changepassword: 'Change password'
+
+navigation:
+    mentions-legales.title: Legal Mentions
+    actualites.title: 'News & Events'
+    agenda.title: Agenda
+    emplois.title: 'Job offers, thesis, post-doc'
+    presentation.title: CReSTIC in a few words
+    organigramme.title: Organization chart
+    membres.title: CReSTIC members
+    documentation.title: CReSTIC documents
+    publications.title: CReSTIC releases
+    contact.title: Contacts
+
+titre: Title
+keywords: Keywords
+message : Message
+illustration : Illustration
+slug: Slug
+nomConference: Name of the conference
+sigleConference: Acronym for the conference
+ville: City
+pays: Country
+tauxSelection: Selection rate
+url: Website
+urlConference: Website of the conference
+internationale: International
+editeur: Publisher
+contacts: Contacts
+by: By
+posted: Posted on
+membres.crestic: CReSTIC members
+DOC: PHD Student
+DOCH: Student Outside URCA
+MCF: Assistant Professor
+PR: Professor
+PUPH: PU-PH
+MCUPH: MCU-PH
+
+visiteur:
+    membreAssocie: Associate member
+    agenda:
+        title: CReSTIC Agenda
+        pasdevenement: No scheduled events
+    documentation:
+        title: CReSTIC Documentation
+    actualite:
+        title: CReSTIC News
+    equipe:
+        title: Research teams
+        themerecherche: Research Themes
+        informations: Information
+        projetsrecherches: Research projects
+        publications: Latest releases
+        membresequipe: Team members
+        responsable: Manager
+        contact: Contact
+        departements: Departments
+        detail: Team details
+    liste.title: List of members
+    annuaire.title: Member Directory
+    trombinoscope.title: Trombinoscope
+    emploisIndex:
+        title: 'Job offers, thesis, post-doc'
+        emploi: Employment
+        datepublication: Release date
+        duree: Duration
+        details: Details
+        contact: Contact
+        plusinfo: More information about the offer
+        titreModal: Information on the job offer
+    TApercuDepartements:
+        theme: Theme
+        informations: Information
+        responsable: Manager
+        mail: Email
+        equipes: Research teams
+    contact:
+        information: Information
+        tel:
+            court: Tel.
+        fax:
+            court: Fax.
+        email: Email
+        autresSites: Other CReSTIC Sites
+        envoi:
+            confirmation: Message has been sent successfully
+            erreur: Error sending message
+        ContactSite: Local contact
+        telephone: Telephone
+        commentVenir: How to come
+    departement:
+        title: Departments
+        titlemeta: CReSTIC Departments
+        acces: Department details
+    index:
+        actualites:
+            posteLe: Posted on
+            lirePlus: Read more ...
+            par: Author
+    MembresCrestic:
+        datenomination: Date CReSTIC Appointment
+        contact: Contact
+        email: Email
+        telephone: Telephone
+        telportable: Mobile Phone
+        siteweb: Website
+        localisation: Location
+        cnu: CNU
+        voirprofil: View Profile
+        activites: Activities
+        publications: Releases
+        departement: Department
+        themes: Theme
+        vulgarisation: Animation
+        international: International
+        enseignements: Teaching
+        responsabilitesScientifiques: Scientific
+        responsabilitesAdministratives: Administrative
+        valorisation: valuation
+        evaluation: Evaluation
+        editoriale: Editorial
+    membreConseilLabo: CReSTIC Board Members
+    projet:
+        title: Projects and contracts
+        description: Description
+        informations: Informations
+        dernierespublications: Latest Releases
+        financeurs: Financers
+        membresprojet: Members involved
+        partenaires: Partners
+        responsable: Manager
+        periode: Dates
+        contact: Contact
+        url: Website
+        identification: Identification
+        detail: Project details
+        porteur: 'messages'
+    plateforme:
+        title: Plateforms
+        description: Description
+        informations: Information
+        responsable: Manager
+        localisation: Location
+        contact: Contact
+        url: Website
+        publications: Latest releases
+        projetsrecherches: Research projects related to the platform
+    organigramme:
+        title: CReSTIC Organizational chart
+        direction: CReSTIC Direction
+        directeur: Director
+        directeurAdjoint: Deputy director
+        conseil: Laboratory Board
+        departement: Department
+        equipe: Research team
+        administratif: Administrative Service
+        responsable: Manager
+        technicien: Technical service
+    rechercher:
+        publications: Rechercher des publications
+    offre:
+        titre: Title of the offer
+        date: desired date
+        duree: Duration
+        description: Description
+        resume: Summary
+    publication:
+        aucune: No release found
+        publications: releases
+        plusancienne: previous releases
+        resultatsphrase: Results of your releases search
+        resultatsphrase2: '%nbresult% releases matching your criteria : %criteres%'
+        recherche:
+            touslesprojets: All projects
+            touteslesequipes: All Research teams
+            touslesdepartements: All departments
+            touslesmembres: All members
+            sansprojet: Without project
+            nbresults: '%nbpublis% Releases found. Specify at least one search criteria to get results'
+
+utilisateur:
+    demandesOM:
+        title: Your requests for OMs
+    departements:
+        title: Departments
+    equipes:
+        title: Research teams
+    plateformes:
+        title: Platforms
+    projets:
+        title: Projects
+    emplois:
+        title: Job vacations
+    publications:
+        title: Your releases
+    home: Your CReSTIC space
+    activites:
+        title: Logbook
+
+publications:
+    ouvrages.title: Books / Chapters
+    revues.title: Journals
+    conferences.title: Conferences
+    brevets.title: Patents
+    rapports.title: Report
+    theses.title: Theses
+    habilitations.title: HDR
+    informations: General Information
+    apercu:
+        pagination: Page numbers
+        datepubli: Date
+        internationale:
+            title: International
+            oui: Yes
+            non: No
+        nationale:
+            title: Nationale
+            oui: Yes
+            non: No
+        doi: DOI
+        url: Website
+    templates:
+        TRecherchePublications:
+            titre: Research
+            equipe: Research team
+            typePublication: 'Release Type'
+            publications: 'All releases'
+            brevets: Patents
+            conferences: Conference
+            habilitations: Habilitations
+            ouvrages: Books
+            chapitres: Chapters
+            rapports: Reports
+            revues: Journals
+            theses: Theses/Habilitations
+            art: 'Article in journals'
+            comm: 'Communication in a congress'
+            couv: 'Book chapter'
+            douv: 'Direction of work, Proceedings'
+            hdr: HDR
+            ouv: 'Works (including critical edition and translation)'
+            patent: Patent
+            poster: Poster
+            presconf: 'Document associated with scientific events'
+            report: Report
+            these: Thesis
+            auteur: Author
+            keywords: 'Keywords'
+            datePlage: 'date range'
+            valider: Validate
+            projet: Project
+            departement: Department
+            default: Initialize
+fermer: Close
+tous: All
+nom: last name
+prenom: first name
+grade: Grade
+departement: Department
+site: Site
+telephone: Telephone
+actions: Actions
+bureau: Office
+corps: corps
+entre: Between
+et: And

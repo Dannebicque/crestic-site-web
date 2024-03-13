@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-sm-12">
+		{% if cm != null %}
+			<div class="heading mb20">
+				<h2>
+					{{ cm.titre }}
+				</h2>
+			</div>
+			<p class="da-text-justify">
+				{{ cm.texte|raw }}
+			</p>
+		{% endif %}
+	</div>
+</div>

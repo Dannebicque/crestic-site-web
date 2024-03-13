@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.agenda.title'|trans }} | {{ agenda.titre }} {% endblock %}
+
+{% block content %}
+
+	{{ include('includes/inc.agenda.html.twig', {agenda:agenda}) }}
+    <a href="{{ path('public_agenda') }}">{{ 'visiteur.index.agenda.retour'|trans }}</a>
+
+{% endblock %}

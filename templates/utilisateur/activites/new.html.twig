@@ -1,0 +1,16 @@
+{% extends 'base-utilisateur.html.twig' %}
+
+{% block breadcrumbs %}
+    <a href="{{ path('utilisateur_activites_index') }}">Activités</a> / Ajout d'un compte rendu d'activité
+{% endblock %}
+
+{% block content %}
+    <h1>Ajout d'un compte rendu d'activité</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+	{{ include('Utilisateur/footer-new.html.twig', {var: 'activites'}) }}
+
+	{{ form_end(form) }}
+
+{% endblock %}

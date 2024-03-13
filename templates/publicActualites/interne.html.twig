@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.actualite.interne.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .blog-post .blog-post-holder {
+            border: 0;
+            padding-top: 3px;
+        }
+
+        .dateactualite {
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            background-color: #fafafa;
+            border: 1px dotted #d2d2d2;
+        }
+
+        .dateactualite p {
+            margin:0;
+        }
+
+        .titre {
+            text-transform: none;
+        }
+
+        .forceJustify {
+            text-align: justify !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="heading mb20">
+                <h2>
+                    {{ 'visiteur.actualite.interne.title'|trans }}
+                </h2>
+            </div>
+            <br/><br/>
+            {% for actualite in actualites %}
+                <div class="row mb15">
+                    <div class="col-sm-2 dateactualite">
+                        <p>{{ actualite.dateactu|date('d/m/Y') }}</p>
+                    </div>
+                    {% if actualite.image != '' and actualite.image != 'noimage.png' %}
+                        <div class="col-sm-7">
+                            <div class="heading mb10">
+                                <h2 class="titre">
+                                    {{ actualite.titre }}
+                                </h2>
+                            </div>
+                            <div class="forceJustify">{{ actualite.message|raw }}</div>
+                        </div>
+                        <div class="col-sm-3">
+                            <a href="{{ asset('uploads/actualites/'~actualite.image) }}"
+                               target="_blank" title="Agrandir l'image">
+                                <img class="img-responsive" src="{{ asset('uploads/actualites/'~actualite.image) }}"
+                                     alt="{{ actualite.titre }}"></a>
+                        </div>
+                    {% else %}
+                        <div class="col-sm-10">
+                            <div class="heading mb10">
+                                <h2 class="titre">
+                                    {{ actualite.titre }}
+                                </h2>
+                            </div>
+                            <div class="forceJustify">{{ actualite.message|raw }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

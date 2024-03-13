@@ -1,0 +1,58 @@
+<div id="divCarouselSliders" class="carousel slide" data-ride="carousel">
+    {# on affiche l'image d'illustration en fixe #}
+    {# sinon affiche l'image d'illustration et les images du slider #}
+
+    <!-- Indicators -->
+    <ol class="carousel-indicators carousel-indicators-caption">
+        <li data-target="#divCarouselSliders" data-slide-to="0" class="active"></li>
+        {% for slide in sliders %}
+            <li data-target="#divCarouselSliders" data-slide-to="{{ loop.index }}"></li>
+        {% endfor %}
+    </ol>
+
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        <div class="item active">
+            {% if image == null or image == 'noimage.png' %}
+                <img class="img-responsive" src="{{ asset('uploads/noimage.png') }}" alt="Illustration du projet">
+                <div class="carousel-caption fadeInUpBig-animated fadeInUpBig animated">
+                    <h3 class="no-margin text-white">{{ titre }}</h3>
+                </div>
+            {% else %}
+                {% if image|trim|slice(image|length-3,3) == 'jpg' or image|trim|slice(image|length-3,3)== 'png' or image|trim|slice
+                    (image|length-4,4) == 'jpeg' %}
+                    <img class="img-responsive" src="{{ asset('uploads/'~type~'/'~image) }}" alt="Illustration du projet">
+                    <div class="carousel-caption fadeInUpBig-animated fadeInUpBig animated">
+                        <h3 class="no-margin text-white">{{ titre }}</h3>
+                    </div>
+                {% elseif image|trim|slice(image|length-3,3) == 'mp4' %}
+                    <video width="320" height="240" controls style="display:block; width:320px; margin:auto">
+                        <source src="{{ asset('uploads/'~type~'/'~image) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+            {% endif %}
+
+        </div>
+        {% for slide in sliders %}
+            <div class="item">
+                <img class="img-responsive" src="{{ asset('uploads/slider/'~slide.slider.image) }}" alt="Slide {{ loop.index }}">
+                <div class="carousel-caption fadeInUpBig-animated fadeInUpBig animated">
+                    <h3 class="no-margin text-white">{{ slide.slider.titre }}</h3>
+                    <p class="text-light-grey no-margin"><a href="{{ slide.slider.url }}" target="_blank"> {{ slide.slider.texte }}</a></p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if sliders|length > 0 %}
+        <!-- Controls uniquement si plus de une image -->
+        <a class="left carousel-control" href="#divCarouselSliders" role="button" data-slide="prev">
+            <span class="ion-ios7-arrow-left carousel-arrow-left" aria-hidden="true"></span>
+        </a>
+        <a class="right carousel-control" href="#divCarouselSliders" role="button" data-slide="next">
+            <span class="ion-ios7-arrow-right carousel-arrow-right" aria-hidden="true"></span>
+        </a>
+    {% endif %}
+</div>

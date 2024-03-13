@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="heading mb20">
+				<h2>
+					{{ 'membres.crestic'|trans }}
+				</h2>
+				<br /><br />
+
+				<ul class="nav nav-tabs nav-justified " role="tablist">
+					<li class="active"><a href="#liste" role="tab" data-toggle="tab">{{ 'visiteur.liste.title'|trans }}</a></li>
+					<li><a href="#annuaire" role="tab" data-toggle="tab">{{ 'visiteur.annuaire.title'|trans }}</a></li>
+					<li ><a href="#trombi" role="tab" data-toggle="tab">{{ 'visiteur.trombinoscope.title'|trans }}</a></li>
+				</ul>
+				<div class="tab-content tab-default">
+					<div class="tab-pane " id="trombi">
+						<div class="row" id="zone_data">
+
+						</div>
+					</div>
+
+					<div class="tab-pane" id="annuaire">
+						<div class="row" id="zone_data_annuaire">
+
+						</div>
+					</div>
+
+					<div class="tab-pane in active" id="liste">
+						<div class="row" id="zone_data_liste">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+	<script>
+		$(document).ready(function () {
+			$("#zone_data").empty().load("{{ path('public_membres_trombi_lettre') }}", {lettre: 'tous'});
+			$("#zone_data_annuaire").empty().load("{{ path('public_membres_annuaire_lettre') }}", {lettre:
+				'tous'});
+			$("#zone_data_liste").empty().load("{{ path('public_membres_liste') }}");
+
+			$('.chgtlettre').click(function(){
+				/*$("#zone_data").empty().load("{{ path('public_membres_trombi_lettre') }}", {lettre: $(this).data('lettre')});*/
+
+                $.ajax({
+                    url: "{{ path('public_membres_trombi_lettre') }}",
+                    type: "POST",
+                    data: {lettre: $(this).data('lettre')},
+                    dataType: "Html",
+					beforeSend: function(){
+                        $('#load-page').show();
+                    },
+                    success: function (data) {
+                        // hide loading
+                        $("#zone_data").empty().html(data);
+                    },
+                    complete: function(){
+                        $('#load-page').hide();
+                    }
+                });
+
+			});
+
+			$('.chgtlettreannuaire').click(function(){
+				$("#zone_data_annuaire").empty().load("{{ path('public_membres_annuaire_lettre') }}", {lettre: $(this).data
+				('lettre')});
+			});
+		});
+	</script>
+{% endblock %}

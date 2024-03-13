@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="blog-post">
+			<div class="view image-hover-1 no-margin">
+				<img src="{{ asset('uploads/actualites/'~actualite.image) }}" alt="{{ actualite.titre }}"
+				     height="250px" />
+			</div>
+
+			<div class="blog-post-holder">
+				<ul class="list-inline posted-info">
+					<li>
+						{{ 'by'|trans }}
+						{% if actualite.membreCrestic != null %}
+						<a href="" target="_blank" title="{{ 'visiteur.MembresCrestic.voirprofil'|trans }} ">{{ actualite.membreCrestic.display }}</a>
+						{% else %}
+						-
+						{% endif %}
+					</li>
+					<li>
+						{{ 'posted'|trans }}
+						{{ actualite.dateactu|date('d/m/Y H:i') }}
+					</li>
+				</ul>
+				<hr align="left" class="mt15 mb10" style="width:50px;">
+
+				<h2>
+					{{ actualite.titre }}
+				</h2>
+				<div class="forceJustify">{{ actualite.message|raw }}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var div_carousel_sliders = $('#divCaroussel');
+	var div_carousel_height  = '300px';
+	div_carousel_sliders.carousel();
+	$('#divCaroussel .carousel-inner').css('background-color' , 'none');
+	$('#divCaroussel .carousel-caption').css('background-color','none');
+	$('#divCaroussel').css('max-height' , div_carousel_height);
+	$('#divCaroussel').css('overflow'   ,'hidden');
+	$('#divCaroussel .item img').css('width' ,'auto');
+	$('#divCaroussel .item img').css('height' ,div_carousel_height);
+	$('#divCaroussel .item img').css('margin' ,'auto');
+
+</script>

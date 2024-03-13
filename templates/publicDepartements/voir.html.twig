@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ departement.nom }} {% endblock %}
+
+{% block content %}
+    <!-- Begin Content Section -->
+    <section>
+        <div class="container">
+            <div class="heading text-center mb20">
+                <h2>
+                    {{ departement.nom }}
+                </h2>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="heading mb20">
+                        <h4>
+                            {{ 'visiteur.TApercuDepartements.theme'|trans }}
+                        </h4>
+                    </div>
+                    <div>
+                        {{ departement.theme|raw }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="heading mb20">
+                                <h4>
+                                    {{ 'visiteur.TApercuDepartements.informations'|trans }}
+                                </h4>
+                            </div>
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    {{ 'visiteur.TApercuDepartements.responsable'|trans }}
+                                </dt>
+                                <dd>
+                                    {% if departement.membreCrestic != null %}
+                                        <a href="{{ path('public_membres_profil', {slug: departement.membreCrestic.slug}) }}"
+                                           title="Profil du membre {{ departement.membreCrestic.display }}"
+                                           target="_blank">{{ departement.membreCrestic.display }}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </dd>
+                                <dt>
+                                    {{ 'visiteur.TApercuDepartements.mail'|trans }}
+                                </dt>
+                                <dd>
+                                    {% if departement.membreCrestic != null %}
+                                        <a href="mailto:{{ departement.membreCrestic.email }}"
+                                           target="_blank">{{ departement.membreCrestic.email }}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="heading mb20">
+                                <h4>{{ 'visiteur.TApercuDepartements.equipes' | trans }}</h4>
+                            </div>
+                            <div class="liste-equipe">
+                                <div class="row">
+                                    <ul>
+                                    {% for equipe in equipes %}
+                                        <li>
+                                                <a href="{{ path('public_equipes_profil', {slug: equipe.equipe.slug}) }}"
+                                                   title="{{ 'visiteur.equipe.detail'|trans }} {{ equipe.equipe.nom }}">{{ equipe.equipe.nom }}
+                                                    - {{ equipe.equipe.nomlong }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

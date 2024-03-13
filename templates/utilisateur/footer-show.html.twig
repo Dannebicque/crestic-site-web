@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-sm-6" style="text-align: right" >
+		<a href="{{ path('utilisateur_'~var~'_index') }}">Retour à la liste</a>
+	</div>
+	<div class="col-sm-3" style="text-align: right" >
+		{{ form_start(delete_form) }}
+		<input type="submit" value="Supprimer" class="btn btn-danger btn-block">
+		{{ form_end(delete_form) }}
+	</div>
+	<div class="col-sm-3" style="text-align: right" >
+		<a href="{{ path('utilisateur_'~var~'_edit', { 'id': obj }) }}" class="btn
+            btn-warning btn-block">Modifier</a>
+	</div>
+</div>

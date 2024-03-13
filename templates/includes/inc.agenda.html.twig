@@ -1,0 +1,15 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="bl-jour">{{ agenda.datedebut|date('d/m') }}</div>
+				<div class="bl-annee">{{ agenda.datedebut|date('Y') }}</div>
+			</div>
+			<div class="col-sm-8">
+				<h3>{{ agenda.titre }}</h3>
+				<p class="bl-footer">{{ agenda.lieu }}, du {{ agenda.datedebut|date('d/m/Y') }}, {{ agenda.heuredebut|date('H:i') }} au {{ agenda.datefin|date('d/m/Y') }}, {{ agenda.heurefin|date('H:i') }}</p>
+				<p>{{ agenda.description|raw }}</p>
+			</div>
+		</div>
+	</div>
+</div>

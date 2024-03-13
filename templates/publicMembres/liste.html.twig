@@ -1,0 +1,32 @@
+<div class="row" style="clear: both; margin-top: 20px;">
+	<div class="col-sm-12">
+		{% for key, cat in categories %}
+			<h2>{{ ('cat.'~key)|trans }} {% if is_granted('ROLE_UTILISATEUR') %}({{ membres|filter(membre => membre
+				.status	in cat)|length }}){% endif %}</h2>
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>{{ 'nom'|trans }}</th>
+					<th>{{ 'prenom'|trans }}</th>
+					<th>{{ 'grade'|trans }}</th>
+					<th>{{ 'site'|trans }}</th>
+					<th>{{ 'visiteur.MembresCrestic.email'|trans }}</th>
+				</tr>
+				</thead>
+				{% for membre in membres|filter(membre => membre.status in cat) %}
+					<tr>
+						<td><a href="{{ path('public_membres_profil', {slug: membre.slug}) }}" target="_blank"
+							   title="Profil de {{ membre.display }}">{{ membre.nom|title }}</a></td>
+						<td><a href="{{ path('public_membres_profil', {slug: membre.slug}) }}" target="_blank"
+							   title="Profil de {{ membre.display }}">{{ membre.prenom|title }}</a></td>
+						<td>{{ membre.statutLong|trans }}</td>
+						<td>{{ membre.site }}</td>
+						<td>
+							<a href="mailto:{{ membre.email }}" target="_blank">{{ membre.email }}</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endfor %}
+	</div>
+</div>

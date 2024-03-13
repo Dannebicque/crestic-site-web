@@ -1,0 +1,14 @@
+{% extends 'base-utilisateur.html.twig' %}
+
+{% block breadcrumbs %}
+    <a href="{{ path('utilisateur_activites_index') }}">Activités</a> / Modification d'une activité
+{% endblock %}
+
+{% block content %}
+    <h1>Modification d'une activité</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+	{{ include('Utilisateur/footer-edit.html.twig', {var: 'activites'}) }}
+
+{% endblock %}

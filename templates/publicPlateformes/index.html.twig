@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.plateforme.title'|trans }}{% endblock %}
+
+{% block content %}
+    {{ include('includes/inc.page.html.twig', {cm:page}) }}
+
+    <!-- Begin Content Section -->
+{#    <section class="content-40mg">#}
+{#        <div class="container">#}
+{#            <p class="lead text-center fadeInLeft-animated mb40">#}
+{#                {{ 'visiteur.plateforme.index'|trans }}#}
+
+{#            </p>#}
+
+
+{#            <div class="row mt40">#}
+{#               #}
+
+{#                <div class="col-sm-12">#}
+{#                    <ul>#}
+{#                        <li><a href="{{ path('public_plateformes_profil', {slug:'cellflex-4-0'}) }}"#}
+{#                               target="_blank">Cellflex 4.0</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="https://www.univ-reims.fr/recherche-et-valorisation/plateformes-technologiques/maison-de-la-simulation/centre-image/centre-image,15925,27322.html" target="_blank">Centre image</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="https://www.univ-reims.fr/recherche-et-valorisation/plateformes-technologiques/maison-de-la-simulation/centre-de-calcul-regional-romeo/centre-de-calcul-regional-romeo,15924,27321.html" target="_blank">#}
+{#                                Centre de calcul Régional ROMEO</a>#}
+{#                        </li>#}
+{#                    </ul>#}
+
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
+
+{% endblock %}

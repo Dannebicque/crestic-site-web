@@ -1,0 +1,54 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group">
+				<a href="#" data-lettre="tous"
+				   class="btn btn-rw {% if 'tous' == affichage %} btn-primary {% else %}btn-info{% endif %}
+				chgtlettreannuaire">{{ 'tous'|trans }}</a>
+				{% for lettre in 'A'..'Z' %}
+					<a href="#" data-lettre="{{ lettre }}"
+					   class="btn btn-rw {% if lettre == affichage %} btn-primary {% else %}btn-info{% endif %}
+				chgtlettreannuaire">{{ lettre }}</a>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row annuaire-both">
+	<div class="col-sm-12">
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th>{{ 'nom'|trans }}</th>
+				<th>{{ 'prenom'|trans }}</th>
+				<th>{{ 'grade'|trans }}</th>
+				<th>{{ 'site'|trans }}</th>
+				<th>{{ 'visiteur.contact.email'|trans }}</th>
+			</tr>
+			</thead>
+			{% for membre in membres|filter(membre => membre.status != 'DOCH') %}
+				<tr>
+					<td><a href="{{ path('public_membres_profil', {slug: membre.slug}) }}" target="_blank"
+						   title="Profil de {{ membre.display }}">{{ membre.nom|title }}</a></td>
+					<td><a href="{{ path('public_membres_profil', {slug: membre.slug}) }}" target="_blank"
+						   title="Profil de {{ membre.display }}">{{ membre.prenom|title }}</a></td>
+					<td>{{ membre.statutLong|trans }}</td>
+					<td>{{ membre.site }}</td>
+					<td>
+						<a href="mailto:{{ membre.email }}" target="_blank">{{ membre.email }}</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		$('.chgtlettreannuaire').click(function () {
+			$("#zone_data_annuaire").empty().load("{{ path('public_membres_annuaire_lettre') }}", {lettre: $(this).data
+			('lettre')});
+		});
+	});
+
+</script>

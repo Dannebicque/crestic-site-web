@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group">
+				<a href="#" data-lettre="tous"
+				   class="btn btn-rw {% if 'tous' == affichage %} btn-primary {% else %}btn-info{% endif %}
+				chgtlettre">{{ 'tous'|trans }}</a>
+				{% for lettre in 'A'..'Z' %}
+					<a href="#" data-lettre="{{ lettre }}"
+					   class="btn btn-rw {% if lettre == affichage %} btn-primary {% else %}btn-info{% endif %}
+				chgtlettre">{{ lettre }}</a>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" style="clear: both; margin-top: 20px;">
+	{% for membre in membres|filter(membre => membre.status != 'DOCH') %}
+		<div id="membreCresticMosaique" class="col-sm-3 text-center" style="margin-bottom:15px; height: 250px;">
+			<div class="text-center">
+				<div class="membreCresticMosaiqueImage">
+					{% if membre.image == 'noimage.png' or
+						membre.image == '' or
+						membre.image == null %}
+						<div class="avatar">
+							<p>{{ membre.initiales }}</p>
+						</div>
+					{% else %}
+						<img src="{{ asset('uploads/membresCrestic/'~membre.image) }}"
+							 style="width:auto;height:100px" alt="Photo de {{
+						membre.display }}">
+					{% endif %}
+				</div>
+				<div class="membreCresticMosaiqueMosaiqueNom col-sm-12">
+					<a href="{{ path('public_membres_profil', {slug: membre.slug}) }}" target="_blank" title="Profil
+					de {{ membre.display }}">{{ membre.display }}</a>
+				</div>
+				<div class="membreCresticMosaiqueMosaiqueStatus col-sm-12">
+					{{ membre.statutLong|trans }}
+				</div>
+				<div class="col-sm-12">
+					<a href="mailto:{{ membre.email }}" target="_blank"><span class="fa fa-envelope"></span></a>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+<script>
+	$(document).ready(function () {
+		$('.chgtlettre').click(function () {
+			$("#zone_data").empty().load("{{ path('public_membres_trombi_lettre') }}", {lettre: $(this).data
+			('lettre')});
+		});
+	});
+
+</script>

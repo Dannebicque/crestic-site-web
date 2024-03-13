@@ -1,0 +1,102 @@
+{% extends('base.html.twig') %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="heading mb20">
+                <h2>
+                    {{ 'utilisateur.home'|trans }}
+                </h2>
+            </div>
+            <br>
+            <div class="row">
+
+                <div class="col-sm-3" style="text-align: center">
+                    <a href="{{ path('utilisateur_membres_edit') }}">
+                        <span class="ion-android-contact bordered-icon-lg"></span><br/>
+                        Modifier vos informations
+                    </a>
+                </div>
+
+
+                <div class="col-sm-3" style="text-align: center">
+{#                    <a href="{{ path('utilisateur_activites_index') }}">#}
+                        <span class="ion-clipboard bordered-icon-lg"></span><br/>
+                        Activités/"blog"
+{#                    </a>#}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="heading mb20">
+                        <h4>
+                            {{ 'utilisateur.activites.title'|trans }}
+                        </h4>
+                    </div>
+                    <ul>
+                        {% for activite in activites %}
+                            <li>{{ activite.created|date('d/m/Y') }} | {{ activite.titre }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="heading mb20">
+                        <h4>
+                            {{ 'utilisateur.equipes.title'|trans }}
+                        </h4>
+                    </div>
+                    <ul>
+                        {% for equipe in user.equipesHasMembres %}
+                            <li><a href="{{ path('public_equipes_profil', {slug:equipe.equipe.slug}) }}" title="Voir
+						l'équipe" target="_blank">{{ equipe.equipe.nom }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="heading mb20">
+                        <h4>
+                            {{ 'utilisateur.plateformes.title'|trans }}
+                        </h4>
+                    </div>
+                    <ul>
+                        {% for plateforme in user.plateformes %}
+                            <li><a href="{{ path('public_plateformes_profil', {slug:plateforme.slug}) }}"
+                                   title="Voir la plateforme" target="_blank">{{ plateforme.nom }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="heading mb20">
+                        <h4>
+                            {{ 'utilisateur.projets.title'|trans }}
+                        </h4>
+                    </div>
+                    <ul>
+                        {% for projet in user.projets %}
+                            <li><a href="{{ path('public_projet_profil', {slug:projet.projet.slug}) }}"
+                                   title="Voir le projet" target="_blank">{{ projet.projet.titre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="heading mb20">
+                        <h4>
+                            {{ 'utilisateur.emplois.title'|trans }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.agenda.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .bl-jour {
+            width: 100%;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            height: 70px;
+        }
+
+        .bl-footer {
+            width: 100%;
+            font-size: 10px;
+            background-color: #fafafa;
+            padding: 5px;
+        }
+
+        .bl-annee {
+            width: 100%;
+            font-size: 15px;
+            text-align: center;
+            vertical-align: middle;
+            height: 20px;
+        }
+    </style>
+
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="heading mb20">
+                <h2>
+                    {{ 'visiteur.agenda.title'|trans }}
+                </h2>
+            </div>
+            <div class="row">
+
+                {% for evt in evenements %}
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="bl-jour">{{ evt.datedebut|date('d/m/Y') }}</div>
+                            </div>
+                            <div class="col-sm-8">
+                                <h3>{{ evt.titre }}</h3>
+                                <p class="bl-footer">{{ evt.lieu }}, du {{ evt.datedebut|date('d/m/Y') }}
+                                                                   , {{ evt.heuredebut|date('H:i') }}
+                                    {% if evt.datefin != null %}
+                                                                   au {{ evt.datefin|date('d/m/Y') }}
+                                                                   , {{ evt.heurefin|date('H:i') }}
+                                {% endif %}</p>
+                                <p>{{ evt.description|raw }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width:400px;" class="double-hr mt30 mb30">
+                {% else %}
+                    <div class="alert alert-warning">
+                        {{ 'visiteur.agenda.pasdevenement'|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

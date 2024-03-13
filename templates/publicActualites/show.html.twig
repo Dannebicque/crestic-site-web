@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<style>
+		.forceJustify {
+			text-align: justify !important;
+		}
+	</style>
+{% endblock %}
+
+{% block title %}{{ 'visiteur.actualite.title'|trans }} | {{ actualite.titre }} {% endblock %}
+
+{% block content %}
+
+	{{ include('includes/inc.actualite.html.twig', {actualite:actualite}) }}
+	<a href="{{ path('public_actualites') }}">{{ 'visiteur.index.actualites.retour'|trans }}</a>
+{% endblock %}

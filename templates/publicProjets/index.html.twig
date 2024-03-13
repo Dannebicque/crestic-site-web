@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <ul>
+        {% for categorie in categoriesprojets|filter(categorie => categorie.parent == null )%}
+            <li>
+                <a class="trigger">
+                    {% if app.request.locale == 'en' %}
+                        {{ categorie.libelleEn }}
+                    {% else %}
+                        {{ categorie.libelle }}
+                    {% endif %}
+                </a>
+                <ul>
+                    {% if categorie.enfants != null %}
+                        {% for cat in categorie.enfants %}
+                            <li>
+                                <a class="trigger">
+                                    {% if app.request.locale == 'en' %}
+                                        {{ cat.libelleEn }}
+                                    {% else %}
+                                        {{ cat.libelle }}
+                                    {% endif %}
+                                </a>
+                                <ul>
+                                    {% for projet in cat.projets %}
+                                        <li>
+                                            <a href="{{ path('public_projet_profil', {slug: projet
+                                            .slug}) }}">{{ projet.titre }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="#">Aucun projet</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for projet in categorie.projets %}
+                        <li>
+                            <a href="{{ path('public_projet_profil', {slug: projet
+                            .slug}) }}">{{ projet.titre }}</a>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

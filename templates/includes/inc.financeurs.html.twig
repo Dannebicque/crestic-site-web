@@ -1,0 +1,9 @@
+{% for financeur in financeurs %}
+    <div class="col-sm-3"  style="text-align: center; height:120px">
+        <a href="{{ financeur.financeur.url }}" target="_blank">
+            <img src="{{ asset('uploads/partenaires/'~financeur.financeur.image)  }}"
+                 alt="logo" style="position: absolute; bottom: 0; width:120px" />
+        </a>
+    </div>
+{% endfor %}
+<div style="clear: both;"></div>

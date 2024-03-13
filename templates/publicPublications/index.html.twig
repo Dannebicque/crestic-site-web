@@ -1,0 +1,409 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="heading mb20">
+                <h2>
+                    {{ 'visiteur.rechercher.publications'|trans }}
+                </h2>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="typePublication" class="col-sm-2">
+                        {{ 'publications.templates.TRecherchePublications.typePublication'|trans }}
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="typeArt">
+                                    <input type="checkbox"
+                                           name="typePublication[]" checked
+                                           id="typeArt" value="ART">
+                                    Articles en revues</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typeComm">
+                                    <input type="checkbox"
+                                           name="typePublication[]" checked
+                                           id="typeComm" value="COMM">
+                                    Articles en conférences internationales</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typeDOUV">
+                                    <input type="checkbox"
+                                           name="typePublication[]" checked
+                                           id="typeDOUV" value="DOUV">
+                                    Ouvrages, proceedings, ...</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typeCOUV">
+                                    <input type="checkbox"
+                                           name="typePublication[]" checked
+                                           id="typeCOUV" value="COUV">
+                                    Chapitres d'ouvrages, ...</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typeTHESE">
+                                    <input type="checkbox"
+                                           name="typePublication[]" checked
+                                           id="typeTHESE" value="THESE">
+                                    Thèses et habilitations</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typePATENT">
+                                    <input type="checkbox"
+                                           name="typePublication[]" checked
+                                           id="typePATENT" value="PATENT">
+                                    Brevets</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typeCommSansActe">
+                                    <input type="checkbox"
+                                           name="typePublication[]"
+                                           id="typeCommSansActe" value="COMM_SANS">
+                                    Communications sans actes</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="typePoster">
+                                    <input type="checkbox"
+                                           name="typePublication[]"
+                                           id="typePoster" value="POSTER">
+                                    Posters</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="auteur" class="col-sm-2">
+                        {{ 'publications.templates.TRecherchePublications.auteur'|trans }}
+                    </label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="auteur" name="auteur">
+                            <option value="">Commencer à saisir les lettres</option>
+                            <option value="*">Tous les auteurs</option>
+                            {% for auteur in auteurs %}
+                                <option value="{{ auteur.id }}">{{ auteur.display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="datePlage" class="col-sm-2">
+                        {{ 'publications.templates.TRecherchePublications.datePlage'|trans }}
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="datePlage" class="col-sm-2">
+                                        {{ 'entre'|trans }}
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="dateDebut" name="dateDebut">
+                                            {% for i in 2016.."now"|date('Y')+1 %}
+                                                <option value="{{ i }}"
+                                                        {% if loop.first %}selected{% endif %}>{{ i }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="datePlage" class="col-sm-2">
+                                        {{ 'et'|trans }}
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="dateFin" name="dateFin">
+                                            {% for i in 2016.."now"|date('Y')+1 %}
+                                                <option value="{{ i }}"
+                                                        {% if loop.last %}selected{% endif %}>{{ i }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-rw btn-primary" id="onRecherchePublications">
+                        {{ 'publications.templates.TRecherchePublications.valider'|trans }}
+                    </button>
+
+                    <button class="btn btn-rw btn-primary" id="onRecherchePublicationsInit">
+                        {{ 'publications.templates.TRecherchePublications.default'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12" id="resultats_recherches">
+            <div class="alert alert-info-rw">
+                Veuillez saisir au moins un critère pour effectuer une recherche.
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .hal_picto {
+            width: 15px;
+            height: 15px;
+            display: inline-block
+        }
+
+        .hal_entry {
+
+        }
+
+        .hal_reference {
+
+        }
+
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+            text-decoration: none;
+            color: lightgrey;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      var $locale = {{ app.request.getLocale() }}
+    </script>
+    <script src="{{ asset('assets/js/bibliov2.js') }}"></script>
+    <script>
+      var $params = '' //paramètre de recherche.
+
+      $(document).on('click', '#onRecherchePublications', function () {
+        $params = ''
+        recupereHal()
+      })
+
+      function recupereHal () {
+        var $resultat = $('#resultats_recherches')
+        var $nbResults = 0
+
+        var $auteur = $('#auteur').val()
+        $resultat.empty()
+
+        var dateDebut = $('#dateDebut').val()
+        var dateFin = $('#dateFin').val()
+
+        if ($auteur !== '' && $auteur !== '*') {
+          $.ajax({
+              url: "{{ path('ajax_membre_biblio') }}",
+              async: false,
+              data: {
+                'membreCrestic': $auteur,
+              },
+              method: 'post',
+              success: function (data) {
+                //var $params = '';
+                if (data.idHal == '') {
+                  $params = $params + '(authLastName_s:' + data.nom + ' AND authFirstName_s:' + data.prenom + ') AND'
+                } else {
+                  $params = $params + 'authIdHal_s:' + data.idHal + ' AND '
+                }
+              },
+            },
+          )
+        }
+
+        let $types = []
+        //récupération des types
+        $('input[type=checkbox]:checked').each(function () {
+          $types.push($(this).val())
+        })
+        var $references = []
+        var $fields = 'fl=language_s,docType_s,authFullName_s,bookTitle_s,city_s,conferenceEndDateY_i,' +
+          'conferenceTitle_s,' +
+          'country_t,' +
+          'halId_s,inPress_bool,invitedCommunication_s,isbn_s,issue_s,journalPublisher_s,journalTitle_s,page_s,' +
+          'proceedings_s,producedDateY_i,publisher_s,title_s,volume_s,doiId_s,uri_s,authorityInstitution_s'
+
+        for (let index in $types) {
+          switch ($types[index]) {
+            case 'ART':
+              $params = 'docType_s:(ART) AND  '
+              break
+            case 'COMM':
+              $params = 'docType_s:(COMM) AND proceedings_s:1 AND  '
+              break
+            case 'DOUV':
+              //(docType_s = OUV) ou (docType_s = ISSUE) ou (docType_s = PROCEEDINGS)
+              $params = 'docType_s:(DOUV OR OUV OR ISSUE OR PROCEEDINGS) AND  '
+              break
+            case 'COUV':
+              $params = 'docType_s:(COUV) AND  '
+              break
+            case 'THESE':
+              $params = 'docType_s:(THESE OR HDR) AND  '
+              break
+            case 'PATENT':
+              $params = 'docType_s:(PATENT) AND  '
+              break
+            case 'COMM_SANS':
+              $params = 'docType_s:(COMM) AND proceedings_s:0 AND  '
+              break
+            case 'POSTER':
+              $params = 'docType_s:(POSTER) AND  '
+              break
+          }
+
+          // if ($types[index] === 'THESE') {
+          //   type = type + 'THESE OR HDR OR '
+          // } else if ($types[index] === 'COMM_SANS') {
+          //   type = type + 'COMM OR '
+          //   sans_acte = true
+          //
+          // } else {
+          //   type = type + $types[index] + ' OR '
+          //   // if ($types[index] === 'COMM') {
+          //   //   sans_acte = false
+          //   // }
+          // }
+
+          $params = $params + ' structId_i:21189'
+          //compte le nombre de résultats
+          $.ajax({
+            url: encodeURI('https://api.archives-ouvertes' +
+              '.fr/search/?q=' + $params + '&wt=xml&rows=0&fq=producedDateY_i:[' + dateDebut + ' TO ' + dateFin + ']'),
+            dataType: 'xml',
+            async: false,
+            success: function (data) {
+              var $xml = $(data)
+              var $xResult = $xml.find('result')
+              $nbResults += $xResult.attr('numFound')
+            },
+          })
+
+          $.ajax({
+
+            url: encodeURI('https://api.archives-ouvertes' +
+              '.fr/search/?q=' + $params + '&wt=json&indent=true&sort=producedDate_s ' +
+              'desc,docType_s ASC&fl=producedDateY_i,label_s,docType_s,uri_s&rows=' +
+              $nbResults + '&fq=producedDateY_i:[' + dateDebut + ' TO ' + dateFin + ']&' + $fields),
+            async: false,
+            success: function (data) {
+              $references.push(data.response.docs)
+            }
+          })
+        }
+
+        var $html = ''
+        var $htmlPrec = ''
+        var $annee = 0
+        var $anneePrec = 0
+
+        var $tableauPublis = []
+        var tabType = ['rouge', 'bleu', 'cyan', 'orange', 'jaune', 'vert', 'vert2', 'autre']
+        var now = new Date()
+        var annee = now.getFullYear() + 2
+        for (var a = 2015; a < annee; a++) {
+          $tableauPublis[a] = []
+          for (var type = 0; type < tabType.length; type++) {
+            $tableauPublis[a][tabType[type]] = []
+          }
+        }
+
+        $references.forEach(function (references) {
+          for (var i = 0; i < references.length; i++) {
+            if (references[i].docType_s !== 'IMG' && references[i].docType_s !== 'VIDEO' && references[i]
+                .docType_s !== 'MAP' && references[i].docType_s !== 'SOFTWARE' && references[i].docType_s !==
+              'SON' && references[i].docType_s !== 'LECTURE' && references[i].docType_s !== 'REPORT' && references[i].docType_s !== 'UNDEFINED') {
+
+              if (references[i].producedDateY_i in $tableauPublis) {
+                switch (references[i].docType_s) {
+                  case 'POSTER':
+                    $tableauPublis[references[i].producedDateY_i]['vert2'].push(references[i])
+                    break
+                  case 'ART':
+                    $tableauPublis[references[i].producedDateY_i]['rouge'].push(references[i])
+                    break
+                  case 'COMM':
+                    if (references[i].proceedings_s === '1') {
+                      $tableauPublis[references[i].producedDateY_i]['bleu'].push(references[i])
+                    } else {
+                      $tableauPublis[references[i].producedDateY_i]['vert'].push(references[i])
+                    }
+                    break
+                  case 'PRESCONF':
+                  case 'OUV':
+                  case 'DOUV':
+                  case 'incollection':
+                  case 'book':
+                  case 'ISSUE':
+                  case 'PROCEEDINGS':
+                    $tableauPublis[references[i].producedDateY_i]['cyan'].push(references[i])
+                    break
+                  case 'COUV':
+                    $tableauPublis[references[i].producedDateY_i]['orange'].push(references[i])
+                    break
+                  case 'HDR':
+                  case 'THESE':
+                  case 'phdthesis':
+                  case 'REPORT_DOCT':
+
+                    $tableauPublis[references[i].producedDateY_i]['jaune'].push(references[i])
+                    break
+                  default:
+                    $tableauPublis[references[i].producedDateY_i]['autre'].push(references[i])
+                }
+              }
+            }
+          }
+        })
+
+        for (var a = annee - 1; a > 2015; a--) {
+          $htmlPrec = $htmlPrec + '<br><br><div class="heading"><h4>' + a + '</h4></div>'
+          $html = $html + '<br><br><div class="heading"><h4>' + a + '</h4></div>'
+          for (var type = 0; type < tabType.length; type++) {
+
+            for (var i = 0; i < $tableauPublis[a][tabType[type]].length; i++) {
+              var $text = convertToHtml($tableauPublis[a][tabType[type]][i])
+              if ($tableauPublis[a][tabType[type]][i].proceedings_s === '0') {
+                if ($tableauPublis[a][tabType[type]][i].docType_s === 'POSTER') {
+                  $html = $html + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+                } else if ($tableauPublis[a][tabType[type]][i].docType_s === 'COMM') {
+                  $html = $html + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s + '_SANS_ACTE'] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+                } else {
+
+                  $htmlPrec = $htmlPrec + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+                }
+              } else {
+                $html = $html + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+              }
+            }
+          }
+        }
+
+        $resultat.empty()
+
+        $resultat.append($html)
+        // },
+        //})
+      }
+
+      $(document).on('change', '#auteur', function () {
+        $.ajax({
+          url: '',
+          success: function () {
+
+          },
+        })
+      })
+    </script>
+{% endblock %}

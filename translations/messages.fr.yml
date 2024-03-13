@@ -1,0 +1,328 @@
+
+acces.profl: Accéder au profil de
+
+top_bar:
+    address:
+        university: 'Université de Reims Champagne-Ardenne'
+        departement: 'Centre de Recherche en STIC'
+    login:
+        login: 'Connexion Intranet'
+        welcom: Bienvenue
+        prenom: Prénom
+        acces_intranet: 'Accés Intranet'
+        acces_utilisateur: 'Accès à mon espace'
+        acces_responsable: 'Accès espace responsable'
+        acces_administrateur: 'Accès espace administration'
+        logout: Déconnexion
+        window.connection: Connexion
+        window.close: Déconnexion
+        window.error: Erreur
+        window.username_email: 'Email (ou pseudo)'
+        window.password: 'Mot de passe'
+        window.remember_me: 'Se souvenir de moi'
+        changepassword: 'Modifier mot de passe'
+
+navigation:
+    mentions-legales.title: Mentions Légales
+    actualites.title: Faits marquants
+    actualites.interne.title: Actualité du laboratoire
+    agenda.title: Agenda
+    emplois.title: 'Offres d''emploi, thèses, post-doc'
+    presentation.title: Présentation
+    organigramme.title: Organigramme
+    membres.title: Membres du CReSTIC
+    documentation.title: Documentation du CReSTIC
+    publications.title: Publications du CReSTIC
+    contact.title: Contacts
+
+titre: Titre
+keywords: Mots Clés
+message : Message
+illustration : Illustration
+slug: Slug
+nomConference: Nom de la conférence
+sigleConference: Sigle de la conférence
+ville: Ville
+pays: Pays
+tauxSelection: Taux de sélection
+url: Site web
+urlConference: Site Web de la Conférence
+internationale: Internationale
+editeur: Editeur
+contacts: Contacts
+by: Par
+posted: Posté le
+membres.crestic: Membres du CReSTIC
+DOC: Doctorant
+DOCH: Doctorant Hors URCA
+MCF: Maître de conférences
+MCF-HDR: Maître de conférences HDR
+Assoc: Chercheur Associé
+ING: Ingénieur
+ING-R: Ingénieur de recherche
+ING-C: Ingénieur contractuel
+P-DOC: Post-Doctorant
+ATER: ATER
+TECH: Technicien
+PR: Professeur
+PUPH: Professeur PH
+PAST: PAST/MAST
+PU-PH: Professeur PH
+MCUPH: Maître de conférences PH
+MCU-PH: Maître de conférences PH
+ADM: Secrétaire
+
+visiteur:
+    membreAssocie: Membre associé
+    agenda:
+        title: Agenda du CReSTIC
+        pasdevenement: Aucun événement programmé.
+    documentation:
+        title: Documentation du CReSTIC
+    actualite:
+        title: Faits marquants
+        interne.title: Actualité du laboratoire
+    equipe:
+        title: Équipes
+        themerecherche: Thèmatique de recherche
+        informations: Informations
+        projetsrecherches: Projets de recherche
+        projetsrecherches.termines: Projets de recherche terminés
+        publications: Dernières publications
+        membresequipe: Membres de l'équipe
+        responsable: Responsable
+        contact: Contact
+        departements: Département(s)
+        detail: Détails de l'équipe
+    liste.title: Liste des membres
+    annuaire.title: Annuaire des membres
+    trombinoscope.title: Trombinoscope
+    emploisIndex:
+        title: 'Offres d''emploi, thèses, post-doc'
+        emploi: Emploi
+        datepublication: Date de publication
+        duree: Durée
+        details: Détails
+        contact: Contact
+        plusinfo: 'Plus d''informations sur l''offre'
+        titreModal: 'Information sur l''offre d''emploi'
+    TApercuDepartements:
+        theme: Thématique
+        informations: Informations
+        responsable: Responsable
+        mail: Email
+        equipes: Équipes
+    contact:
+        information: Informations
+        tel:
+            court: Tel.
+        fax:
+            court: Fax.
+        email: Email
+        autresSites: Autres Sites du CReSTIC
+        envoi:
+            confirmation: Message envoyé avec succès
+            erreur: 'Erreur lors de l''envoi du message'
+        ContactSite: Contact local
+        telephone: Téléphone
+        commentVenir: Comment venir
+    departement:
+        title: Départements
+        titlemeta: Départements du CReSTIC
+        acces: Détails du département
+    index:
+        actualites:
+            posteLe: Posté le
+            lirePlus: Lire la suite ...
+            par: Auteur
+            retour: Retour à la liste des actualités
+        agenda:
+            posteLe: Posté le
+            lirePlus: Lire la suite ...
+            par: Auteur
+            retour: Retour à la liste des événements
+    MembresCrestic:
+        hal: Biblio. HAL
+        datenomination: Date Nomination CReSTIC
+        contact: Contact
+        email: Email
+        telephone: Téléphone
+        telportable: Téléphone Portable
+        siteweb: Site Web
+        localisation: Localisation
+        cnu: CNU
+        voirprofil: Voir le profil
+        activites: Activités
+        publications: Publications
+        publicationsAutres: Communications
+        departement: Département
+        themes: Thématiques
+        vulgarisation: Animation
+        international: International
+        enseignements: Enseignement
+        responsabilitesScientifiques: Scientifique
+        responsabilitesAdministratives: Administratif
+        valorisation: Valorisation
+        evaluation: Évaluation
+        editoriale: Éditorial
+        equipes: 'Equipe(s)'
+    membreConseilLabo: Membre du conseil de laboratoire
+    projet:
+        title: Projets
+        description: Description
+        informations: Informations
+        dernierespublications: Dernières publications
+        financeurs: Financeurs
+        membresprojet: Membres impliqués
+        partenaires: Partenaires
+        responsable: Responsable
+        periode: Dates
+        contact: Contact
+        url: Site web
+        identification: Identification
+        detail: Détails du projet
+        porteur: Porteur du projet
+    plateforme:
+        index: Plateformes du CReSTIC
+        title: Plateformes
+        description: Description
+        informations: Informations
+        responsable: Responsable
+        localisation: Localisation
+        contact: Contact
+        url: Site Web
+        publications: 'Dernières publications'
+        projetsrecherches: Projets de recherche en lien avec la plateforme
+    organigramme:
+        title: Organigramme du CReSTIC
+        direction: Direction du CReSTIC
+        directeur: Directeur
+        directeurAdjoint: Directeur Adjoint
+        conseil: Conseil de Laboratoire
+        departement: Département
+        equipe: Équipe
+        administratif: Service administratif
+        responsable: Responsable
+        technicien: Service technique
+    rechercher:
+        publications: Rechercher des publications du CReSTIC
+    offre:
+        titre: 'Titre de l''offre'
+        date: Date souhaitée
+        duree: Durée
+        description: Description
+        resume: Résumé
+    publication:
+        aucune: Aucune publication trouvée
+        publications: publications
+        plusancienne: Plus anciennes
+        resultatsphrase: Résultats de votre recherche de publications
+        resultatsphrase2: '%nbresult% publications correspondent à vos critères : %criteres%'
+        recherche:
+            touslesprojets: Tous les projets
+            touteslesequipes: Toutes les équipes
+            touslesdepartements: Tous les départements
+            touslesmembres: Tous les membres
+            sansprojet: Sans projet
+            nbresults: 'Il y a %nbpublis% publications sur le site. Précisez au moins un critère de recherche pour obtenir des résultats.'
+
+utilisateur:
+  demandesOM:
+        title: 'Vos demandes d''OMs'
+  departements:
+        title: Départements
+  equipes:
+        title: Équipes
+  plateformes:
+        title: Plateformes
+  projets:
+        title: Projets
+  emplois:
+        title: 'Offres d''emplois'
+  publications:
+        title: Vos publications
+  home: Votre espace CReSTIC
+  activites:
+        title: Carnet de bord
+  intranet:
+      title: 'Intranet'
+      documents:
+          title: 'Ressources internes'
+
+publications:
+    ouvrages.title: Ouvrages/Chapitres
+    revues.title: Revues
+    conferences.title: Conférences
+    brevets.title: Brevets
+    rapports.title: Rapports
+    theses.title: Thèses
+    habilitations.title: HDR
+    informations: Informations Générales
+    apercu:
+        pagination: Pages
+        datepubli: Date
+        internationale:
+            title: Internationale
+            oui: Oui
+            non: Non
+        nationale:
+            title: Nationale
+            oui: Oui
+            non: Non
+        doi: DOI
+        url: Site Web
+    templates:
+        TRecherchePublications:
+            titre: Recherche
+            equipe: Équipe
+            typePublication: 'Type de publication'
+            publications: 'Toutes les publications'
+            brevets: Brevet
+            conferences: Conférence
+            habilitations: Habilitations
+            ouvrages: Ouvrages
+            chapitres: Chapitres
+            rapports: Rapports
+            revues: Revues
+            theses: Theses/Habilitations
+            art: 'Article dans des revues'
+            comm: 'Communication dans un congrès'
+            couv: 'Chapitre d''ouvrage'
+            douv: 'Direction d''ouvrage, Proceedings'
+            hdr: HDR
+            ouv: 'Ouvrage (y compris édition critique et traduction)'
+            patent: Brevet
+            poster: Poster
+            presconf: 'Document associé à des manifestations scientifiques'
+            report: Rapport
+            these: Thèse
+            auteur: Auteur
+            keywords: 'Mots clé'
+            datePlage: 'date Plage'
+            valider: Valider
+            projet: Projet
+            departement: Département
+            default: Initialiser
+fermer: Fermer
+tous: Tous
+nom: Nom
+prenom: Prénom
+grade: Grade
+departement: Département
+site: Site
+telephone: Téléphone
+actions: Actions
+bureau: Bureau
+corps: corps
+entre: Entre
+et: Et
+
+cat:
+  ec: Enseignants-Chercheurs (permanents)
+  assoc: Chercheurs associés
+  past: PAST/MAST
+  pdoc: Post-Doctorants
+  ater: ATER
+  ing: Ingénieurs Contractuels
+  adm: Personnels d'accompagnement à la recherche
+  doc: Doctorants

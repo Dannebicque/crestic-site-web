@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.getLocale() }}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="description"
+          content="Site officiel du CRESTIC (Centre de Recherche en Sciences et Technologies de l'Information et de la Communication) de l'Université de Reims Champagne Ardenne."/>
+    <meta name="keywords" content="crestic, research lab, automatique, traitement du signal, informatique, research">
+    <meta name="author" content="David Annebicque">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="{{ asset('favicon.ico') }}" rel="shortcut icon" type="image/x-icon"/>
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('android-icon-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ asset('ms-icon-144x144.png') }}">
+    <meta name="theme-color" content="#ffffff">
+    <title>{% block title %}Bienvenue{% endblock %} | CRESTIC | URCA | laboratoire de recherche</title>
+
+    <link href="{{ asset('assets/css/royal_preloader.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/bootstrap-treeview.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/bootstrap-social.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/owl.carousel.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/jquery.snippet.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/buttons.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/ionicons.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/font-awesome.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/magnific-popup.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/jquery-ui-1.11.4/jquery-ui.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/datatables/datatables.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/lou-multi-select-a789e06/css/multi-select.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/nosstyles.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/fullcalendar/fullcalendar.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/select2-master/dist/css/select2.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/crestic26112023.css') }}" rel="stylesheet"/>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="royal_preloader scrollreveal">
+{% block beginBody %}
+{% endblock %}
+
+<div id="royal_preloader">
+</div>
+
+{{ include('top-menu.html.twig') }}
+
+{% block mainContent %}
+    <div class="content-40mg">
+        <div class="container">
+            <div class="col-sm-12" id="contentIndex">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<!-- Begin Footer -->
+<footer class="footer-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2">
+                <a href="http://www.univ-reims.fr" target="_blank">
+                    <img src="{{ asset('assets/img/web.jpg') }}" alt="Logo URCA" width="100px">
+                </a>
+            </div>
+            <div class="col-sm-10 mg25-xs">
+                <p>
+                    <small class="address">
+                        <span class="ion-home da-footer-info-icons"></span>
+                        CReSTIC - UFR Sciences Exactes et Naturelles - Moulin de la Housse - BP 1039 - 51687 Reims CEDEX
+                        2<br/>
+
+                        <span class="ion-email da-footer-info-icons"></span>
+                        <a href="mailto:{{ settings('mail') }}" target="_blank">{{ settings('mail') }}</a>
+                        <span class="ion-ios7-telephone da-footer-info-icons"></span>
+                        {{ settings('telephonePrincipal') }}
+                    </small>
+                </p>
+                <p class="copyright">
+                    Template &copy; 2015 Raleway. All rights reserved. Site et développement &copy; CReSTIC & David Annebicque
+                    <a href="{{ path('visiteur_page', {slug:'mentions-legales'}) }}">{{ 'navigation.mentions-legales.title'|trans }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+{#<script src="{{ asset('assets/js/jquery-2.1.4.min.js') }}"></script>#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{{ asset('assets/js/royal_preloader.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.mixitup.min.js') }}"></script>
+<script src="{{ asset('assets/js/scrollReveal.js') }}"></script>
+<script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.snippet.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.fitvids.js') }}"></script>
+<script src="{{ asset('assets/js/activate-snippet.js') }}"></script>
+<script src="{{ asset('assets/js/skrollr.min.js') }}"></script>
+<script src="{{ asset('assets/datatables/datatables.min.js') }}"></script>
+<script src="{{ asset('assets/lou-multi-select-a789e06/js/jquery.multi-select.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.editable.min.js') }}"></script>
+<script src="{{ asset('assets/jquery-ui-1.11.4/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('assets/fullcalendar/lib/moment.min.js') }}"></script>
+<script src="{{ asset('assets/fullcalendar/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('assets/fullcalendar/lang-all.js') }}"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
+<script src="{{ asset('assets/select2-master/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('assets/js/notify.min.js') }}"></script>
+<script src="{{ asset('assets/js/david.js') }}"></script>
+
+<script>
+  var div_carousel_sliders = $('#divCarouselSliders');
+  var div_carousel_height = '300px';
+  div_carousel_sliders.carousel();
+  $('#divCarouselSliders .carousel-inner').css('background-color', 'none');
+  $('#divCarouselSliders .carousel-caption').css('background-color', 'none');
+  $('#divCarouselSliders').css('max-height', div_carousel_height);
+  $('#divCarouselSliders').css('overflow', 'hidden');
+  $('#divCarouselSliders .item img').css('width', 'auto');
+  $('#divCarouselSliders .item img').css('height', div_carousel_height);
+  $('#divCarouselSliders .item img').css('margin', 'auto');
+
+  var config = {
+    easing: 'hustle',
+    mobile: true,
+    delay: 'onload'
+  };
+  window.sr = new scrollReveal(config);
+
+  $.notify.defaults({globalPosition: 'top right'});
+
+</script>
+
+{% block javascripts %}
+    {#block pour contenir les JS spécifiques aux pages#}
+{% endblock %}
+
+{% block endBody %}
+{% endblock %}
+</body>
+</html>

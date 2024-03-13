@@ -1,0 +1,38 @@
+<dl class="dl-horizontal">
+    <dt>
+        {{ 'visiteur.offre.titre'|trans }}
+    </dt>
+    <dd>
+        {{ offre.titre }}
+    </dd>
+    <dt>
+        {{ 'visiteur.offre.resume'|trans }}
+    </dt>
+    <dd>
+        {{ offre.resume }}
+    </dd>
+    <dt>
+        {{ 'visiteur.offre.description'|trans }}
+    </dt>
+    <dd>
+        {{ offre.description|raw }}
+    </dd>
+    <dt>
+        {{ 'visiteur.offre.date'|trans }}
+    </dt>
+    <dd>
+        {{ offre.debut|date('d/m/Y') }}
+    </dd>
+    <dt>
+        {{ 'visiteur.offre.duree'|trans }}
+    </dt>
+    <dd>
+        {{ offre.duree }}
+    </dd>
+    <dt>
+        PDF
+    </dt>
+    <dd>
+        <a href="{{ asset('uploads/emplois/'~offre.pdf) }}" target="_blank" title="Télécharger le PDF">Fichier PDF de l'offre</a>
+    </dd>
+</dl>

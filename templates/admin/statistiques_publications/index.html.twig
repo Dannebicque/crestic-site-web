@@ -1,0 +1,148 @@
+{%  extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}Statistiques{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <section class="content-header">
+            <div class="d-flex flex-row justify-content-between align-content-center w-100">
+                <div class="content-header-title">
+                    <h1 class="title">
+                        Statistiques
+                    </h1>
+                </div>
+            </div>
+        </section>
+        <section id="main" class="content-body">
+            <div class="content-panel">
+                <div class="content-panel-body with-rounded-top with-min-h-250 without-padding ">
+                    <table class="table datagrid with-rounded-top ">
+                        <thead>
+                        <tr>
+                            <th class="text-"><a href="#">Département</a></th>
+                            <th class="text-"><a href="#">Nb membres</a></th>
+                            <th class="text-"><a href="#">Avant 2016</a></th>
+                            <th class="text-"><a href="#">A partir de 2016</a></th>
+                            <th class="text-"><a href="#">Total</a></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for departement in departements %}
+                            <tr>
+                                <th>{{ departement.nom }}</th>
+                                <th>{{ departement.membres|length }}</th>
+                                <th>{{ statistiquesDepartement[departement.id].total - statistiquesDepartement[departement.id].total2016 }}</th>
+                                <th>{{ statistiquesDepartement[departement.id].total2016 }}</th>
+                                <th>{{ statistiquesDepartement[departement.id].total }}</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </section>
+
+        <section id="main" class="content-body">
+            <div class="content-panel">
+                <div class="content-panel-body with-rounded-top with-min-h-250 without-padding ">
+                    <table class="table datagrid with-rounded-top ">
+                        <thead>
+                        <tr>
+                            <th class="text-"><a href="#">Equipe</a></th>
+                            <th class="text-"><a href="#">Nb membres</a></th>
+                            <th class="text-"><a href="#">Avant 2016</a></th>
+                            <th class="text-"><a href="#">A partir de 2016</a></th>
+                            <th class="text-"><a href="#">Total</a></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for equipe in equipes %}
+                            <tr>
+                                <th>{{ equipe.nom }}</th>
+                                <th>{{ equipe.membres|length }}</th>
+                                <th>{{ statistiquesEquipes[equipe.id].total - statistiquesEquipes[equipe.id].total2016 }}</th>
+                                <th>{{ statistiquesEquipes[equipe.id].total2016 }}</th>
+                                <th>{{ statistiquesEquipes[equipe.id].total }}</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </section>
+
+        <section id="main" class="content-body">
+            <div class="content-panel">
+                <div class="content-panel-body with-rounded-top with-min-h-250 without-padding ">
+                    <table class="table datagrid with-rounded-top ">
+                        <thead>
+                        <tr>
+                            <th class="text-"><a href="#">Membre</a></th>
+                            <th class="text-"><a href="#">id Hal</a></th>
+                            <th class="text-"><a href="#">Avant 2016</a></th>
+                            <th class="text-"><a href="#">A partir de 2016</a></th>
+                            <th class="text-"><a href="#">Total</a></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for membre in statistiquesMembre %}
+                            <tr>
+                                <th>{{ membre.membre.getDisplay }}</th>
+                                <th>{{ membre.membre.idHal }}</th>
+                                <th>{{ statistiquesMembre[membre.membre.id].total - statistiquesMembre[membre.membre.id].total2016 }}</th>
+                                <th>{{ statistiquesMembre[membre.membre.id].total2016 }}</th>
+                                <th>{{ statistiquesMembre[membre.membre.id].total }}</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+
+
+{#    <div class="content">#}
+{#        <section class="content-header">#}
+{#            <h1>Statistiques par équipe</h1>#}
+{#        </section>#}
+{#        <section id="main">#}
+{#            <div class="content-panel">#}
+{#                <div class="content-panel-body without-header without-footer">#}
+{#                    <table class="table datagrid with-rounded-top">#}
+{#                        <thead>#}
+{#                        <tr>#}
+{#                            <th>Equipe</th>#}
+{#                            <th>Nb membres</th>#}
+{#                            <th>Avant 2016</th>#}
+{#                            <th>A partir de 2016</th>#}
+{#                            <th>Total</th>#}
+{#                        </tr>#}
+{#                        </thead>#}
+{#                        <tbody>#}
+{#                        {% for equipe in equipes %}#}
+{#                            <tr>#}
+{#                                <th>{{ equipe.nom }}</th>#}
+{#                                <th></th>#}
+{#                                <th>{{ statistiquesEquipes[equipe.id].total - statistiquesEquipes[equipe.id].total2016 }}</th>#}
+{#                                <th>{{ statistiquesEquipes[equipe.id].total2016 }}</th>#}
+{#                                <th>{{ statistiquesEquipes[equipe.id].total }}</th>#}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{#                        </tbody>#}
+{#                    </table>#}
+{#                </div>#}
+{#            </div>#}
+{#        </section>#}
+{#    </div>#}
+{% endblock %}
+

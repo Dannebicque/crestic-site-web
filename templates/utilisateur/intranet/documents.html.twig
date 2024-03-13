@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+    Documents internes
+{% endblock %}
+
+{% block title %}Documents internes{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="heading mb20">
+                <h2>
+                    Documents internes
+                </h2>
+            </div>
+            <div class="row">
+
+                {% for categorie in categories|filter(categorie => categorie.categorieParent == null) %}
+                    <div class="col-sm-12">
+                        <div class="row" style="margin-left: 30px;">
+                            <div class="col-sm-12">
+                                <h3> > {{ categorie.libelle }}</h3>
+                                {% for document in categorie.documentsInternes %}
+                                    <div class="row mb15" style="margin-left: 30px;">
+                                        <div class="col-sm-10">
+                                            <div class="heading mb10">
+                                                <h4 class="titre">
+                                                    <a href="{{ asset('uploads/documentsInternes/'~document.fichier) }}"
+                                                       target="_blank">{{ document.titre }}</a>
+                                                </h4>
+                                            </div>
+                                            <p style="text-align: justify">{{ document.description|raw }}</p>
+                                            <p>
+                                                Version du {{ document.updated|date('d/m/Y H:i') }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <hr style="width:400px;" class="double-hr mt30 mb30">
+                                {% for categ in categorie.enfants %}
+                                    <h3> >>> {{ categ.libelle }}</h3>
+                                    {% for document in categ.documentsInternes %}
+                                        <div>
+                                            <p>{{ document.titre }}</p>
+                                        </div>
+                                    {% endfor %}
+                                    <hr style="width:400px;" class="double-hr mt30 mb30">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width:400px;" class="double-hr mt30 mb30">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

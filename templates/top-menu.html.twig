@@ -1,0 +1,148 @@
+<header>
+    <div id="divHeader">
+        <!-- Begin Top Bar -->
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-7">
+                        <!-- Address and Phone -->
+                        <span class="ion-android-system-home home-icon"></span>
+                        <a href="{% if app.request.locale == 'fr' %}http://www.univ-reims.fr{% else %}http://www.univ-reims.eu/{% endif %}"
+                           target="_blank" title="">
+                            {{ 'top_bar.address.university'|trans }}
+                        </a> | {{ 'top_bar.address.departement'|trans }}
+
+                        <span class="ion-ios7-telephone phone-icon"></span>
+                        {{ settings('telephonePrincipal') }}
+                    </div>
+
+                    <div class="col-sm-5">
+                        <ul class="topbar-list list-inline text-right">
+
+                            {% set route = app.request.attributes.get('_route') %}
+                            {% set params = app.request.attributes.get('_route_params') %}
+
+                            {% if params is iterable %}
+                                {% set paramsEn = params|merge({'_locale': 'en'}) %}
+                                {% set paramsFr = params|merge({'_locale': 'fr'}) %}
+                            {% else %}
+                                {% set paramsEn = {'_locale': 'en'} %}
+                                {% set paramsFr = {'_locale': 'fr'} %}
+                            {% endif %}
+
+                            <li>
+                                <a href="{{ path(route, paramsEn) }}" title="English Version">
+                                    <img src="{{ asset('assets/img/uk.png') }}" alt="en">
+                                </a>
+
+                                <a href="{{ path(route, paramsFr) }}" title="Version Française">
+                                    <img src="{{ asset('assets/img/fr.png') }}" alt="fr">
+                                </a>
+                            </li>
+
+                            <!-- login register-->
+
+                            {% if is_granted('ROLE_ADMINISTRATEUR') %}
+                                <li class="dropdown dropdown-main" style="list-style: none;">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                        {{ 'top_bar.login.welcom'|trans }}
+                                        {{ app.user.display|raw }}
+                                        <span class="fa fa-angle-down dropdown-arrow"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+                                        <li>
+                                            <a href="{{ path('homepage_utilisateur') }}">
+                                                {{ 'top_bar.login.acces_utilisateur'|trans }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin') }}">
+                                                {{ 'top_bar.login.acces_administrateur'|trans }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            {#<a href="{{ path('l3_logout') }}">#}
+                                                {#{{ 'top_bar.login.logout'|trans }}#}
+                                            {#</a>#}
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% elseif is_granted('ROLE_UTILISATEUR') %}
+                                <li class="dropdown dropdown-main" style="list-style: none;">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                        {{ 'top_bar.login.welcom'|trans }}
+                                        {{ app.user.display|raw }}
+                                        <span class="fa fa-angle-down dropdown-arrow"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+                                        <li>
+                                            <a href="{{ path('homepage_utilisateur') }}">
+                                                {{ 'top_bar.login.acces_utilisateur'|trans }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin') }}">
+                                                {{ 'top_bar.login.acces_responsable'|trans }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            {#<a href="{{ path('l3_logout') }}">#}
+                                                {#{{ 'top_bar.login.logout'|trans }}#}
+                                            {#</a>#}
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            {% else %}
+                                <li><a href="{{ path('homepage_utilisateur') }}">
+                                        {{ 'top_bar.login.login'|trans }}
+                                    </a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-wrapper">
+            <div class="navbar navbar-main affix-top" id="fixed-navbar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 column-header">
+                            <!-- Logo -->
+                            <div class="navbar-header col-sm-2">
+                                <!-- Brand -->
+                                <a href="{{ path('homepage') }}" class="navbar-brand">
+                                    {#<div class="css-logo">#}
+
+                                    {#</div>#}
+                                    <img src="{{ asset('assets/img/crestic-logo.png') }}" alt="CReSTIC" height="50px">
+                                </a>
+                                <!-- Mobile Navigation -->
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div><!-- /navbar header -->
+
+                            <!-- Main Navigation - Explained in Documentation -->
+                            <nav class="navbar-collapse collapse navHeaderCollapse" role="navigation">
+                                <ul class="nav navbar-nav navbar-right">
+                                    {{ render(controller(
+                                        'App\\Controller\\DefaultController::menuAlternatif'
+                                    )) }}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

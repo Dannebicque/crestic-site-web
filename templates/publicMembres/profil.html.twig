@@ -1,0 +1,495 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CReSTIC | {{ user.display }}{% endblock %}
+{% block content %}
+    {% if user.ancienMembresCrestic == true %}
+    <div class="alert alert-warning">
+        {{ user.display }} ne fait plus partie du CReSTIC depuis le {{ user.dateDepart|date('d/m/Y') }}.
+    </div>
+    {% endif %}
+    <div class="heading mb20">
+        <h1>{{ user.display }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 text-center">
+            <div class="content-box-profile content-box-bordered no-margin">
+                {% if user.image == 'noimage.png' or
+                    user.image == '' or
+                    user.image == null %}
+                    <div class="avatar">
+                        <p>{{ user.initiales }}</p>
+                    </div>
+                {% else %}
+                    <img src="{{ asset('uploads/membresCrestic/'~user.image) }}"
+                         style="width:auto;height:200px" alt="Photo de {{ user.display }}">
+                {% endif %}
+                {#                <img src="{% if user.image != null %}{{ asset('uploads/membresCrestic/'~user.image) }}{% else %}{{ #}
+                {#                asset('uploads/membresCrestic/noimage.jpg') }}{% endif %}" #}
+                {#                     height="200px" #}
+                {#                     alt="Photo de {{ user.display }}"/> #}
+                {% if user.membreAssocie == true %}
+                    <p>{{ 'visiteur.membreAssocie'|trans }}</p>
+                {% endif %}
+
+                {% if is_granted('ROLE_UTILISATEUR') %}
+                    <dl>
+                        {% if user.corpsgrade  != '' and user.corpsgrade != null %}
+                            <dt>
+                                {{ 'corps'|trans }}/{{ 'grade'|trans }}
+                            </dt>
+                            <dd>
+                                {{ user.corpsgrade }}
+                            </dd>
+                        {% endif %}
+
+                        {#                        {% if user.datenomination  != '' and user.datenomination != null %} #}
+                        {#                            <dt> #}
+                        {#                                {{ 'visiteur.MembresCrestic.datenomination'|trans }} #}
+                        {#                            </dt> #}
+                        {#                            <dd> #}
+                        {#                                {{ user.datenomination|date('d/m/Y') }} #}
+                        {#                            </dd> #}
+                        {#                        {% endif %} #}
+                    </dl>
+                {% endif %}
+
+                <h4 class="team-member-name-imgtop">
+                    {{ 'visiteur.MembresCrestic.contact'|trans }}
+                </h4>
+                <dl>
+                    <dt>
+                        {{ 'visiteur.MembresCrestic.email'|trans }}
+                    </dt>
+                    <dd>
+                        <a href="mailto:{{ user.email }}" target="_blank">{{ user.email }}</a>
+                    </dd>
+                    {% if user.tel  != '' and user.tel != null %}
+                        <dt>
+                            {{ 'visiteur.MembresCrestic.telephone'|trans }}
+                        </dt>
+                        <dd>
+                            {{ user.tel|tel_format }}
+                        </dd>
+                    {% endif %}
+
+                    {% if user.telPortable  != '' and user.telPortable != null %}
+                        <dt>
+                            {{ 'visiteur.MembresCrestic.telportable'|trans }}
+                        </dt>
+                        <dd>
+                            {{ user.telPortable|tel_format }}
+                        </dd>
+                    {% endif %}
+
+                    {% if user.url != '' %}
+                        <dt>
+                            {{ 'visiteur.MembresCrestic.siteweb'|trans }}
+                        </dt>
+                        <dd>
+                            <a href="{{ user.url }}" target="_blank">{{ user.url }}</a>
+                        </dd>
+                    {% endif %}
+                    <dt>
+                        {{ 'visiteur.MembresCrestic.equipes'|trans }}
+                    </dt>
+                    <dd>
+                        {% for equipe in user.equipesHasMembres %}
+                            <a href="{{ path('public_equipes_profil', {slug:equipe.equipe.slug}) }}" target="_blank">
+                                {{ equipe.equipe.nom }}
+                            </a>
+                            {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </dd>
+                </dl>
+                <div class="team-description">
+                    {# todo: réseaux sociaux
+                    <!-- Social -->
+                    <a href="#"><span class="ion-social-twitter team-ico mr15"></span></a>
+                    <a href="#"><span class="ion-social-facebook team-ico mr15"></span></a>
+                    <a href="#"><span class="ion-social-googleplus-outline team-ico"></span></a> #}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-8">
+
+            <h4>
+                {% if user.cnu != '' and user.cnu != null %} {{ 'visiteur.MembresCrestic.cnu'|trans }} : {{ user.cnu }}{% endif %}
+            </h4>
+            <br/>
+            <h4>{{ 'visiteur.MembresCrestic.localisation'|trans }}</h4>
+
+            {{ user.adresse }} <br/>
+            {{ user.localisation }}
+            <br/><br/>
+            <h4>CV</h4>
+            {% if app.request.locale == 'en' and user.cvEn != '' and user.cvEn != null %}
+                {{ user.cvEn|raw }}
+            {% else %}
+                {{ user.cv|raw }}
+            {% endif %}
+            <br>
+        </div>
+    </div>
+
+    <div class="heading mt30">
+        <h4>
+            {{ 'visiteur.MembresCrestic.activites'| trans }}
+        </h4>
+    </div>
+
+    <!-- Begin Tabs Justified -->
+    <ul id="membresTabActivites" class="nav nav-tabs nav-justified mt15" role="tablist">
+        {% if attribute (user,'responsabilitesAdministratives') is not empty %}
+            <li>
+                <a href="#responsabilitesAdministratives" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.responsabilitesAdministratives'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'themes') is not empty %}
+            <li>
+                <a href="#themes" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.themes'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'responsabilitesScientifiques') is not empty %}
+            <li>
+                <a href="#responsabilitesScientifiques" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.responsabilitesScientifiques'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {# <li> #}
+        {# <a href="#publications" role="tab" data-toggle="tab"> #}
+        {# {{ 'visiteur.MembresCrestic.publications'| trans }} #}
+        {# </a> #}
+        {# </li> #}
+
+        <li>
+            <a href="#hal" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.publications'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#halAutres" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.publicationsAutres'| trans }}
+            </a>
+        </li>
+
+        {% if attribute (user,'international') is not empty %}
+            <li>
+                <a href="#international" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.international'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'editorial') is not empty %}
+            <li>
+                <a href="#editorial" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.editoriale'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'valorisation') is not empty %}
+            <li>
+                <a href="#valorisation" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.valorisation'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'evaluation') is not empty %}
+            <li>
+                <a href="#evaluation" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.evaluation'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'vulgarisation') is not empty %}
+            <li>
+                <a href="#vulgarisation" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.vulgarisation'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if attribute (user,'enseignements') is not empty %}
+            <li>
+                <a href="#enseignements" role="tab" data-toggle="tab">
+                    {{ 'visiteur.MembresCrestic.enseignements'| trans }}
+                </a>
+            </li>
+        {% endif %}
+
+    </ul>
+
+    <div id="membresTabDivActivites" class="tab-content tab-default mb15">
+
+        {% if attribute (user,'responsabilitesAdministratives') is not empty %}
+            <div class="tab-pane tab-profil" id="responsabilitesAdministratives">
+                {% if app.request.locale == 'en' and user.responsabilitesAdministrativesEn != '' and user.responsabilitesAdministrativesEn != null %}
+                    {{ user.responsabilitesAdministrativesEn|raw }}
+                {% else %}
+                    {{ user.responsabilitesAdministratives|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'valorisation') is not empty %}
+            <div class="tab-pane tab-profil" id="valorisation">
+                {% if app.request.locale == 'en' and user.valorisationEn != '' and user.valorisationEn != null %}
+                    {{ user.valorisationEn|raw }}
+                {% else %}
+                    {{ user.valorisation|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'vulgarisation') is not empty %}
+            <div class="tab-pane tab-profil" id="vulgarisation">
+                {% if app.request.locale == 'en' and user.vulgarisationEn != '' and user.vulgarisationEn != null %}
+                    {{ user.vulgarisationEn|raw }}
+                {% else %}
+                    {{ user.vulgarisation|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'international') is not empty %}
+            <div class="tab-pane tab-profil" id="international">
+                {% if app.request.locale == 'en' and user.internationalEn != '' and user.internationalEn != null %}
+                    {{ user.internationalEn|raw }}
+                {% else %}
+                    {{ user.international|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'enseignements') is not empty %}
+            <div class="tab-pane tab-profil" id="enseignements">
+                {% if app.request.locale == 'en' and user.enseignementsEn != '' and user.enseignementsEn != null %}
+                    {{ user.enseignementsEn|raw }}
+                {% else %}
+                    {{ user.enseignements|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'responsabilitesScientifiques') is not empty %}
+            <div class="tab-pane tab-profil" id="responsabilitesScientifiques">
+                {% if app.request.locale == 'en' and user.responsabilitesScientifiquesEn != '' and user.responsabilitesScientifiquesEn != null %}
+                    {{ user.responsabilitesScientifiquesEn|raw }}
+                {% else %}
+                    {{ user.responsabilitesScientifiques|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'themes') is not empty %}
+            <div class="tab-pane tab-profil" id="themes">
+                {% if app.request.locale == 'en' and user.themesEn != '' and user.themesEn != null %}
+                    {{ user.themesEn|raw }}
+                {% else %}
+                    {{ user.themes|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'evaluation') is not empty %}
+            <div class="tab-pane tab-profil" id="evaluation">
+                {% if app.request.locale == 'en' and user.evaluationEn != '' and user.evaluationEn != null %}
+                    {{ user.evaluationEn|raw }}
+                {% else %}
+                    {{ user.evaluation|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if attribute (user,'editorial') is not empty %}
+            <div class="tab-pane tab-profil" id="editorial">
+                {% if app.request.locale == 'en' and user.editorialEn != '' and user.editorialEn != null %}
+                    {{ user.editorialEn|raw }}
+                {% else %}
+                    {{ user.editorial|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="tab-pane tab-profil" id="hal">
+            <div class="alert alert-info">Cette liste bibliographique est récupérée automatiquement depuis
+                <a href="https://hal.archives-ouvertes.fr/" target="_blank">HAL</a></div>
+            <div id="result_hal">
+
+            </div>
+        </div>
+        <div class="tab-pane tab-profil" id="halAutres">
+            <div class="alert alert-info">Cette liste bibliographique est récupérée automatiquement depuis
+                <a href="https://hal.archives-ouvertes.fr/" target="_blank">HAL</a></div>
+            <div id="result_hal_autres">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      var $locale = "{{ app.request.getLocale() }}"
+    </script>
+    <script src="{{ asset('assets/js/bibliov2.js') }}"></script>
+    <script>
+
+      $(document).ready(function () {
+        recupereHal()
+        var max_height = 0
+        $('#membresTabActivites a:first').tab('show')
+
+        $('#membresTabActivites a').each(function () {
+          var id_tab = $(this).attr('href')
+          if (max_height < $(id_tab).height()) {
+            max_height = $(id_tab).height()
+          }
+        })
+
+        $('#membresTabDivActivites').height(max_height)
+
+        $('.link-share').attr('data-link', '/fiche/membre/{{ user.slug }}')
+
+      })
+
+      function recupereHal () {
+        var $resultat = $('#result_hal')
+        var $resultatAutres = $('#result_hal_autres')
+        var $nbResults = 0
+        var $nbResultsAutres = 0
+        $resultat.empty()
+        $resultatAutres.empty()
+
+        $.ajaxSetup({
+          scriptCharset: 'iso-8859-1',
+          cache: false
+        })
+
+        //compte le nombre de résultats
+        $.ajax({
+          url: encodeURI("https://api.archives-ouvertes.fr/search/?q=authIdHal_s:{{ user.idhal }}&wt=xml&rows=0"),
+          dataType: 'xml',
+          success: function (data) {
+            var $xml = $(data)
+            var $xResult = $xml.find('result')
+            $nbResults = $xResult.attr('numFound')
+          }
+        }).then(function () {
+          //récupère les data
+          var $fields = 'fl=language_s,docType_s,authFullName_s,bookTitle_s,city_s,conferenceEndDateY_i,' +
+            'conferenceTitle_s,' +
+            'country_t,' +
+            'halId_s,inPress_bool,invitedCommunication_s,isbn_s,issue_s,journalPublisher_s,journalTitle_s,page_s,' +
+            'proceedings_s,producedDateY_i,publisher_s,title_s,volume_s,doiId_s,uri_s,authorityInstitution_s'
+          $.ajax({
+            url: encodeURI("https://api.archives-ouvertes.fr/search/?q=authIdHal_s:{{ user.idhal }}" +
+              '&wt=json&indent=true&sort=producedDate_s desc,docType_s ASC& ' +
+              '&uri_s&rows=' + $nbResults + '&' + $fields),
+            dataType: 'json',
+            success: function (data) {
+              var $references = data.response.docs
+              var $html = ''
+              var $htmlPrec = ''
+
+              var $tableauPublis = []
+              var tabType = ['rouge', 'bleu', 'cyan', 'orange', 'jaune', 'autre']
+              var now = new Date()
+              var annee = now.getFullYear() + 2
+
+              for (var i = 0; i < $references.length; i++) {
+                if ($references[i].docType_s !== 'IMG' && $references[i].docType_s !== 'VIDEO' && $references[i]
+                    .docType_s !== 'MAP' && $references[i].docType_s !== 'SOFTWARE' && $references[i].docType_s !==
+                  'SON' && $references[i].docType_s !== 'LECTURE' && $references[i].docType_s !== 'REPORT' && $references[i].docType_s !== 'UNDEFINED') {
+                  /*on ne traite pas : pré-publications, documents de travail = UNDEFINED
+                  - rapports =  report
+                  - cours [je ne pense pas qu'il y en ait, mais on ne sait jamais] = LECTURE
+                  - toutes les données de recherche (image ; vidéo ; son) [je ne pense pas
+                    qu'il y en ait, mais on ne sait jamais]*/
+
+                  if (!($references[i].producedDateY_i in $tableauPublis)) {
+                    var a = $references[i].producedDateY_i
+                    $tableauPublis[a] = []
+                    for (var type = 0; type < tabType.length; type++) {
+                      $tableauPublis[a][tabType[type]] = []
+                    }
+                  }
+
+                  switch ($references[i].docType_s) {
+                    case 'ART':
+                      $tableauPublis[$references[i].producedDateY_i]['rouge'].push($references[i])
+                      break
+                    case 'COMM':
+                      $tableauPublis[$references[i].producedDateY_i]['bleu'].push($references[i])
+                      break
+                    case 'PRESCONF':
+                    case 'OUV':
+                    case 'DOUV':
+                    case 'incollection':
+                    case 'book':
+                    case 'ISSUE':
+                    case 'PROCEEDINGS':
+                      $tableauPublis[$references[i].producedDateY_i]['cyan'].push($references[i])
+                      break
+                    case 'COUV':
+                      $tableauPublis[$references[i].producedDateY_i]['orange'].push($references[i])
+                      break
+                    case 'HDR':
+                    case 'THESE':
+                    case 'phdthesis':
+                    case 'REPORT_DOCT':
+                      $tableauPublis[$references[i].producedDateY_i]['jaune'].push($references[i])
+                      break
+                    default:
+                      $tableauPublis[$references[i].producedDateY_i]['autre'].push($references[i])
+                  }
+
+                }
+              }
+
+              for (var a = annee - 1; a > 2000; a--) {
+                $htmlPrec = $htmlPrec + '<br><br><div class="heading"><h4>' + a + '</h4></div>'
+                $html = $html + '<br><br><div class="heading"><h4>' + a + '</h4></div>'
+                for (var type = 0; type < tabType.length; type++) {
+                  if (a in $tableauPublis && tabType[type] in $tableauPublis[a]) {
+                    for (var i = 0; i < $tableauPublis[a][tabType[type]].length; i++) {
+                      var $text = convertToHtml($tableauPublis[a][tabType[type]][i])
+                      if ($tableauPublis[a][tabType[type]][i].docType_s !== 'ART' && $tableauPublis[a][tabType[type]][i]
+                        .proceedings_s === '0') {
+                        if ($tableauPublis[a][tabType[type]][i].docType_s === 'COMM') {
+                          $htmlPrec = $htmlPrec + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s + '_SANS_ACTE'] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+                        } else {
+                          $htmlPrec = $htmlPrec + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+                        }
+                      } else {
+                        $html = $html + '<div class="row hal_entry"><div class="col-sm-1">' + arrayType[$tableauPublis[a][tabType[type]][i].docType_s] + '</div> <div class="col-sm-11 hal_reference">' + $text + '</div></div>'
+                      }
+                    }
+                  }
+                }
+              }
+
+              $resultat.empty()
+              $resultatAutres.empty()
+              $resultat.append($html)
+              $resultatAutres.append($htmlPrec)
+            }
+          })
+        })
+      }
+    </script>
+{% endblock %}

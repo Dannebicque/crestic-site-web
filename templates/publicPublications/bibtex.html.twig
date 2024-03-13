@@ -1,0 +1,26 @@
+{% if publication != null %}
+<pre id="bibtex">{{ biblio.formatBibtex(publication) }}</pre>
+    {#@article{DBLP:journals/ijgi/MobaiedMLR15,
+      author    = {Samira Mobaied and
+                   Nathalie Machon and
+                   Arnault Lalanne and
+                   Bernard Riera},
+      title     = {The Spatiotemporal Dynamics of Forest-Heathland Communities over 60
+                   Years in Fontainebleau, France},
+      journal   = { {ISPRS} Int. J. Geo-Information},
+      volume    = {4},
+      number    = {2},
+      pages     = {957--973},
+      year      = {2015},
+      url       = {https://doi.org/10.3390/ijgi4020957},
+      doi       = {10.3390/ijgi4020957},
+      timestamp = {Sun, 28 May 2017 13:17:35 +0200},
+      biburl    = {http://dblp.uni-trier.de/rec/bib/journals/ijgi/MobaiedMLR15},
+      bibsource = {dblp computer science bibliography, http://dblp.org}
+    }#}
+
+{% else %}
+    <div class="alert">
+        <div class="alert-danger">{{ 'visiteur.publication.aucune'|trans }}</div>
+    </div>
+{% endif %}

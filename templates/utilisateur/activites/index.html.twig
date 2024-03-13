@@ -1,0 +1,38 @@
+{% extends 'base-utilisateur.html.twig' %}
+
+{% block breadcrumbs %}
+    <a href="{{ path('utilisateur_activites_index') }}">Activités</a>
+{% endblock %}
+
+{% block content %}
+    <h1>Votre carnet de bord</h1>
+	<div class="alert alert-info-rw">Vous pouvez indiquer ici vos différentes activités : rendez-vous pour des contrats,
+	                       rencontre d'entreprises,... Toutes ces informations permettront la rédaction du bilan annuel.</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for activite in activites %}
+            <tr>
+                <td>{{ activite.titre }}</td>
+                <td>{% if activite.created %}{{ activite.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+	                <a href="{{ path('utilisateur_activites_show', { 'id': activite.id }) }}" class="btn btn-info"
+	                   title="Voir"><i class="fa fa-eye"></i> </a>
+	                <a href="{{ path('utilisateur_activites_edit', { 'id': activite.id }) }}" class="btn
+                            btn-warning" title="Modifier"><i class="fa fa-pencil"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+	<a href="{{ path('utilisateur_activites_new') }}" class="btn btn-primary">Ajouter une nouvelle entrée au
+	                                                                          carnet
+	</a>
+{% endblock %}

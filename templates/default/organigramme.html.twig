@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<style>
+	.lienOrganigramme a{
+		color: white;
+	}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="heading mb20">
+				<h2>
+					{{ 'visiteur.organigramme.title'|trans }}
+				</h2>
+			</div>
+			<div class="row mt30">
+
+				<div class="col-sm-3 text-center">
+					<div class="panel panel-default">
+						<div class="panel-heading">{{ 'visiteur.organigramme.administratif'|trans }}</div>
+						<div class="panel-body">
+							{% for secretaire in organigramme['secretaire'] %}
+								{{ secretaire|linkMembre|raw }}
+								<br/>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6 text-center">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-success">
+								<div class="panel-heading">
+									{{ 'visiteur.organigramme.direction'|trans }}
+								</div>
+								<div class="panel-body">
+
+									{{ 'visiteur.organigramme.directeur'|trans }}
+									<br/>
+									{% for directeur in organigramme['directeur'] %}
+											{{ directeur|linkMembre|raw }}
+									{% endfor %}
+									<br/>
+
+									{{ 'visiteur.organigramme.directeurAdjoint'|trans }}
+									<br/>
+
+									{% for directeurAdjoint in organigramme['directeurAdjoint'] %}
+										{{ directeurAdjoint|linkMembre|raw }}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">{{ 'visiteur.organigramme.conseil'|trans }} (16 membres)</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-3 text-center">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							{{ 'visiteur.organigramme.technicien'|trans }}
+						</div>
+						<div class="panel-body">
+							{% for technicien in organigramme['technicien'] %}
+								{{ technicien|linkMembre|raw }}
+								<br/>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt30">
+{#				{% for departement in organigramme['departement'] %}#}
+{#					<div class="col-sm-6 text-center">#}
+{#						<div class="panel panel-danger">#}
+{#							<div class="panel-heading lienOrganigramme">#}
+{#								{{ 'visiteur.organigramme.departement'|trans }}#}
+{#									{{ departement.sigle }} - {{ departement.nom }}<br/>#}
+{#								{{ 'visiteur.organigramme.responsable'|trans }} :#}
+{#									{{ departement.membreCrestic|linkMembre|raw }}#}
+{#							</div>#}
+
+{#							<div class="panel-body">#}
+								{% for equipe in organigramme['equipe'] %}
+{#									{% set  array_equipe_departement = equipe.getDepartements() %}#}
+{#									{% for equipe_departement in array_equipe_departement %}#}
+{#										{% if equipe_departement.departement.id == departement.id %}#}
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															{{ 'visiteur.organigramme.equipe'|trans }}
+
+																<a href="{{ path('public_equipes_profil', {slug: equipe
+																	.slug}) }}" title="Profil
+								de {{ equipe.nom }}" target="_blank">{{ equipe.nom }}<br/>
+																	{{ equipe.nomlong }}</a>
+																<br/>
+															{{ 'visiteur.organigramme.responsable'|trans }} :
+																{{ equipe.responsable|linkMembre|raw }}
+
+														</div>
+													</div>
+												</div>
+											</div>
+{#										{% endif %}#}
+{#									{% endfor %}#}
+								{% endfor %}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				{% endfor %}#}
+			</div>
+		</div>
+	</div>
+{% endblock %}

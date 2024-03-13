@@ -1,0 +1,26 @@
+homepage:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /fr/accueil
+        permanent: true
+
+en_homepage:
+    path: /en
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /en/accueil
+        permanent: true
+
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+    prefix: /{_locale}
+    defaults:
+        _locale: fr
+    requirements:
+        _locale: fr|en
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation

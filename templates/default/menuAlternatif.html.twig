@@ -1,0 +1,144 @@
+<!-- Accueil -->
+<li class="dropdown dropdown-main">
+    <a href="#" class="dropdown-toggle" data-hover="dropdown"
+       data-toggle="dropdown">
+        CReSTIC
+        <span class="fa fa-angle-down dropdown-arrow"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+        <li>
+            <a href="{{ path('homepage') }}">{{ 'navigation.presentation.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('public_organigramme') }}">{{ 'navigation.organigramme.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('public_membres') }}">{{ 'navigation.membres.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('public_publications') }}">{{ 'navigation.publications.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('public_documentation') }}">{{ 'navigation.documentation.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('public_contact') }}">{{ 'navigation.contact.title'|trans }}</a>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown dropdown-main">
+    <a href="#" class="dropdown-toggle" data-hover="dropdown"
+       data-toggle="dropdown">
+        Actualités
+        <span class="fa fa-angle-down dropdown-arrow"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+        <li>
+            <a href="{{ path('public_actualites') }}">{{ 'navigation.actualites.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('public_actualites_interne') }}">{{ 'navigation.actualites.interne.title'|trans }}</a>
+        </li>
+
+        <li>
+            <a href="{{ path('public_agenda') }}">{{ 'navigation.agenda.title'|trans }}</a>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown dropdown-main">
+    <a href="#" class="dropdown-toggle" data-hover="dropdown"
+       data-toggle="dropdown">
+        {{ 'visiteur.equipe.title'|trans }}
+        <span class="fa fa-angle-down dropdown-arrow"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+        {% for equipe in equipes %}
+            <li>
+                <a href="{{ path('public_equipes_profil', {slug: equipe
+                    .slug}) }}">{{ equipe.nom }}</a>
+            </li>
+        {% endfor %}
+
+    </ul>
+</li>
+
+<li class="dropdown dropdown-main">
+    <a href="{{ path('public_projets') }}" class="dropdown-toggle" data-hover="dropdown"
+       data-toggle="dropdown">
+        {{ 'visiteur.projet.title'|trans }}
+        <span class="fa fa-angle-down dropdown-arrow"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+        {% for categorie in categoriesprojets|filter(categorie => categorie.parent == null )%}
+        <li class="dropdown dropdown-submenu">
+            <a class="trigger">
+                {% if app.request.locale == 'en' %}
+                    {{ categorie.libelleEn }}
+                {% else %}
+                    {{ categorie.libelle }}
+                {% endif %}
+            </a>
+            <ul class="dropdown-menu animated fadeInRight dropdown-animation">
+                {% if categorie.enfants != null %}
+                    {% for cat in categorie.enfants %}
+                        <li class="dropdown dropdown-submenu">
+                            <a class="trigger">
+                                {% if app.request.locale == 'en' %}
+                                    {{ cat.libelleEn }}
+                                {% else %}
+                                    {{ cat.libelle }}
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight dropdown-animation">
+                                {% for projet in cat.projets %}
+                                    <li>
+                                        <a href="{{ path('public_projet_profil', {slug: projet
+                                            .slug}) }}">{{ projet.titre }}</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="#">Aucun projet</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+
+                {% for projet in categorie.projets %}
+                    <li>
+                        <a href="{{ path('public_projet_profil', {slug: projet
+                            .slug}) }}">{{ projet.titre }}</a>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+
+<li class="dropdown dropdown-main">
+    <a href="{{ path('public_plateformes_index') }}">
+        {{ 'visiteur.plateforme.title'|trans }}
+    </a>
+</li>
+
+{% if is_granted('ROLE_UTILISATEUR') %}
+    <li class="dropdown dropdown-main">
+        <a href="#" class="dropdown-toggle" data-hover="dropdown"
+           data-toggle="dropdown">
+            Intranet
+            <span class="fa fa-angle-down dropdown-arrow"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-subhover dropdown-animation animated fadeIn">
+            <li>
+                <a href="{{ path('utilisateur_intranet_documents') }}">
+                    {{ 'utilisateur.intranet.documents.title'|trans }}
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endif %}

@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.equipe.title'|trans }} | {{ equipe.nom }} {% endblock %}
+
+{% block content %}
+    <!-- Begin Content Section -->
+    <section>
+        <div class="container">
+            <p class="lead text-center fadeInLeft-animated mb40">
+                {{ 'visiteur.equipe.title'|trans }}
+                <b>
+                    {{ equipe.nom }}
+                </b><br/>
+                {{ equipe.nomlong }}
+            </p>
+            {{ include('includes/inc.slider.html.twig', {image: equipe.image, titre:equipe.nomlong, sliders: sliders,
+                type: 'equipes'}) }}
+
+
+            <!-- Begin Content 1 -->
+            <div class="row mt40">
+                <!-- Begin Tabs -->
+                <div class="col-sm-6">
+                    <div class="heading mt15-xs">
+                        <h4>
+                            {{ 'visiteur.equipe.themerecherche'|trans }}
+                        </h4>
+                    </div>
+                    {{ equipe.themeRecherche|raw }}
+                </div>
+
+                <!-- Quick Info -->
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="heading text-center mt30-xs">
+                                <h4>
+                                    {{ 'visiteur.equipe.informations'|trans }}
+                                </h4>
+                            </div>
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    {{ 'visiteur.equipe.responsable'|trans }}
+                                </dt>
+                                <dd>
+                                    {% if equipe.responsable != null %}
+                                        <a href="{{ path('public_membres_profil', {slug: equipe.responsable.slug}) }}"
+                                           title="Profil de {{ equipe.responsable.display }}"
+                                           target="_blank">{{ equipe.responsable.display }}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </dd>
+                                <dt>
+                                    {{ 'visiteur.equipe.contact'|trans }}
+                                </dt>
+                                <dd>
+                                    {% if equipe.responsable != null %}
+                                        <a href="mailto:{{ equipe.responsable.email }}"
+                                           target="_blank">{{ equipe.responsable
+                                            .email }}</a>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                            <br/>
+                            {% if equipe.video != '' %}
+                                <div class="heading text-center mt30-xs">
+                                    <h4>
+                                        {{ 'visiteur.equipe.informations'|trans }}
+                                    </h4>
+                                </div>
+                                Include vidéo
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="heading">
+                                <h4>
+                                    {{ 'visiteur.equipe.projetsrecherches'|trans }}
+                                </h4>
+                            </div>
+                            <div class="row">
+                                <ul>
+                                    {% for projet in projets|filter(projet => projet.projet.datefin|date
+                                        ('Y-m-d') >= 'now'|date('Y-m-d')) %}
+                                        <li><a href="{{ path('public_projet_profil', {slug:projet.projet.slug}) }}"
+                                               target="_blank">{{ projet.projet.titre }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="heading">
+                                <h4>
+                                    {{ 'visiteur.equipe.projetsrecherches.termines'|trans }}
+                                </h4>
+                            </div>
+                            <div class="row">
+                                <ul>
+                                    {% for projet in projets|filter(projet => projet.projet.datefin|date
+                                        ('Y-m-d') < 'now'|date('Y-m-d')) %}
+                                        <li><a href="{{ path('public_projet_profil', {slug:projet.projet.slug}) }}" target="_blank">{{ projet.projet.titre }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="row mt30">
+                <div class="col-sm-12">
+                    <div class="heading text-center mt15-xs">
+                        <h4>
+                            {{ 'visiteur.equipe.membresequipe'|trans }}
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12" id="divMembresMosaique">
+                            {% for membre in membres %}
+                                <div id="membreCresticMosaique" class="row col-sm-3 text-center"
+                                     style="margin-bottom:15px">
+                                    <div class="row text-center">
+                                        <div class="membreCresticMosaiqueImage col-sm-12">
+                                            {% if membre.membreCrestic.image == 'noimage.png' or
+                                                membre.membreCrestic.image == '' or
+                                                membre.membreCrestic.image == null %}
+                                                <div class="avatar">
+                                                   <p>{{ membre.membreCrestic.initiales }}</p>
+                                                </div>
+                                            {% else %}
+                                            <img src="{{ asset('uploads/membresCrestic/'~membre.membreCrestic.image) }}" style="width:auto;height:100px">
+                                            {% endif %}
+                                        </div>
+                                        <div class="membreCresticMosaiqueMosaiqueStatus col-sm-12">{{ membre
+                                            .membreCrestic.statutLong|trans }}</div>
+                                        <div class="membreCresticMosaiqueMosaiqueNom col-sm-12">
+                                            <a href="{{ path('public_membres_profil', {slug:membre.membreCrestic.slug}) }}"
+                                               target="_blank"
+                                               title="{{ 'visiteur.MembresCrestic.voirprofil'|trans }} {{ membre.membreCrestic.display }}">{{ membre.membreCrestic.display }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /row -->
+            <!-- End Content 3 -->
+        </div><!-- /container -->
+    </section><!-- /section -->
+    <!-- End Content Section -->
+{% endblock %}

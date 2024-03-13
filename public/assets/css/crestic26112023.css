@@ -1,0 +1,182 @@
+.modal-title {
+    color: #fff;
+    text-transform: none;
+    font-weight: 700;
+}
+
+.modal-footer{
+    height: 50px;
+    min-height: 50px;
+    font-size: 10px;
+    font-style: italic;
+    padding: 2px;
+    padding-right: 10px;
+}
+
+#load-page-img
+{
+    position:absolute;
+    top: 40%;
+    left: 50%;
+
+}
+
+.TDataHelpText{
+    font-style: italic;
+    font-size:12px;
+    color: #0D3349;
+}
+
+.dl-apercu-horizontal dt
+{
+    width:100px;
+}
+
+.dl-apercu-horizontal dd
+{
+    margin-left:130px;
+}
+
+.formatIEEE
+{
+    border: 1px dotted lightgrey;
+    background-color: #99CDD8;
+    opacity: 0.8;
+    padding: 5px;
+    margin-top:10px;
+}
+
+#liste_departements ul
+{
+    float: right;
+}
+
+#liste_departements li
+{
+    list-style: none;
+    float: left;
+}
+
+.image-hover-1
+{
+    border-top: 1px dotted #d2d2d2;
+    border-left: 1px dotted #d2d2d2;
+    border-right: 1px dotted #d2d2d2;
+}
+
+.dataTables_processing
+{
+    color: #3c763d;
+    border: 1px solid #3c763d;
+    border-radius: 2px;
+    background: none;
+    background-color: #dff0d8;
+}
+
+.liste-sans-style{
+    list-style:none;
+    margin-left:0;
+    padding-left:0;
+}
+
+.membreCresticMosaiqueMosaiqueStatus
+{
+    font-size: 11px;
+}
+
+.da-footer-info-icons
+{
+    padding-left: 20px;
+    padding-right: 10px;
+    color: #8B8B8B;
+}
+
+.da-text-justify
+{
+    text-align: justify;
+}
+
+.da-liste-biblio
+{
+    list-style: none;
+    margin-left:-50px;
+    padding:0px;
+}
+
+.da-biblio-titre
+{
+    font-weight: bold;
+}
+
+.success{
+    background-color: #dff0d8;
+    width: 100%;
+}
+
+.control-label{
+    font-weight: 100;
+}
+
+.required{
+    font-weight: bold;
+}
+
+.tab-profil {
+    height: 400px;
+    overflow-x: auto;
+}
+
+
+.avatar {
+    height: 100px;
+    font-size: 36px;
+    font-weight: bold;
+    background-color: #00B7EB;
+    width: 100px;
+    text-align: center;
+    margin: auto;
+    border-radius: 50px;
+    color: white;
+}
+
+.avatar p {
+    padding-top:20px;
+}
+
+.annuaire-both {
+    clear: both; margin-top: 20px;
+}
+
+.hal_picto {
+    width: 15px;
+    height: 15px;
+    display: inline-block
+}
+
+.hal_entry {
+
+}
+
+.hal_reference {
+
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: lightgrey;
+}
+
+.bloc-info {
+    line-height: 1.8em;
+    overflow: auto;
+    position: relative;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    background-color: #fefefe;
+    color: #595959;
+    font-style: normal;
+    margin-bottom: 5px;
+    padding: 5px;
+}

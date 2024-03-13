@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'visiteur.emploisIndex.title'|trans }}{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="heading">
+				<h1>
+					{{ 'visiteur.emploisIndex.title'|trans }}
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table">
+						<thead>
+						<tr>
+							<th>{{ 'visiteur.emploisIndex.emploi'|trans }}</th>
+							<th>{{ 'visiteur.emploisIndex.datepublication'|trans }}</th>
+							<th>{{ 'visiteur.emploisIndex.duree'|trans }}</th>
+							<th>{{ 'visiteur.emploisIndex.details'|trans }}</th>
+							<th>PDF</th>
+							<th>{{ 'visiteur.emploisIndex.contact'|trans }}</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for offre in offres %}
+							<tr>
+								<td>{{ offre.titre }}</td>
+
+								<td>{{ offre.created|date('d/m/Y') }}</td>
+								<td>{{ offre.duree }}</td>
+								<td>
+									<a href="#" data-offre="{{ offre.id }}" class="detailOffre btn btn-info" title="{{ 'visiteur.emploisIndex.plusinfo'|trans }}" data-toggle="modal" data-target="#modalOffre"><span class="fa fa-eye"></span></a>
+								</td>
+								<td>{% if offre.pdf != '' or offre.pdf != null %}<a href="{{ asset('uploads/emplois/'~offre.pdf) }}" target="_blank" title="Télécharger le PDF"><span class="fa fa-file"></span></a>{% endif %} </td>
+								<td>
+                                    {% if offre.contact != null %}
+										<a href="{{ path('public_membres_profil', {slug: offre.contact.slug}) }}"
+										   title="{{ 'visiteur.MembresCrestic.voirprofil'|trans }} {{ offre.contact.display }}"
+										   target="_blank">{{ offre.contact.display }}</a>
+                                    {% else %}
+										-
+                                    {% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Default Modal -->
+	<div class="modal fade" id="modalOffre" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{{ 'fermer'|trans }}</span></button>
+					<h4 class="modal-title" id="defaultModalLabel">{{ 'visiteur.emploisIndex.titreModal'|trans }}</h4>
+				</div>
+				<div class="modal-body" id="body-detailOffre">
+					Content
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-rw btn-success" data-dismiss="modal">{{ 'fermer'|trans }}</button>
+				</div>
+			</div><!-- /modal content -->
+		</div><!-- /modal dialog -->
+	</div><!-- /modal holder -->
+	<!-- End Default Modal -->
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function () {
+        $('.detailOffre').on('click', function(){
+            $('#body-detailOffre').empty().load("{{ path('public_emploi_details') }}", {'offre': $(this).data('offre')});
+        });
+    });
+</script>
+{% endblock %}
