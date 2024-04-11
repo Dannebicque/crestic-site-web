@@ -35,7 +35,7 @@ security:
     # Là dans bin/console make:admin:dashboardce cas seul les utilisateurs ayant le rôle ROLE_ADMIN
     # peuvent acceder à toutes les pages commençant par /admin
     - { path: '^/[a-z]{2}/sso/redirect/cas', roles: PUBLIC_ACCESS }
-    - { path: '^/[a-z]{2}/administration', roles: [ ROLE_ADMINISTRATEUR, ROLE_UTILISATEUR ] }
+    #- { path: '^/[a-z]{2}/administration', roles: [ ROLE_ADMINISTRATEUR, ROLE_UTILISATEUR ] }
     - { path: '^/[a-z]{2}/espace-utilisateur', roles: [ ROLE_UTILISATEUR ] }
     - { path: '^/[a-z]{2}/', roles: PUBLIC_ACCESS }
 

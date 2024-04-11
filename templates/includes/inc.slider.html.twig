@@ -13,16 +13,16 @@
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-        <div class="item active">
+        <div class="item active ">
             {% if image == null or image == 'noimage.png' %}
-                <img class="img-responsive" src="{{ asset('uploads/noimage.png') }}" alt="Illustration du projet">
+                <img class="img-slider" src="{{ asset('uploads/noimage.png') }}" alt="Illustration du projet">
                 <div class="carousel-caption fadeInUpBig-animated fadeInUpBig animated">
                     <h3 class="no-margin text-white">{{ titre }}</h3>
                 </div>
             {% else %}
                 {% if image|trim|slice(image|length-3,3) == 'jpg' or image|trim|slice(image|length-3,3)== 'png' or image|trim|slice
                     (image|length-4,4) == 'jpeg' %}
-                    <img class="img-responsive" src="{{ asset('uploads/'~type~'/'~image) }}" alt="Illustration du projet">
+                    <img class="img-slider" src="{{ asset('uploads/'~type~'/'~image) }}" alt="Illustration du projet">
                     <div class="carousel-caption fadeInUpBig-animated fadeInUpBig animated">
                         <h3 class="no-margin text-white">{{ titre }}</h3>
                     </div>
@@ -37,7 +37,7 @@
         </div>
         {% for slide in sliders %}
             <div class="item">
-                <img class="img-responsive" src="{{ asset('uploads/slider/'~slide.slider.image) }}" alt="Slide {{ loop.index }}">
+                <img class="img-slider" src="{{ asset('uploads/slider/'~slide.slider.image) }}" alt="Slide {{ loop.index }}">
                 <div class="carousel-caption fadeInUpBig-animated fadeInUpBig animated">
                     <h3 class="no-margin text-white">{{ slide.slider.titre }}</h3>
                     <p class="text-light-grey no-margin"><a href="{{ slide.slider.url }}" target="_blank"> {{ slide.slider.texte }}</a></p>

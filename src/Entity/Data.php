@@ -84,4 +84,9 @@ class Data
         'Fonds privés' => 'prives',
         'Autres' => 'autres',
     ];
+    const TAB_ROLES_FORM = [
+        'Utilisateur' => 'ROLE_UTILISATEUR',
+        'Administrateur' => 'ROLE_ADMINISTRATEUR',
+        'ROLE_RESPONSABLE' => 'ROLE_RESPONSABLE',
+    ];
 }

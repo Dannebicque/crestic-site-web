@@ -2,6 +2,28 @@
 
 {% block title %}{{ 'visiteur.agenda.title'|trans }}{% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.11/index.global.min.js"></script>
+    <script type="module">
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          locale: 'fr',
+          events: {
+            url: 'https://caldav.univ-reims.fr/URCA/cache/QQ3PTCJY5117.ics',
+            format: 'ics'
+          }
+        });
+
+        calendar.render();
+      });
+
+    </script>
+{% endblock %}
+
 {% block stylesheets %}
     <style>
         .bl-jour {
@@ -39,6 +61,20 @@
                 </h2>
             </div>
             <div class="row">
+                <div id="calendar"></div>
+{#                <iframe width="400" height="215" src="https://caldav.univ-reims.fr/remote.php/dav/calendars/annebi01/d.annebicque/?export"></iframe>#}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="heading mb20">
+                <h2>
+                    {{ 'visiteur.agenda.title'|trans }}
+                </h2>
+            </div>
+            <div class="row">
 
                 {% for evt in evenements %}
                     <div class="col-sm-12">
@@ -49,11 +85,11 @@
                             <div class="col-sm-8">
                                 <h3>{{ evt.titre }}</h3>
                                 <p class="bl-footer">{{ evt.lieu }}, du {{ evt.datedebut|date('d/m/Y') }}
-                                                                   , {{ evt.heuredebut|date('H:i') }}
+                                    , {{ evt.heuredebut|date('H:i') }}
                                     {% if evt.datefin != null %}
-                                                                   au {{ evt.datefin|date('d/m/Y') }}
-                                                                   , {{ evt.heurefin|date('H:i') }}
-                                {% endif %}</p>
+                                        au {{ evt.datefin|date('d/m/Y') }}
+                                        , {{ evt.heurefin|date('H:i') }}
+                                    {% endif %}</p>
                                 <p>{{ evt.description|raw }}</p>
                             </div>
                         </div>
@@ -64,6 +100,7 @@
                         {{ 'visiteur.agenda.pasdevenement'|trans }}
                     </div>
                 {% endfor %}
+
             </div>
         </div>
     </div>

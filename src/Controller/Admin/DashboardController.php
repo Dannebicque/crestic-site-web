@@ -26,6 +26,7 @@ use App\Entity\ProjetsHasMembres;
 use App\Entity\ProjetsHasSliders;
 use App\Entity\Sites;
 use App\Entity\Slider;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -50,6 +51,12 @@ class DashboardController extends AbstractDashboardController
             ;
     }
 
+    public function configureAssets(): Assets
+    {
+        return parent::configureAssets()
+            ->addWebpackEncoreEntry('app');
+    }
+
     public function configureMenuItems(): iterable
     {
         //todo:lien vers profil, vers equipes et vers projets
@@ -63,6 +70,8 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Intranet');
         yield MenuItem::linkToCrud('Documents Internes', 'fa fa-file-text', DocumentsInternes::class);
+        yield MenuItem::linkToRoute('Documents Internes', 'fa fa-file-text', 'admin_documents');
+
         yield MenuItem::linkToCrud('Catégories des documents', 'fa fa-file-text', CategorieDocument::class);
 
 

@@ -32,6 +32,7 @@
                             {% endif %}
 
                             <li>
+                                {% if route != null %}
                                 <a href="{{ path(route, paramsEn) }}" title="English Version">
                                     <img src="{{ asset('assets/img/uk.png') }}" alt="en">
                                 </a>
@@ -39,6 +40,15 @@
                                 <a href="{{ path(route, paramsFr) }}" title="Version Française">
                                     <img src="{{ asset('assets/img/fr.png') }}" alt="fr">
                                 </a>
+                                {% else %}
+                                    <a href="{{ path('homepage', {_locale:'en'}) }}" title="English Version">
+                                        <img src="{{ asset('assets/img/uk.png') }}" alt="en">
+                                    </a>
+
+                                    <a href="{{ path('homepage', {_locale:'fr'}) }}" title="Version Française">
+                                        <img src="{{ asset('assets/img/fr.png') }}" alt="fr">
+                                    </a>
+                                {% endif %}
                             </li>
 
                             <!-- login register-->
@@ -120,7 +130,7 @@
                                     {#<div class="css-logo">#}
 
                                     {#</div>#}
-                                    <img src="{{ asset('assets/img/crestic-logo.png') }}" alt="CReSTIC" height="50px">
+                                    <img src="{{ asset('assets/img/logocresticst.png') }}" alt="CReSTIC" height="50px">
                                 </a>
                                 <!-- Mobile Navigation -->
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">

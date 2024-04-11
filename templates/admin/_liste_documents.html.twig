@@ -1,0 +1,20 @@
+<h2>{{ categorie.libelle }}</h2>
+
+<div>
+    <div class="row">
+    {% for document in documents %}
+        <div class="col-2">
+            {{ document.titre }}
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+<div>
+    <form>
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        <input type="submit" value="Ajouter" class="btn btn-success mt-1">
+        {{ form_end(form) }}
+    </form>
+</div>

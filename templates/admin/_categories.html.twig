@@ -1,0 +1,16 @@
+<ul class="text-decoration-none list-unstyled">
+    {% for categorie in categories|filter(categorie => categorie.categorieParent == null) %}
+        <li>
+            <a href="#"
+                    {{ stimulus_action('document', 'changeCategorie', 'click',{id:categorie.id}) }}
+            >
+                {{ categorie.libelle }}
+            </a>
+        </li>
+    {% endfor %}
+    <li {{ stimulus_target('document', 'add_categorie') }}>
+        <a href="#" {{ stimulus_action('document', 'add_categorie') }}>
+            <i class="fas fa-plus-circle"></i> Ajouter une catégorie
+        </a>
+    </li>
+</ul>

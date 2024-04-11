@@ -54,7 +54,7 @@ class MembresCresticCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
+        $tab = [
             TextField::new('nom', 'Nom'),
             TextField::new('prenom', 'Prénom'),
             BooleanField::new('ancienMembresCrestic', 'Ancien membre ?'),
@@ -66,8 +66,18 @@ class MembresCresticCrudController extends AbstractCrudController
             TextField::new('email', 'Email')->hideOnIndex(),
             TextField::new('username', 'Login URCA')->hideOnIndex(),
             TextField::new('idHal', 'Id hal')->hideOnIndex(),
-            AssociationField::new('departementMembre', 'Département')->setCrudController( Departements::class)
-
         ];
+
+        if ($this->isGranted('ROLE_ADMINISTRATEUR')) {
+            //gestion des rôles
+            $tab[] = ChoiceField::new('roles', 'Rôles')->setChoices(Data::TAB_ROLES_FORM)
+                ->allowMultipleChoices()
+                ->renderExpanded()
+            ;
+
+
+        }
+
+        return $tab;
     }
 }

@@ -1832,12 +1832,14 @@ class MembresCrestic implements UserInterface, Stringable
 
     public function getRoles(): array
     {
-        $roles = json_decode($this->roles, true, 2, JSON_THROW_ON_ERROR);
+        $roles = json_decode($this->roles);
 
         // Afin d'être sûr qu'un user a toujours au moins 1 rôle
         if (empty($roles)) {
             $roles[] = 'ROLE_UTILISATEUR';
         }
+
+        // recopier les valeurs dans les clés du tableau $roles
 
         return array_unique($roles);
     }
