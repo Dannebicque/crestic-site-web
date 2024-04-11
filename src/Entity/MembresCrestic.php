@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -22,7 +23,7 @@ use const JSON_THROW_ON_ERROR;
 #[ORM\Entity(repositoryClass: MembresCresticRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
-class MembresCrestic implements UserInterface, Stringable
+class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticatedUserInterface
 {
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
@@ -34,6 +35,9 @@ class MembresCrestic implements UserInterface, Stringable
 
     #[ORM\Column(name: 'username', type: 'string', length: 255)]
     private ?string $username = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $password = null;
 
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
     private ?string $email = null;
@@ -1845,9 +1849,9 @@ class MembresCrestic implements UserInterface, Stringable
     }
 
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
-        // TODO: Implement getPassword() method.
+        return $this->password;
     }
 
     public function getSalt()

@@ -1,5 +1,7 @@
 security:
-
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    App\Entity\MembresCrestic: 'auto'
 
   role_hierarchy:
     ROLE_UTILISATEUR: ROLE_USER
@@ -16,7 +18,8 @@ security:
       security: false
     main:
       custom_authenticator:
-          - App\Security\CasAuthenticator
+        - App\Security\CasAuthenticator
+        - App\Security\LoginFormAuthenticator
       entry_point: App\Security\CasAuthenticator
       # les urls auxquels s'appliquent ce firewall, dans ce cas, ce sont toutes les urls
       pattern: ^/

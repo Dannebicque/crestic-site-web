@@ -33,13 +33,13 @@
 
                             <li>
                                 {% if route != null %}
-                                <a href="{{ path(route, paramsEn) }}" title="English Version">
-                                    <img src="{{ asset('assets/img/uk.png') }}" alt="en">
-                                </a>
+                                    <a href="{{ path(route, paramsEn) }}" title="English Version">
+                                        <img src="{{ asset('assets/img/uk.png') }}" alt="en">
+                                    </a>
 
-                                <a href="{{ path(route, paramsFr) }}" title="Version Française">
-                                    <img src="{{ asset('assets/img/fr.png') }}" alt="fr">
-                                </a>
+                                    <a href="{{ path(route, paramsFr) }}" title="Version Française">
+                                        <img src="{{ asset('assets/img/fr.png') }}" alt="fr">
+                                    </a>
                                 {% else %}
                                     <a href="{{ path('homepage', {_locale:'en'}) }}" title="English Version">
                                         <img src="{{ asset('assets/img/uk.png') }}" alt="en">
@@ -73,9 +73,9 @@
                                             </a>
                                         </li>
                                         <li>
-                                            {#<a href="{{ path('l3_logout') }}">#}
-                                                {#{{ 'top_bar.login.logout'|trans }}#}
-                                            {#</a>#}
+                                            {# <a href="{{ path('l3_logout') }}"> #}
+                                            {# {{ 'top_bar.login.logout'|trans }} #}
+                                            {# </a> #}
                                         </li>
                                     </ul>
                                 </li>
@@ -99,17 +99,26 @@
                                             </a>
                                         </li>
                                         <li>
-                                            {#<a href="{{ path('l3_logout') }}">#}
-                                                {#{{ 'top_bar.login.logout'|trans }}#}
-                                            {#</a>#}
+                                            {# <a href="{{ path('l3_logout') }}"> #}
+                                            {# {{ 'top_bar.login.logout'|trans }} #}
+                                            {# </a> #}
                                         </li>
                                     </ul>
                                 </li>
 
                             {% else %}
-                                <li><a href="{{ path('homepage_utilisateur') }}">
-                                        {{ 'top_bar.login.login'|trans }}
-                                    </a></li>
+                                <li>
+                                    {#  si environnement de developpement sinon #}
+                                    {% if app.environment == 'dev' %}
+                                        <a href="{{ path('app_login') }}">
+                                            {{ 'top_bar.login.login'|trans }}
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('homepage_utilisateur') }}">
+                                            {{ 'top_bar.login.login'|trans }}
+                                        </a>
+                                    {% endif %}
+                                </li>
                             {% endif %}
 
                         </ul>
@@ -127,13 +136,14 @@
                             <div class="navbar-header col-sm-2">
                                 <!-- Brand -->
                                 <a href="{{ path('homepage') }}" class="navbar-brand">
-                                    {#<div class="css-logo">#}
+                                    {# <div class="css-logo"> #}
 
-                                    {#</div>#}
+                                    {# </div> #}
                                     <img src="{{ asset('assets/img/logocresticst.png') }}" alt="CReSTIC" height="50px">
                                 </a>
                                 <!-- Mobile Navigation -->
-                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                        data-target=".navHeaderCollapse">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
