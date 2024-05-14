@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\EquipesHasMembres;
 use App\Entity\MaillingList;
 use App\Services\Mailer\MailerService;
 use Doctrine\ORM\EntityManager;
@@ -10,6 +11,7 @@ use Doctrine\ORM\Event\PostRemoveEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use App\Entity\MembresCrestic;
@@ -24,9 +26,6 @@ class EntityListener
 {
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
-    private string $SauvMembremail;
-    private string $SauvMembrestatus;
-    private string $SauvMembrequipe;
 
     /**
      * Constructeur de classe
@@ -63,8 +62,18 @@ class EntityListener
             foreach ($mailingLists as $mailingList) {
 
                 $message = new MailerService($this->mailer);
-                $message->Mailer_sent("DEL {$mailingList} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la maillinglist {$mailingList} .");
+                $message->Mailer_sent("DEL {$mailingList->getNomlist()} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la maillinglist {$mailingList->getNomlist()} .");
             }
+        }
+        if ($entity instanceof EquipesHasMembres)
+        {
+            $equipe = $entity->getEquipe();
+            $membre= $entity->getMembreCrestic();
+            $mailresult = $this->SelectMailbyMembreCrestic($membre->getStatus(),$equipe->getNom());
+            $this->DelMailingList($mailresult,$membre, $this->entityManager);
+
+
+
         }
     }
 
@@ -80,38 +89,29 @@ class EntityListener
     {
         $entity = $args->getObject();
         if ($entity instanceof MembresCrestic) {
-            // notre l'equipe peut prendre un forme d'un objject et non du titre
+
             $status = $entity->getStatus();
-            $mailresult = $this->SelectMailbyMembreCrestic($status, null);
+            $mailresult = $this->SelectMailbyMembreCrestic($status, "");
             $this->SetMailingList($mailresult, $entity,$this->entityManager);
 
             $message = new MailerService($this->mailer);
-            $message->Mailer_sent("DEL }", "Ajout de l'utilisateur  .");
+            $message->Mailer_sent("ADD {$mailresult} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la maillinglist {$mailresult} .");
 
             }
-    }
+        if ($entity instanceof EquipesHasMembres)
+        {
+            $equipe = $entity->getEquipe();
+            $membre= $entity->getMembreCrestic();
+            $mailresult = $this->SelectMailbyMembreCrestic($membre->getStatus(),$equipe->getNom());
+            $maildelete = $this->SelectMailbyMembreCrestic($membre->getStatus(),"");
+            $this->SetMailingList($mailresult,$membre,$this->entityManager);
+            $this->DelMailingList($maildelete,$membre, $this->entityManager);
 
 
-    /**
-     * Action réalisée avant la mise à jour d'une entité.
-     *
-     * Cette méthode récupère l'ancien e-mail de l'utilisateur avant la mise à jour.
-     *
-     * @param PreUpdateEventArgs $args Les arguments de l'événement de mise à jour.
-     * @return void
-     */
-    public function preUpdate(PreUpdateEventArgs $args): void
-    {
-        $entity = $args->getObject();
 
-        if ($entity instanceof MembresCrestic) {
-            $this->SauvMembremail = $entity->getEmail();
-            $this->SauvMembrestatus = $entity->getStatus();
-            $this->SauvMembrequipe = $entity->getEquipes() ?? [];
         }
-
-
     }
+
 
     /**
      * Action réalisée après la mise à jour d'une entité.
@@ -124,53 +124,46 @@ class EntityListener
     public function postUpdate(PostUpdateEventArgs $args): void
     {
         $entity = $args->getObject();
-        $mailingLists = $entity->getMaillingLists();
+
 
         if ($entity instanceof MembresCrestic) {
+            $mailingLists = $entity->getMaillingLists();
+            $changeset = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
 
-            if ($this->SauvMembremail !== $entity->getEmail()) {
+            if (array_key_exists('email', $changeset)) {
+
                 foreach ($mailingLists as $mailingList) {
 
                     $message = new MailerService($this->mailer);
-                    $message->Mailer_sent("DEL {$mailingList} {$this->SauvMembremail})", "Suppression de l'ancien email de l'utilisateur {$entity->getUsername()}.");
+                    $message->Mailer_sent("DEL {$mailingList->getNomlist()} {$changeset['email'][0]}", "Modification d'email de l'utilisateur {$entity->getUsername()} suppresion de la mailling list {$mailingList->getNomlist()} .");
 
                     $message2 = new MailerService($this->mailer);
-                    $message2->Mailer_sent("ADD {$mailingList} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()}.");
+                    $message2->Mailer_sent("ADD {$mailingList->getNomlist()} {$changeset['email'][1]}", "Modification d'email de l'utilisateur {$entity->getUsername()} ajout de la mailling list {$mailingList->getNomlist()} .");
                 }
-                if ($this->SauvMembrestatus !== $entity->getStatus()) {
-
-                    $message = new MailerService($this->mailer);
-                    $message->Mailer_sent("DEL {$mailingList} {$this->SauvMembremail})", "Suppression de l'ancien email de l'utilisateur {$entity->getUsername()}.");
-
-                    $message2 = new MailerService($this->mailer);
-                    $message2->Mailer_sent("ADD {$mailingList} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()}.");
-                }
-                /*
-                if ($this->SauvMembrequipe !== $entity->getEquipes()) {
-
-                    if ($this->SauvMembrequipe == [])
-                    {
-                        $message = new MailerService($this->mailer);
-                        $message->Mailer_sent("DEL {$mailingList} {$this->SauvMembremail})", "Suppression de l'ancien email de l'utilisateur {$entity->getUsername()}.");
-
-                    }
-                    else {
-                        foreach ($entity->getEquipes() as $equipe) {
-                            if(!in_array($equipe,$this->SauvMembrequipe))
-                            {
-                                $message = new MailerService($this->mailer);
-                                $message->Mailer_sent("DEL {$mailingList} {$this->SauvMembremail})", "Suppression de l'ancien email de l'utilisateur {$entity->getUsername()}.");
-                            }
-
-                        }
-                    }
-
-                }*/
             }
 
 
+            if (array_key_exists('status', $changeset)) {
+                $status = $entity->getStatus();
+                $oldstatus = $changeset['status'][0];
+                $mailresult = $this->SelectMailbyMembreCrestic($status, "");
+                $oldmailresult = $this->SelectMailbyMembreCrestic($oldstatus, "");
+                $this->SetMailingList($mailresult, $entity, $this->entityManager);
+                $this->DelMailingList($oldmailresult, $entity, $this->entityManager);
+
+               /* public function DelMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager)
+                {
+                    $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
+                    $mailingList->RemoveMembreCresticId($entity);
+                    $entityManager->persist($mailingList);
+                    $entityManager->flush();
+                }*/
+
+            }
+
         }
     }
+
     public function SetMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager ): void
     {
         $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
@@ -189,9 +182,17 @@ class EntityListener
         $entityManager->flush();
     }
 
-    public function SelectMailbyMembreCrestic(string $status, ?string $equipe): string
+    public function DelMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager)
     {
-        if ($equipe == null) {
+        $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
+        $mailingList->RemoveMembreCresticId($entity);
+        $entityManager->persist($mailingList);
+        $entityManager->flush();
+    }
+
+    public function SelectMailbyMembreCrestic(string $status, string $equipe): string
+    {
+        if ($equipe== "") {
             switch ($status) {
                 case "PR":
                 case "PU-PH":
