@@ -12,6 +12,7 @@ use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\PersistentCollection;
+use PhpParser\Node\Stmt\Return_;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use App\Entity\MembresCrestic;
@@ -143,26 +144,31 @@ class EntityListener
             }
 
 
-            if (array_key_exists('status', $changeset)) {
+            if (array_key_exists('status', $changeset)) { // Verifie sis l'entyité a changer
+
+                $boolequipe = $this->Searchbyequipeforstatus($entity, $this->entityManager);
                 $status = $entity->getStatus();
                 $oldstatus = $changeset['status'][0];
-                $mailresult = $this->SelectMailbyMembreCrestic($status, "");
-                $oldmailresult = $this->SelectMailbyMembreCrestic($oldstatus, "");
-                $this->SetMailingList($mailresult, $entity, $this->entityManager);
-                $this->DelMailingList($oldmailresult, $entity, $this->entityManager);
 
-               /* public function DelMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager)
-                {
-                    $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
-                    $mailingList->RemoveMembreCresticId($entity);
-                    $entityManager->persist($mailingList);
-                    $entityManager->flush();
-                }*/
+                if ($boolequipe == "") {
+                    $mailresult = $this->SelectMailbyMembreCrestic($status, "");
+                    $oldmailresult = $this->SelectMailbyMembreCrestic($oldstatus, "");
+                    $this->SetMailingList($mailresult, $entity, $this->entityManager);
+                    $this->DelMailingList($oldmailresult, $entity, $this->entityManager);
+                }
+                else {
+                    foreach ($boolequipe as $equipe) {
+                        $mailresult = $this->SelectMailbyMembreCrestic($status, $equipe->getEquipe());
+                        $oldmailresult = $this->SelectMailbyMembreCrestic($oldstatus, $equipe->getEquipe());
+                        $this->SetMailingList($mailresult, $entity, $this->entityManager);
+                        $this->DelMailingList($oldmailresult, $entity, $this->entityManager);
+                    }
+                }
 
             }
-
         }
-    }
+        }
+
 
     public function SetMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager ): void
     {
@@ -180,6 +186,23 @@ class EntityListener
         // Persistez la nouvelle MailingList en base de données
         $entityManager->persist($mailingList);
         $entityManager->flush();
+    }
+
+    public function Searchbyequipeforstatus($membreCrestic,EntityManagerInterface $entityManager)
+    {
+        $equipes = $entityManager->getRepository(EquipesHasMembres::class)->findby(['membreCrestic' => $membreCrestic]);
+        $message = new MailerService($this->mailer);
+        $message->Mailer_sent("DEL", " {$equipes[1]->getEquipe()}.{$equipes[0]}");
+        if(empty($equipes))
+        {
+            return "";
+        }
+
+        else{
+            return $equipes;
+        }
+
+
     }
 
     public function DelMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager)
