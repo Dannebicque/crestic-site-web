@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Equipes;
 use App\Entity\EquipesHasMembres;
 use App\Entity\MaillingList;
 use App\Services\Mailer\MailerService;
@@ -60,6 +61,7 @@ class EntityListener
          */
         if ($entity instanceof MembresCrestic) {
             $mailingLists = $entity->getMaillingLists();
+            $this->DelEquipehasMembre($entity,$this->entityManager);
             foreach ($mailingLists as $mailingList) {
 
                 $message = new MailerService($this->mailer);
@@ -72,6 +74,7 @@ class EntityListener
             $membre= $entity->getMembreCrestic();
             $mailresult = $this->SelectMailbyMembreCrestic($membre->getStatus(),$equipe->getNom());
             $this->DelMailingList($mailresult,$membre, $this->entityManager);
+
 
 
 
@@ -210,6 +213,14 @@ class EntityListener
         $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
         $mailingList->RemoveMembreCresticId($entity);
         $entityManager->persist($mailingList);
+        $entityManager->flush();
+    }
+    public function DelEquipehasMembre($membreCrestic, EntityManagerInterface $entityManager)
+    {
+        $equipes = $entityManager->getRepository(EquipesHasMembres::class)->findBy(['membreCrestic' => $membreCrestic]);
+        foreach ($equipes as $equipe) {
+            $entityManager->remove($equipe);
+        }
         $entityManager->flush();
     }
 
