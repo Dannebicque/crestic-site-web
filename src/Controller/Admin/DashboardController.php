@@ -28,7 +28,6 @@ use App\Entity\ProjetsHasSliders;
 use App\Entity\Sites;
 use App\Entity\Slider;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -46,10 +45,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            // the name visible to end users
-            ->setTitle('CReSTIC')
-
-            ;
+            ->setTitle('CReSTIC');
     }
 
     public function configureAssets(): Assets
@@ -97,7 +93,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Départements', 'fa fa-tags', Departements::class)->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToCrud('Membres', 'fa fa-file-text', MembresCrestic::class)->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToCrud('plateformes', 'fa fa-file-text', Plateformes::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('MaillingListe', 'fa fa-file-text',MailingList::class);
+        yield MenuItem::linkToCrud('MailingList', 'fa fa-file-text',MailingList::class);
 
         yield MenuItem::section('Site web')->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToCrud('Pages', 'fa fa-file-text', Cms::class)->setPermission('ROLE_ADMINISTRATEUR');
