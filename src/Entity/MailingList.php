@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\MaillingListRepository;
+use App\Repository\MailingListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MaillingListRepository::class)]
+#[ORM\Entity(repositoryClass: MailingListRepository::class)]
 class MailingList
 {
     #[ORM\Id]
