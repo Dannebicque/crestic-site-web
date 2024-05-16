@@ -211,9 +211,11 @@ class EntityListener
     public function DelMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager)
     {
         $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
-        $mailingList->RemoveMembreCresticId($entity);
-        $entityManager->persist($mailingList);
-        $entityManager->flush();
+        if ($mailingList !== null) {
+            $mailingList->RemoveMembreCresticId($entity);
+            $entityManager->persist($mailingList);
+            $entityManager->flush();
+        }
     }
     public function DelEquipehasMembre($membreCrestic, EntityManagerInterface $entityManager)
     {
@@ -227,6 +229,10 @@ class EntityListener
     public function SelectMailbyMembreCrestic(string $status, string $equipe): string
     {
         if ($equipe== "") {
+           /* if(empty($status))
+            {
+                return "crestic.divers";
+            }*/
             switch ($status) {
                 case "PR":
                 case "PU-PH":
@@ -253,6 +259,11 @@ class EntityListener
                     throw new \InvalidArgumentException("Statut non reconnu, équipe nulle : $status");
             }
         } else {
+            $equipe=strtolower($equipe);
+           /* if(empty($status))
+            {
+                return "crestic.{$equipe}.divers";
+            }*/
             switch ($status) {
                 case "PR":
                 case "PU-PH":
