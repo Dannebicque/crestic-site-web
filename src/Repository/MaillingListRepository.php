@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\MaillingList;
+use App\Entity\MailingList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MaillingList>
+ * @extends ServiceEntityRepository<MailingList>
  */
 class MaillingListRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MaillingList::class);
+        parent::__construct($registry, MailingList::class);
     }
 
 //    /**
-//     * @return MaillingList[] Returns an array of MaillingList objects
+//     * @return MailingList[] Returns an array of MailingList objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -31,7 +31,7 @@ class MaillingListRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MaillingList
+//    public function findOneBySomeField($value): ?MailingList
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

@@ -16,7 +16,7 @@ use App\Entity\Equipes;
 use App\Entity\EquipesHasMembres;
 use App\Entity\EquipesHasSliders;
 use App\Entity\Financeurs;
-use App\Entity\MaillingList;
+use App\Entity\MailingList;
 use App\Entity\MembresCrestic;
 use App\Entity\Organigramme;
 use App\Entity\Partenaires;
@@ -97,7 +97,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Départements', 'fa fa-tags', Departements::class)->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToCrud('Membres', 'fa fa-file-text', MembresCrestic::class)->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToCrud('plateformes', 'fa fa-file-text', Plateformes::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('MaillingListe', 'fa fa-file-text',MaillingList::class);
+        yield MenuItem::linkToCrud('MaillingListe', 'fa fa-file-text',MailingList::class);
 
         yield MenuItem::section('Site web')->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToCrud('Pages', 'fa fa-file-text', Cms::class)->setPermission('ROLE_ADMINISTRATEUR');

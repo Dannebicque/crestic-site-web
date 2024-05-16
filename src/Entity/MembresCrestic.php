@@ -230,9 +230,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     private ?\DateTimeInterface $dateDepart = null;
 
     /**
-     * @var Collection<int, MaillingList>
+     * @var Collection<int, MailingList>
      */
-    #[ORM\ManyToMany(targetEntity: MaillingList::class, mappedBy: 'MembreCrestic_id')]
+    #[ORM\ManyToMany(targetEntity: MailingList::class, mappedBy: 'MembreCrestic_id')]
     private Collection $maillingLists;
 
     /**
@@ -1937,14 +1937,14 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
-     * @return Collection<int, MaillingList>
+     * @return Collection<int, MailingList>
      */
     public function getMaillingLists(): Collection
     {
         return $this->maillingLists;
     }
 
-    public function addMaillingList(MaillingList $maillingList): static
+    public function addMaillingList(MailingList $maillingList): static
     {
         if (!$this->maillingLists->contains($maillingList)) {
             $this->maillingLists->add($maillingList);
@@ -1954,7 +1954,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         return $this;
     }
 
-    public function removeMaillingList(MaillingList $maillingList): static
+    public function removeMaillingList(MailingList $maillingList): static
     {
         if ($this->maillingLists->removeElement($maillingList)) {
             $maillingList->removeMembreCresticId($this);

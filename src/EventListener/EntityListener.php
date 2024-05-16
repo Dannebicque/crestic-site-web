@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Equipes;
 use App\Entity\EquipesHasMembres;
-use App\Entity\MaillingList;
+use App\Entity\MailingList;
 use App\Services\Mailer\MailerService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -175,11 +175,11 @@ class EntityListener
 
     public function SetMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager ): void
     {
-        $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
+        $mailingList = $entityManager->getRepository(MailingList::class)->findOneBy(['nomlist' => $nomlist]);
 
         if(empty($mailingList))
         {
-            $mailingList = new MaillingList();
+            $mailingList = new MailingList();
             $mailingList->setNomlist($nomlist);
 
         }
@@ -210,7 +210,7 @@ class EntityListener
 
     public function DelMailingList(string $nomlist, $entity, EntityManagerInterface $entityManager)
     {
-        $mailingList = $entityManager->getRepository(MaillingList::class)->findOneBy(['nomlist' => $nomlist]);
+        $mailingList = $entityManager->getRepository(MailingList::class)->findOneBy(['nomlist' => $nomlist]);
         if ($mailingList !== null) {
             $mailingList->RemoveMembreCresticId($entity);
             $entityManager->persist($mailingList);

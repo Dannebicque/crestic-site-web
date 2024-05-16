@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MaillingListRepository::class)]
-class MaillingList
+class MailingList
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,21 +24,41 @@ class MaillingList
     #[ORM\ManyToMany(targetEntity: MembresCrestic::class, inversedBy: 'maillingLists')]
     private Collection $MembreCrestic_id;
 
+    /**
+     * Constructeur de la classe MailingList.
+     */
     public function __construct()
     {
         $this->MembreCrestic_id = new ArrayCollection();
     }
 
+    /**
+     * Obtient l'identifiant de la liste de diffusion.
+     *
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Obtient le nom de la liste de diffusion.
+     *
+     * @return string|null
+     */
     public function getNomlist(): ?string
     {
         return $this->nomlist;
     }
 
+    /**
+     * Définit le nom de la liste de diffusion.
+     *
+     * @param string|null $nomlist
+     *
+     * @return $this
+     */
     public function setNomlist(?string $nomlist): static
     {
         $this->nomlist = $nomlist;
@@ -47,6 +67,8 @@ class MaillingList
     }
 
     /**
+     * Retourne la collection de membres associés à cette liste de diffusion.
+     *
      * @return Collection<int, MembresCrestic>
      */
     public function getMembreCresticId(): Collection
@@ -54,6 +76,13 @@ class MaillingList
         return $this->MembreCrestic_id;
     }
 
+    /**
+     * Ajoute un membre à la liste de diffusion.
+     *
+     * @param MembresCrestic $membreCresticId
+     *
+     * @return $this
+     */
     public function addMembreCresticId(MembresCrestic $membreCresticId): static
     {
         if (!$this->MembreCrestic_id->contains($membreCresticId)) {
@@ -63,6 +92,13 @@ class MaillingList
         return $this;
     }
 
+    /**
+     * Supprime un membre de la liste de diffusion.
+     *
+     * @param MembresCrestic $membreCresticId
+     *
+     * @return $this
+     */
     public function removeMembreCresticId(MembresCrestic $membreCresticId): static
     {
         $this->MembreCrestic_id->removeElement($membreCresticId);

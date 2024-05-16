@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MaillingList;
+use App\Entity\MailingList;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -14,7 +14,7 @@ class MaillingListCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return MaillingList::class;
+        return MailingList::class;
     }
 
 
