@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\MembresCresticRepository;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonException;
 use Stringable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -90,25 +92,25 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     #[ORM\ManyToOne(targetEntity: 'Departements', inversedBy: 'membres')]
     private ?Departements $departementMembre = null;
 
-    #[ORM\OneToMany(targetEntity: 'Actualites', mappedBy: 'membreCrestic')]
+    #[ORM\OneToMany(mappedBy: 'membreCrestic', targetEntity: 'Actualites')]
     private Collection $actualites;
 
-    #[ORM\OneToMany(targetEntity: Activites::class, mappedBy: 'membreCrestic')]
+    #[ORM\OneToMany(mappedBy: 'membreCrestic', targetEntity: Activites::class)]
     private Collection $activites;
 
-    #[ORM\OneToMany(targetEntity: 'Emplois', mappedBy: 'contact')]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: 'Emplois')]
     private Collection $emplois;
 
-    #[ORM\OneToMany(targetEntity: 'ProjetsHasMembres', mappedBy: 'membreCrestic')]
+    #[ORM\OneToMany(mappedBy: 'membreCrestic', targetEntity: 'ProjetsHasMembres')]
     private Collection $projets;
 
-    #[ORM\OneToMany(targetEntity: 'Plateformes', mappedBy: 'responsable')]
+    #[ORM\OneToMany(mappedBy: 'responsable', targetEntity: 'Plateformes')]
     private Collection $plateformes;
 
-    #[ORM\OneToMany(targetEntity: 'EquipesHasMembres', mappedBy: 'membreCrestic')]
+    #[ORM\OneToMany(mappedBy: 'membreCrestic', targetEntity: 'EquipesHasMembres')]
     private Collection $equipesHasMembres;
 
-    #[ORM\OneToMany(targetEntity: 'Equipes', mappedBy: 'responsable')]
+    #[ORM\OneToMany(mappedBy: 'responsable', targetEntity: 'Equipes')]
     private Collection $equipes;
 
     #[ORM\OneToMany(mappedBy: 'membreCrestic', targetEntity: 'Departements')]
@@ -200,7 +202,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     private ?string $vulgarisation_en = null;
 
     #[ORM\Column(name: 'international', type: 'text', nullable: true)]
-    private  $international;
+    private string $international;
 
     #[ORM\Column(name: 'international_en', type: 'text', nullable: true)]
     private ?string $international_en = null;
@@ -227,7 +229,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     private bool $ancienMembresCrestic = false;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $dateDepart = null;
+    private ?DateTimeInterface $dateDepart = null;
 
     /**
      * @var Collection<int, MailingList>
@@ -237,6 +239,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Membres constructor.
+     * @throws JsonException
      */
     public function __construct()
     {
@@ -259,7 +262,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -267,9 +270,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get image
      *
-     * @return string
+     * @return string|null
      */
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
@@ -277,10 +280,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Set image
      *
+     * @param string|null $image
      *
      * @return MembresCrestic
      */
-    public function setImage(?string $image)
+    public function setImage(?string $image): static
     {
         $this->image = $image;
 
@@ -290,9 +294,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get dateNaissance
      *
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getDateNaissance()
+    public function getDateNaissance(): ?DateTime
     {
         return $this->dateNaissance;
     }
@@ -300,11 +304,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Set dateNaissance
      *
-     * @param \DateTime $dateNaissance
+     * @param DateTime $dateNaissance
      *
      * @return MembresCrestic
      */
-    public function setDateNaissance($dateNaissance)
+    public function setDateNaissance(DateTime $dateNaissance): static
     {
         $this->dateNaissance = $dateNaissance;
 
@@ -314,9 +318,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get adressePerso
      *
-     * @return string
+     * @return string|null
      */
-    public function getAdressePerso()
+    public function getAdressePerso(): ?string
     {
         return $this->adressePerso;
     }
@@ -328,7 +332,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setAdressePerso($adressePerso)
+    public function setAdressePerso(string $adressePerso): static
     {
         $this->adressePerso = $adressePerso;
 
@@ -338,9 +342,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get tel
      *
-     * @return string
+     * @return string|null
      */
-    public function getTel()
+    public function getTel(): ?string
     {
         return $this->tel;
     }
@@ -352,7 +356,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setTel($tel)
+    public function setTel(string $tel): static
     {
         $this->tel = $tel;
 
@@ -362,9 +366,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get telPortable
      *
-     * @return string
+     * @return string|null
      */
-    public function getTelPortable()
+    public function getTelPortable(): ?string
     {
         return $this->telPortable;
     }
@@ -376,7 +380,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setTelPortable($telPortable)
+    public function setTelPortable(string $telPortable): static
     {
         $this->telPortable = $telPortable;
 
@@ -386,9 +390,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get url
      *
-     * @return string
+     * @return string|null
      */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -400,7 +404,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setUrl($url)
+    public function setUrl(string $url): static
     {
         $this->url = $url;
 
@@ -410,9 +414,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get cv
      *
-     * @return string
+     * @return string|null
      */
-    public function getCv()
+    public function getCv(): ?string
     {
         return $this->cv;
     }
@@ -424,7 +428,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setCv($cv)
+    public function setCv(string $cv): static
     {
         $this->cv = $cv;
 
@@ -434,9 +438,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get themes
      *
-     * @return string
+     * @return string|null
      */
-    public function getThemes()
+    public function getThemes(): ?string
     {
         return $this->themes;
     }
@@ -448,7 +452,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setThemes($themes)
+    public function setThemes(string $themes): static
     {
         $this->themes = $themes;
 
@@ -458,9 +462,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get responsabilitesScientifiques
      *
-     * @return string
+     * @return string|null
      */
-    public function getResponsabilitesScientifiques()
+    public function getResponsabilitesScientifiques(): ?string
     {
         return $this->responsabilitesScientifiques;
     }
@@ -472,7 +476,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setResponsabilitesScientifiques($responsabilitesScientifiques)
+    public function setResponsabilitesScientifiques(string $responsabilitesScientifiques): static
     {
         $this->responsabilitesScientifiques = $responsabilitesScientifiques;
 
@@ -482,9 +486,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get responsabilitesAdministratives
      *
-     * @return string
+     * @return string|null
      */
-    public function getResponsabilitesAdministratives()
+    public function getResponsabilitesAdministratives(): ?string
     {
         return $this->responsabilitesAdministratives;
     }
@@ -496,7 +500,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setResponsabilitesAdministratives($responsabilitesAdministratives)
+    public function setResponsabilitesAdministratives(string $responsabilitesAdministratives): static
     {
         $this->responsabilitesAdministratives = $responsabilitesAdministratives;
 
@@ -506,9 +510,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get valorisation
      *
-     * @return string
+     * @return string|null
      */
-    public function getValorisation()
+    public function getValorisation(): ?string
     {
         return $this->valorisation;
     }
@@ -520,7 +524,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setValorisation($valorisation)
+    public function setValorisation(string $valorisation): static
     {
         $this->valorisation = $valorisation;
 
@@ -530,9 +534,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get vulgarisation
      *
-     * @return string
+     * @return string|null
      */
-    public function getVulgarisation()
+    public function getVulgarisation(): ?string
     {
         return $this->vulgarisation;
     }
@@ -544,7 +548,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setVulgarisation($vulgarisation)
+    public function setVulgarisation(string $vulgarisation): static
     {
         $this->vulgarisation = $vulgarisation;
 
@@ -556,7 +560,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return string
      */
-    public function getInternational()
+    public function getInternational(): string
     {
         return $this->international;
     }
@@ -568,7 +572,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setInternational($international)
+    public function setInternational(string $international): static
     {
         $this->international = $international;
 
@@ -578,9 +582,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get enseignements
      *
-     * @return string
+     * @return string|null
      */
-    public function getEnseignements()
+    public function getEnseignements(): ?string
     {
         return $this->enseignements;
     }
@@ -592,7 +596,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setEnseignements($enseignements)
+    public function setEnseignements(string $enseignements): static
     {
         $this->enseignements = $enseignements;
 
@@ -604,7 +608,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return boolean
      */
-    public function getAncienMembresCrestic()
+    public function getAncienMembresCrestic(): bool
     {
         return $this->ancienMembresCrestic;
     }
@@ -616,7 +620,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setAncienMembresCrestic($ancienMembresCrestic)
+    public function setAncienMembresCrestic(bool $ancienMembresCrestic): static
     {
         $this->ancienMembresCrestic = $ancienMembresCrestic;
 
@@ -624,9 +628,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
-     * @return File
+     * Get imageFile
+     *
+     * @return File|null
      */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
@@ -638,11 +644,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     * @param File|UploadedFile|null $image
      */
-    public function setImageFile(
-        File|UploadedFile $image = null
-    ) {
+    public function setImageFile(File|UploadedFile $image = null): void
+    {
         $this->imageFile = $image;
 
         if ($image) {
@@ -652,22 +657,12 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         }
     }
 
-    public function __toString(): string
-    {
-        return $this->getDisplay();
-    }
-
-    public function getDisplay()
-    {
-        return ucfirst($this->prenom) . " " . ucwords(mb_strtolower($this->nom));
-    }
-
     /**
      * Get prenom
      *
      * @return string
      */
-    public function getPrenom()
+    public function getPrenom(): string
     {
         return ucwords($this->prenom);
     }
@@ -679,7 +674,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setPrenom($prenom)
+    public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
 
@@ -687,11 +682,43 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
+     * Convertit l'objet en une représentation sous forme de chaîne.
+     *
+     * @return string La représentation sous forme de chaîne.
+     */
+    public function __toString(): string
+    {
+        return $this->getDisplay();
+    }
+
+    /**
+     * Obtient une représentation à afficher du membre (prénom et nom formatés).
+     *
+     * @return string La représentation à afficher du membre.
+     */
+    public function getDisplay(): string
+    {
+        return ucfirst($this->prenom) . " " . ucwords(mb_strtolower($this->nom));
+    }
+
+    /**
+     * Obtient les initiales de l'utilisateur (première lettre du prénom et du nom).
+     *
+     * @return array|false|string|null Les initiales en majuscules, ou null si le prénom ou le nom ne sont pas définis.
+     */
+    public function initiales(): array|false|string|null
+    {
+        $ini = substr($this->prenom, 0, 1) . substr($this->nom, 0, 1);
+
+        return mb_strtoupper($ini);
+    }
+
+    /**
      * Get emailPerso
      *
-     * @return string
+     * @return string|null
      */
-    public function getEmailPerso()
+    public function getEmailPerso(): ?string
     {
         return $this->emailPerso;
     }
@@ -703,7 +730,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setEmailPerso($emailPerso)
+    public function setEmailPerso(string $emailPerso): static
     {
         $this->emailPerso = $emailPerso;
 
@@ -713,9 +740,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get adresse
      *
-     * @return string
+     * @return string|null
      */
-    public function getAdresse()
+    public function getAdresse(): ?string
     {
         return $this->adresse;
     }
@@ -727,7 +754,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setAdresse($adresse)
+    public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
 
@@ -737,10 +764,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add actualite
      *
+     * @param Actualites $actualite
      *
      * @return MembresCrestic
      */
-    public function addActualite(Actualites $actualite)
+    public function addActualite(Actualites $actualite): static
     {
         $this->actualites[] = $actualite;
 
@@ -749,8 +777,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove actualite
+     *
+     * @param Actualites $actualite
      */
-    public function removeActualite(Actualites $actualite)
+    public function removeActualite(Actualites $actualite): void
     {
         $this->actualites->removeElement($actualite);
     }
@@ -758,9 +788,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get actualites
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getActualites()
+    public function getActualites(): ArrayCollection|Collection
     {
         return $this->actualites;
     }
@@ -768,10 +798,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add emploi
      *
+     * @param Emplois $emploi
      *
      * @return MembresCrestic
      */
-    public function addEmploi(Emplois $emploi)
+    public function addEmploi(Emplois $emploi): static
     {
         $this->emplois[] = $emploi;
 
@@ -780,8 +811,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove emploi
+     *
+     * @param Emplois $emploi
      */
-    public function removeEmploi(Emplois $emploi)
+    public function removeEmploi(Emplois $emploi): void
     {
         $this->emplois->removeElement($emploi);
     }
@@ -789,9 +822,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get emploi
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getEmplois()
+    public function getEmplois(): ArrayCollection|Collection
     {
         return $this->emplois;
     }
@@ -799,10 +832,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add plateforme
      *
+     * @param Plateformes $plateforme
      *
      * @return MembresCrestic
      */
-    public function addPlateforme(Plateformes $plateforme)
+    public function addPlateforme(Plateformes $plateforme): static
     {
         $this->plateformes[] = $plateforme;
 
@@ -811,8 +845,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove plateforme
+     *
+     * @param Plateformes $plateforme
      */
-    public function removePlateforme(Plateformes $plateforme)
+    public function removePlateforme(Plateformes $plateforme): void
     {
         $this->plateformes->removeElement($plateforme);
     }
@@ -820,9 +856,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get plateformes
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getPlateformes()
+    public function getPlateformes(): ArrayCollection|Collection
     {
         return $this->plateformes;
     }
@@ -830,10 +866,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add equipesHasMembre
      *
+     * @param EquipesHasMembres $equipesHasMembre
      *
      * @return MembresCrestic
      */
-    public function addEquipesHasMembre(EquipesHasMembres $equipesHasMembre)
+    public function addEquipesHasMembre(EquipesHasMembres $equipesHasMembre): static
     {
         $this->equipesHasMembres[] = $equipesHasMembre;
 
@@ -842,8 +879,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove equipesHasMembre
+     *
+     * @param EquipesHasMembres $equipesHasMembre
      */
-    public function removeEquipesHasMembre(EquipesHasMembres $equipesHasMembre)
+    public function removeEquipesHasMembre(EquipesHasMembres $equipesHasMembre): void
     {
         $this->equipesHasMembres->removeElement($equipesHasMembre);
     }
@@ -851,9 +890,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get equipesHasMembres
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getEquipesHasMembres()
+    public function getEquipesHasMembres(): ArrayCollection|Collection
     {
         return $this->equipesHasMembres;
     }
@@ -861,10 +900,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add equipe
      *
+     * @param Equipes $equipe
      *
      * @return MembresCrestic
      */
-    public function addEquipe(Equipes $equipe)
+    public function addEquipe(Equipes $equipe): static
     {
         $this->equipes[] = $equipe;
 
@@ -873,8 +913,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove equipe
+     *
+     * @param Equipes $equipe
      */
-    public function removeEquipe(Equipes $equipe)
+    public function removeEquipe(Equipes $equipe): void
     {
         $this->equipes->removeElement($equipe);
     }
@@ -882,9 +924,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get equipes
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getEquipes()
+    public function getEquipes(): ArrayCollection|Collection
     {
         return $this->equipes;
     }
@@ -892,10 +934,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add departement
      *
+     * @param Departements $departement
      *
      * @return MembresCrestic
      */
-    public function addDepartement(Departements $departement)
+    public function addDepartement(Departements $departement): static
     {
         $this->departements[] = $departement;
 
@@ -904,8 +947,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove departement
+     *
+     * @param Departements $departement
      */
-    public function removeDepartement(Departements $departement)
+    public function removeDepartement(Departements $departement): void
     {
         $this->departements->removeElement($departement);
     }
@@ -913,9 +958,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get departements
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getDepartements()
+    public function getDepartements(): ArrayCollection|Collection
     {
         return $this->departements;
     }
@@ -923,9 +968,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get slug
      *
-     * @return string
+     * @return string|null
      */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -935,7 +980,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setSlug()
+    public function setSlug(): static
     {
         $this->slug = $this->generate_slug($this->prenom . '-' . $this->nom);
 
@@ -943,13 +988,14 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
+     * Generate slug
+     *
      * @param $str
      *
      * @return string
      */
-    public function generate_slug($str)
+    public function generate_slug($str): string
     {
-
         $table = [
             'Š' => 'S',
             'š' => 's',
@@ -1018,7 +1064,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
             'ù' => 'u',
             'ú' => 'u',
             'û' => 'u',
-            'ý' => 'y',
+            'ỳ' => 'y',
             'ý' => 'y',
             'þ' => 'b',
             'ÿ' => 'y',
@@ -1032,16 +1078,15 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         $stripped = preg_replace(['/\s{2,}/', '/[\t\n]/'], ' ', (string)$str);
 
         // -- Returns the slug
-        return strtolower(strtr($str, $table));
-
+        return strtolower(strtr($stripped, $table));
     }
 
     /**
      * Get created
      *
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getCreated()
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
@@ -1049,11 +1094,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Set created
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return MembresCrestic
      */
-    public function setCreated($created)
+    public function setCreated(DateTime $created): static
     {
         $this->created = $created;
 
@@ -1063,14 +1108,21 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get updated
      *
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getUpdated()
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
 
-    public function setUpdated($updated)
+    /**
+     * Set updated
+     *
+     * @param $updated
+     *
+     * @return MembresCrestic
+     */
+    public function setUpdated($updated): static
     {
         $this->updated = $updated;
 
@@ -1080,9 +1132,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get etage
      *
-     * @return string
+     * @return string|null
      */
-    public function getEtage()
+    public function getEtage(): ?string
     {
         return $this->etage;
     }
@@ -1094,7 +1146,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setEtage($etage)
+    public function setEtage(string $etage): static
     {
         $this->etage = $etage;
 
@@ -1104,9 +1156,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get responsabiliteFonction
      *
-     * @return string
+     * @return string|null
      */
-    public function getResponsabiliteFonction()
+    public function getResponsabiliteFonction(): ?string
     {
         return $this->responsabiliteFonction;
     }
@@ -1118,33 +1170,33 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setResponsabiliteFonction($responsabiliteFonction)
+    public function setResponsabiliteFonction(string $responsabiliteFonction): static
     {
         $this->responsabiliteFonction = $responsabiliteFonction;
 
         return $this;
     }
 
-    public function getAuteurIEEE()
+    /**
+     * Obtient l'auteur au format IEEE (initiales du prénom suivies du nom).
+     *
+     * @return string L'auteur au format IEEE.
+     */
+    public function getAuteurIEEE(): string
     {
-//        if ( ($this->getMembreCrestic() === null && $this->getMembreExterieur() === null) || ($this->getMembreCrestic() !== null && $this->getMembreExterieur() !== null))
-//        {
-//            return 'Err!';
-//        } elseif ($this->membreCrestic !== null && $this->membreExterieur === null)
-//        {
-        //membre crestic
         return $this->getInitialePrenom() . ' ' . $this->getNom();
-//        } else
-//        {
-//            return $this->getMembreExterieur()->getInitialePrenom().' '.$this->getMembreExterieur()->getNom();
-//        }
     }
 
-    public function getInitialePrenom()
+    /**
+     * Obtient les initiales du prénom de l'auteur.
+     *
+     * @return string Les initiales du prénom de l'auteur.
+     */
+    public function getInitialePrenom(): string
     {
         $prenom = str_replace(' ', '-', $this->prenom);
-
         $tprenom = explode('-', $prenom);
+
         $texte = '';
         foreach ($tprenom as $item) {
             $texte .= strtoupper(substr($item, 0, 1)) . '. ';
@@ -1158,7 +1210,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return string
      */
-    public function getNom()
+    public function getNom(): string
     {
         return ucwords($this->nom);
     }
@@ -1170,7 +1222,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setNom($nom)
+    public function setNom(string $nom): static
     {
         $this->nom = $nom;
 
@@ -1178,11 +1230,79 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
+     * Obtient le nom d'utilisateur.
+     *
+     * @return string|null Le nom d'utilisateur ou null si non défini.
+     */
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    /**
+     * Définit le nom d'utilisateur.
+     *
+     * @param string $username Le nom d'utilisateur.
+     *
+     * @return MembresCrestic L'instance actuelle pour permettre l'enchaînement.
+     */
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Obtient l'identifiant unique de l'utilisateur.
+     *
+     * @return string L'identifiant unique de l'utilisateur (nom d'utilisateur).
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * Obtient l'adresse email de l'utilisateur.
+     *
+     * @return string|null L'adresse email de l'utilisateur ou null si non définie.
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Définit l'adresse email de l'utilisateur.
+     *
+     * @param string $email L'adresse email de l'utilisateur.
+     *
+     * @return MembresCrestic L'instance actuelle pour permettre l'enchaînement.
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Obtient le mot de passe de l'utilisateur.
+     *
+     * @return string|null Le mot de passe de l'utilisateur ou null si non défini.
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    /**
      * Get membreAssocie
      *
      * @return boolean
      */
-    public function getMembreAssocie()
+    public function getMembreAssocie(): bool
     {
         return $this->membreAssocie;
     }
@@ -1194,7 +1314,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setMembreAssocie($membreAssocie)
+    public function setMembreAssocie(bool $membreAssocie): static
     {
         $this->membreAssocie = $membreAssocie;
 
@@ -1206,7 +1326,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return boolean
      */
-    public function getMembreConseilLabo()
+    public function getMembreConseilLabo(): bool
     {
         return $this->membreConseilLabo;
     }
@@ -1218,14 +1338,19 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setMembreConseilLabo($membreConseilLabo)
+    public function setMembreConseilLabo(bool $membreConseilLabo): static
     {
         $this->membreConseilLabo = $membreConseilLabo;
 
         return $this;
     }
 
-    public function getLocalisation()
+    /**
+     * Obtient la localisation complète de l'auteur (site, bâtiment, bureau).
+     *
+     * @return string La localisation complète de l'auteur.
+     */
+    public function getLocalisation(): string
     {
         $loc = [];
         if ($this->getSite() != '') {
@@ -1235,11 +1360,6 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         if ($this->getBatiment() != '') {
             $loc[] = 'bât. ' . $this->getBatiment();
         }
-
-//        if ($this->getEtage() != '')
-//        {
-//            $loc[] = ', étg. '.$this->getEtage();
-//        }
 
         if ($this->getBureau() != '') {
             $loc[] = 'bur. ' . $this->getBureau();
@@ -1255,9 +1375,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get site
      *
-     * @return string
+     * @return string|null
      */
-    public function getSite()
+    public function getSite(): ?string
     {
         return $this->site;
     }
@@ -1269,7 +1389,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setSite($site)
+    public function setSite(string $site): static
     {
         $this->site = $site;
 
@@ -1279,9 +1399,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get batiment
      *
-     * @return string
+     * @return string|null
      */
-    public function getBatiment()
+    public function getBatiment(): ?string
     {
         return $this->batiment;
     }
@@ -1293,7 +1413,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setBatiment($batiment)
+    public function setBatiment(string $batiment): static
     {
         $this->batiment = $batiment;
 
@@ -1303,9 +1423,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get bureau
      *
-     * @return string
+     * @return string|null
      */
-    public function getBureau()
+    public function getBureau(): ?string
     {
         return $this->bureau;
     }
@@ -1317,7 +1437,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setBureau($bureau)
+    public function setBureau(string $bureau): static
     {
         $this->bureau = $bureau;
 
@@ -1327,9 +1447,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get cnu
      *
-     * @return string
+     * @return string|null
      */
-    public function getCnu()
+    public function getCnu(): ?string
     {
         return $this->cnu;
     }
@@ -1341,7 +1461,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setCnu($cnu)
+    public function setCnu(string $cnu): static
     {
         $this->cnu = $cnu;
 
@@ -1351,10 +1471,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add emplois
      *
+     * @param Emplois $emplois
      *
      * @return MembresCrestic
      */
-    public function addEmplois(Emplois $emplois)
+    public function addEmplois(Emplois $emplois): static
     {
         $this->emplois[] = $emplois;
 
@@ -1363,8 +1484,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove emplois
+     *
+     * @param Emplois $emplois
      */
-    public function removeEmplois(Emplois $emplois)
+    public function removeEmplois(Emplois $emplois): void
     {
         $this->emplois->removeElement($emplois);
     }
@@ -1372,10 +1495,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add projet
      *
+     * @param ProjetsHasMembres $projet
      *
      * @return MembresCrestic
      */
-    public function addProjet(ProjetsHasMembres $projet)
+    public function addProjet(ProjetsHasMembres $projet): static
     {
         $this->projets[] = $projet;
 
@@ -1384,8 +1508,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove projet
+     *
+     * @param ProjetsHasMembres $projet
      */
-    public function removeProjet(ProjetsHasMembres $projet)
+    public function removeProjet(ProjetsHasMembres $projet): void
     {
         $this->projets->removeElement($projet);
     }
@@ -1393,9 +1519,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get projets
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getProjets()
+    public function getProjets(): ArrayCollection|Collection
     {
         return $this->projets;
     }
@@ -1403,9 +1529,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get disciplinehceres
      *
-     * @return string
+     * @return string|null
      */
-    public function getDisciplinehceres()
+    public function getDisciplinehceres(): ?string
     {
         return $this->disciplinehceres;
     }
@@ -1417,7 +1543,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setDisciplinehceres($disciplinehceres)
+    public function setDisciplinehceres(string $disciplinehceres): static
     {
         $this->disciplinehceres = $disciplinehceres;
 
@@ -1427,9 +1553,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get datenomination
      *
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getDatenomination()
+    public function getDatenomination(): ?DateTime
     {
         return $this->datenomination;
     }
@@ -1437,11 +1563,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Set datenomination
      *
-     * @param \DateTime $datenomination
+     * @param DateTime $datenomination
      *
      * @return MembresCrestic
      */
-    public function setDatenomination($datenomination)
+    public function setDatenomination(DateTime $datenomination): static
     {
         $this->datenomination = $datenomination;
 
@@ -1449,11 +1575,35 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
+     * Obtient la date de départ de l'utilisateur.
+     *
+     * @return DateTimeInterface|null La date de départ ou null si non définie.
+     */
+    public function getDateDepart(): ?DateTimeInterface
+    {
+        return $this->dateDepart;
+    }
+
+    /**
+     * Définit la date de départ de l'utilisateur.
+     *
+     * @param DateTimeInterface|null $dateDepart La date de départ.
+     *
+     * @return self L'instance actuelle pour permettre l'enchaînement.
+     */
+    public function setDateDepart(?DateTimeInterface $dateDepart): static
+    {
+        $this->dateDepart = $dateDepart;
+
+        return $this;
+    }
+
+    /**
      * Get corpsgrade
      *
-     * @return string
+     * @return string|null
      */
-    public function getCorpsgrade()
+    public function getCorpsgrade(): ?string
     {
         return $this->corpsgrade;
     }
@@ -1465,7 +1615,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setCorpsgrade($corpsgrade)
+    public function setCorpsgrade(string $corpsgrade): static
     {
         $this->corpsgrade = $corpsgrade;
 
@@ -1475,9 +1625,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get departementMembre
      *
-     * @return Departements
+     * @return Departements|null
      */
-    public function getDepartementMembre()
+    public function getDepartementMembre(): ?Departements
     {
         return $this->departementMembre;
     }
@@ -1485,26 +1635,32 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Set departementMembre
      *
+     * @param Departements|null $departementMembre
      *
      * @return MembresCrestic
      */
-    public function setDepartementMembre(Departements $departementMembre = null)
+    public function setDepartementMembre(Departements $departementMembre = null): static
     {
         $this->departementMembre = $departementMembre;
 
         return $this;
     }
 
-    public function getStatutLong()
+    /**
+     * Obtient le statut détaillé de l'auteur.
+     *
+     * @return string|null Le statut détaillé de l'auteur, incluant HDR si applicable.
+     */
+    public function getStatutLong(): ?string
     {
         if ($this->getStatus() === 'MCF') {
-            if ($this->getHdr() == true) {
+            if ($this->getHdr()) {
                 return 'MCF-HDR';
             } else {
                 return $this->getStatus();
             }
         } else if ($this->getStatus() === 'MCU-PH') {
-            if ($this->getHdr() == true) {
+            if ($this->getHdr()) {
                 return 'MCU-PH HDR';
             } else {
                 return $this->getStatus();
@@ -1517,9 +1673,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get statut
      *
-     * @return string
+     * @return string|null
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -1531,7 +1687,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setStatus($status)
+    public function setStatus(string $status): static
     {
         $this->status = $status;
 
@@ -1543,7 +1699,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return boolean
      */
-    public function getHdr()
+    public function getHdr(): bool
     {
         return $this->hdr;
     }
@@ -1555,7 +1711,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setHdr($hdr)
+    public function setHdr(bool $hdr): static
     {
         $this->hdr = $hdr;
 
@@ -1565,10 +1721,11 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Add activite
      *
+     * @param Activites $activite
      *
      * @return MembresCrestic
      */
-    public function addActivite(Activites $activite)
+    public function addActivite(Activites $activite): static
     {
         $this->activites[] = $activite;
 
@@ -1577,8 +1734,10 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
 
     /**
      * Remove activite
+     *
+     * @param Activites $activite
      */
-    public function removeActivite(Activites $activite)
+    public function removeActivite(Activites $activite): void
     {
         $this->activites->removeElement($activite);
     }
@@ -1586,9 +1745,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get activites
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
-    public function getActivites()
+    public function getActivites(): ArrayCollection|Collection
     {
         return $this->activites;
     }
@@ -1596,9 +1755,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get evaluation
      *
-     * @return string
+     * @return string|null
      */
-    public function getEvaluation()
+    public function getEvaluation(): ?string
     {
         return $this->evaluation;
     }
@@ -1610,7 +1769,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setEvaluation($evaluation)
+    public function setEvaluation(string $evaluation): static
     {
         $this->evaluation = $evaluation;
 
@@ -1620,9 +1779,9 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Get editorial
      *
-     * @return string
+     * @return string|null
      */
-    public function getEditorial()
+    public function getEditorial(): ?string
     {
         return $this->editorial;
     }
@@ -1634,7 +1793,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return MembresCrestic
      */
-    public function setEditorial($editorial)
+    public function setEditorial(string $editorial): static
     {
         $this->editorial = $editorial;
 
@@ -1642,205 +1801,262 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     }
 
     /**
-     * @return string
+     * Obtient l'identifiant HAL de l'auteur.
+     *
+     * @return string|null L'identifiant HAL ou null si non défini.
      */
-    public function getIdhal()
+    public function getIdhal(): ?string
     {
         return $this->idhal;
     }
 
     /**
-     * @param string $idhal
+     * Définit l'identifiant HAL de l'auteur.
+     *
+     * @param string $idhal L'identifiant HAL.
      */
-    public function setIdhal($idhal)
+    public function setIdhal(string $idhal): void
     {
         $this->idhal = $idhal;
     }
 
     /**
-     * @return string
+     * Obtient le CV en anglais de l'auteur.
+     *
+     * @return string|null Le CV en anglais ou null si non défini.
      */
-    public function getCvEn()
+    public function getCvEn(): ?string
     {
         return $this->cv_en;
     }
 
     /**
-     * @param string $cv_en
+     * Définit le CV en anglais de l'auteur.
+     *
+     * @param string $cv_en Le CV en anglais.
      */
-    public function setCvEn($cv_en)
+    public function setCvEn(string $cv_en): void
     {
         $this->cv_en = $cv_en;
     }
 
     /**
-     * @return string
+     * Obtient les thèmes de recherche en anglais de l'auteur.
+     *
+     * @return string|null Les thèmes de recherche en anglais ou null si non défini.
      */
-    public function getThemesEn()
+    public function getThemesEn(): ?string
     {
         return $this->themes_en;
     }
 
     /**
-     * @param string $themes_en
+     * Définit les thèmes de recherche en anglais de l'auteur.
+     *
+     * @param string $themes_en Les thèmes de recherche en anglais.
      */
-    public function setThemesEn($themes_en)
+    public function setThemesEn(string $themes_en): void
     {
         $this->themes_en = $themes_en;
     }
 
     /**
-     * @return string
+     * Obtient les responsabilités scientifiques en anglais de l'auteur.
+     *
+     * @return string|null Les responsabilités scientifiques en anglais ou null si non défini.
      */
-    public function getResponsabilitesScientifiquesEn()
+    public function getResponsabilitesScientifiquesEn(): ?string
     {
         return $this->responsabilitesScientifiques_en;
     }
 
     /**
-     * @param string $responsabilitesScientifiques_en
+     * Définit les responsabilités scientifiques en anglais de l'auteur.
+     *
+     * @param string $responsabilitesScientifiques_en Les responsabilités scientifiques en anglais.
      */
-    public function setResponsabilitesScientifiquesEn($responsabilitesScientifiques_en)
+    public function setResponsabilitesScientifiquesEn(string $responsabilitesScientifiques_en): void
     {
         $this->responsabilitesScientifiques_en = $responsabilitesScientifiques_en;
     }
 
     /**
-     * @return string
+     * Obtient les responsabilités administratives en anglais de l'auteur.
+     *
+     * @return string|null Les responsabilités administratives en anglais ou null si non défini.
      */
-    public function getResponsabilitesAdministrativesEn()
+    public function getResponsabilitesAdministrativesEn(): ?string
     {
         return $this->responsabilitesAdministratives_en;
     }
 
     /**
-     * @param string $responsabilitesAdministratives_en
+     * Définit les responsabilités administratives en anglais de l'auteur.
+     *
+     * @param string $responsabilitesAdministratives_en Les responsabilités administratives en anglais.
      */
-    public function setResponsabilitesAdministrativesEn($responsabilitesAdministratives_en)
+    public function setResponsabilitesAdministrativesEn(string $responsabilitesAdministratives_en): void
     {
         $this->responsabilitesAdministratives_en = $responsabilitesAdministratives_en;
     }
 
     /**
-     * @return string
+     * Obtient l'évaluation en anglais de l'auteur.
+     *
+     * @return string|null L'évaluation en anglais ou null si non défini.
      */
-    public function getEvaluationEn()
+    public function getEvaluationEn(): ?string
     {
         return $this->evaluation_en;
     }
 
     /**
-     * @param string $evaluation_en
+     * Définit l'évaluation en anglais de l'auteur.
+     *
+     * @param string $evaluation_en L'évaluation en anglais.
      */
-    public function setEvaluationEn($evaluation_en)
+    public function setEvaluationEn(string $evaluation_en): void
     {
         $this->evaluation_en = $evaluation_en;
     }
 
     /**
-     * @return string
+     * Obtient les responsabilités éditoriales en anglais de l'auteur.
+     *
+     * @return string|null Les responsabilités éditoriales en anglais ou null si non défini.
      */
-    public function getEditorialEn()
+    public function getEditorialEn(): ?string
     {
         return $this->editorial_en;
     }
 
     /**
-     * @param string $editorial_en
+     * Définit les responsabilités éditoriales en anglais de l'auteur.
+     *
+     * @param string $editorial_en Les responsabilités éditoriales en anglais.
      */
-    public function setEditorialEn($editorial_en)
+    public function setEditorialEn(string $editorial_en): void
     {
         $this->editorial_en = $editorial_en;
     }
 
     /**
-     * @return string
+     * Obtient les activités de valorisation en anglais de l'auteur.
+     *
+     * @return string|null Les activités de valorisation en anglais ou null si non défini.
      */
-    public function getValorisationEn()
+    public function getValorisationEn(): ?string
     {
         return $this->valorisation_en;
     }
 
     /**
-     * @param string $valorisation_en
+     * Définit les activités de valorisation en anglais de l'auteur.
+     *
+     * @param string $valorisation_en Les activités de valorisation en anglais.
      */
-    public function setValorisationEn($valorisation_en)
+    public function setValorisationEn(string $valorisation_en): void
     {
         $this->valorisation_en = $valorisation_en;
     }
 
     /**
-     * @return string
+     * Obtient les activités de vulgarisation en anglais de l'auteur.
+     *
+     * @return string|null Les activités de vulgarisation en anglais ou null si non défini.
      */
-    public function getVulgarisationEn()
+    public function getVulgarisationEn(): ?string
     {
         return $this->vulgarisation_en;
     }
 
     /**
-     * @param string $vulgarisation_en
+     * Définit les activités de vulgarisation en anglais de l'auteur.
+     *
+     * @param string $vulgarisation_en Les activités de vulgarisation en anglais.
      */
-    public function setVulgarisationEn($vulgarisation_en)
+    public function setVulgarisationEn(string $vulgarisation_en): void
     {
         $this->vulgarisation_en = $vulgarisation_en;
     }
 
     /**
-     * @return string
+     * Obtient les activités internationales en anglais de l'auteur.
+     *
+     * @return string|null Les activités internationales en anglais ou null si non défini.
      */
-    public function getInternationalEn()
+    public function getInternationalEn(): ?string
     {
         return $this->international_en;
     }
 
     /**
-     * @param string $international_en
+     * Définit les activités internationales en anglais de l'auteur.
+     *
+     * @param string $international_en Les activités internationales en anglais.
      */
-    public function setInternationalEn($international_en)
+    public function setInternationalEn(string $international_en): void
     {
         $this->international_en = $international_en;
     }
 
     /**
-     * @return string
+     * Obtient les enseignements en anglais de l'auteur.
+     *
+     * @return string|null Les enseignements en anglais ou null si non défini.
      */
-    public function getEnseignementsEn()
+    public function getEnseignementsEn(): ?string
     {
         return $this->enseignements_en;
     }
 
     /**
-     * @param string $enseignements_en
+     * Définit les enseignements en anglais de l'auteur.
+     *
+     * @param string $enseignements_en Les enseignements en anglais.
      */
-    public function setEnseignementsEn($enseignements_en)
+    public function setEnseignementsEn(string $enseignements_en): void
     {
         $this->enseignements_en = $enseignements_en;
     }
 
     /**
-     * @return string
+     * Obtient les responsabilités fonctionnelles en anglais de l'auteur.
+     *
+     * @return string|null Les responsabilités fonctionnelles en anglais ou null si non défini.
      */
-    public function getResponsabiliteFonctionEn()
+    public function getResponsabiliteFonctionEn(): ?string
     {
         return $this->responsabiliteFonction_en;
     }
 
     /**
-     * @param string $responsabiliteFonction_en
+     * Définit les responsabilités fonctionnelles en anglais de l'auteur.
+     *
+     * @param string $responsabiliteFonction_en Les responsabilités fonctionnelles en anglais.
      */
-    public function setResponsabiliteFonctionEn($responsabiliteFonction_en)
+    public function setResponsabiliteFonctionEn(string $responsabiliteFonction_en): void
     {
         $this->responsabiliteFonction_en = $responsabiliteFonction_en;
     }
 
     /**
-     * @throws JsonException
+     * Définit les rôles de l'utilisateur.
+     *
+     * @param array $roles Les rôles de l'utilisateur.
+     *
+     * @throws JsonException En cas d'erreur lors de l'encodage JSON.
      */
     public function setRoles(array $roles): void
     {
         $this->roles = json_encode($roles, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * Obtient les rôles de l'utilisateur.
+     *
+     * @return array Les rôles de l'utilisateur.
+     */
     public function getRoles(): array
     {
         $roles = json_decode($this->roles);
@@ -1851,64 +2067,54 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         }
 
         // recopier les valeurs dans les clés du tableau $roles
-
         return array_unique($roles);
     }
 
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
+    /**
+     * Obtient le sel utilisé pour encoder le mot de passe.
+     *
+     * @return void
+     */
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
     }
 
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
+    /**
+     * Efface les informations sensibles de l'utilisateur.
+     *
+     * @return void
+     */
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function setUsername(string $username): self
+    /**
+     * Sérialise les informations de l'utilisateur.
+     *
+     * @return string La chaîne sérialisée représentant l'objet utilisateur.
+     */
+    public function serialize(): string
     {
-        $this->username = $username;
-
-        return $this;
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->image
+            ]
+        );
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function initiales()
-    {
-        $ini = substr($this->prenom, 0, 1) . substr($this->nom, 0, 1);
-
-        return mb_strtoupper($ini);
-    }
-
-    public function serialize()
-    {
-        return serialize([$this->id, $this->username, $this->image]);
-    }
-
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
+    /**
+     * Désérialise les informations de l'utilisateur.
+     *
+     * @param string $serialized La chaîne sérialisée représentant l'objet utilisateur.
+     *
+     * @return void
+     *
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize(string $serialized): void
     {
         [
             $this->id,
@@ -1917,33 +2123,23 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         ] = unserialize($serialized);
     }
 
-
-
-    public function getUserIdentifier(): string
-    {
-        return $this->username;
-    }
-
-    public function getDateDepart(): ?\DateTimeInterface
-    {
-        return $this->dateDepart;
-    }
-
-    public function setDateDepart(?\DateTimeInterface $dateDepart): static
-    {
-        $this->dateDepart = $dateDepart;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, MailingList>
+     * Obtient les listes de diffusion auxquelles l'utilisateur appartient.
+     *
+     * @return Collection<int, MailingList> Une collection de listes de diffusion.
      */
     public function getMaillingLists(): Collection
     {
         return $this->maillingLists;
     }
 
+    /**
+     * Ajoute une liste de diffusion à l'utilisateur.
+     *
+     * @param MailingList $maillingList La liste de diffusion à ajouter.
+     *
+     * @return self L'instance actuelle pour permettre l'enchaînement.
+     */
     public function addMaillingList(MailingList $maillingList): static
     {
         if (!$this->maillingLists->contains($maillingList)) {
@@ -1954,6 +2150,13 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         return $this;
     }
 
+    /**
+     * Retire une liste de diffusion de l'utilisateur.
+     *
+     * @param MailingList $maillingList La liste de diffusion à retirer.
+     *
+     * @return self L'instance actuelle pour permettre l'enchaînement.
+     */
     public function removeMaillingList(MailingList $maillingList): static
     {
         if ($this->maillingLists->removeElement($maillingList)) {
