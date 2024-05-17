@@ -90,8 +90,12 @@ class EntityListener
             // Ajouter le membre aux listes de diffusion correspondantes et envoyer un e-mail de notification
             $this->setMailingList($mailresult, $entity, $this->entityManager);
 
-            $message = new MailerService($this->mailer);
-            $message->Mailer_sent("ADD $mailresult {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist $mailresult .");
+            //  Vérifie si le membre est  HDR
+            if ( $entity->getHdr() || in_array($entity->getStatus(), ["PR","PU-PH"]))
+            {
+                $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+            }
+
         }
 
         if ($entity instanceof EquipesHasMembres) {
@@ -211,9 +215,6 @@ class EntityListener
             'membreCrestic' => $membreCrestic
         ]);
 
-        // Envoyer un e-mail de notification
-        $message = new MailerService($this->mailer);
-        $message->Mailer_sent("DEL", " {$equipes[1]->getEquipe()}.$equipes[0]");
 
         // Vérifier si des équipes ont été trouvées
         if(empty($equipes)) {
