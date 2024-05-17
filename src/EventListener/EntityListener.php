@@ -147,6 +147,13 @@ class EntityListener
                 $status = $entity->getStatus();
                 $oldstatus = $changeset['status'][0];
 
+                if (in_array($changeset['status'][1],["PR","PU-PH"])) {
+                    $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+
+                } if(in_array($changeset['status'][0],["PR","PU-PH"])) {
+                    $this->delMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+                }
+
                 if ($boolequipe == "") {
                     $mailresult = $this->selectMailByMembreCrestic($status, "");
                     $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, "");
@@ -163,8 +170,17 @@ class EntityListener
                     }
                 }
             }
+            if (array_key_exists('hdr', $changeset)) {
+                if ($changeset['hdr'][1]) {
+                    $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+
+                } else {
+                    $this->delMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+                }
+            }
         }
     }
+
 
     /**
      * Fonction utilisée pour gérer les listes de diffusion des utilisateurs.
