@@ -59,47 +59,46 @@ class DashboardController extends AbstractDashboardController
         //todo:lien vers profil, vers equipes et vers projets
 
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
+
         yield MenuItem::section('Actualités');
-        yield MenuItem::linkToCrud('Actualités', 'fa fa-tags', Actualites::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Agenda', 'fa fa-file-text', Agenda::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Emplois', 'fa fa-file-text', Emplois::class);
-        yield MenuItem::linkToCrud('Documents', 'fa fa-file-text', Documents::class);
+        yield MenuItem::linkToCrud('Actualités', 'fa fa-newspaper', Actualites::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Agenda', 'fa fa-calendar-days', Agenda::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Emplois', 'fa fa-briefcase', Emplois::class);
+        yield MenuItem::linkToCrud('Documents', 'fa fa-book', Documents::class);
 
         yield MenuItem::section('Intranet');
-        yield MenuItem::linkToCrud('Documents Internes', 'fa fa-file-text', DocumentsInternes::class);
-        yield MenuItem::linkToRoute('Documents Internes', 'fa fa-file-text', 'admin_documents');
-
-        yield MenuItem::linkToCrud('Catégories des documents', 'fa fa-file-text', CategorieDocument::class);
-
+        yield MenuItem::linkToCrud('Documents internes', 'fa fa-file-text', DocumentsInternes::class);
+        yield MenuItem::linkToRoute('Gestion des documents', 'fa fa-list-check', 'admin_documents');
+        yield MenuItem::linkToCrud('Catégories des documents', 'fa fa-list', CategorieDocument::class);
 
         yield MenuItem::section('Publications')->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToRoute('Statistiques de publications','fa fa-tags', 'admin_statistiques_publications')->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToRoute('Statistiques de publication','fa fa-chart-simple', 'admin_statistiques_publications')->setPermission('ROLE_ADMINISTRATEUR');
 
         yield MenuItem::section('Projets');
-        yield MenuItem::linkToCrud('Catégories de projet', 'fa fa-tags', CategorieProjet::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Projets', 'fa fa-file-text', Projets::class);
-        yield MenuItem::linkToCrud('Slider Projets', 'fa fa-file-text', ProjetsHasSliders::class);
-        yield MenuItem::linkToCrud('Projets / Membres', 'fa fa-file-text', ProjetsHasMembres::class);
-        yield MenuItem::linkToCrud('Projets / Equipes', 'fa fa-file-text', ProjetsHasEquipes::class);
-        yield MenuItem::linkToCrud('Financeurs', 'fa fa-file-text', Financeurs::class);
-        yield MenuItem::linkToCrud('Partenaires', 'fa fa-file-text', Partenaires::class);
+        yield MenuItem::linkToCrud('Projets', 'fa fa-layer-group', Projets::class);
+        yield MenuItem::linkToCrud('Catégories de projet', 'fa fa-list', CategorieProjet::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Projets / Sliders', 'fa fa-file-powerpoint', ProjetsHasSliders::class);
+        yield MenuItem::linkToCrud('Projets / Membres', 'fa fa-user', ProjetsHasMembres::class);
+        yield MenuItem::linkToCrud('Projets / Equipes', 'fa fa-user-group', ProjetsHasEquipes::class);
+        yield MenuItem::linkToCrud('Financeurs', 'fa fa-hand-holding-dollar', Financeurs::class);
+        yield MenuItem::linkToCrud('Partenaires', 'fa fa-handshake-simple', Partenaires::class);
 
         yield MenuItem::section('Equipes');
-        yield MenuItem::linkToCrud('Equipes', 'fa fa-file-text', Equipes::class);
-        yield MenuItem::linkToCrud('Membres / Equipes', 'fa fa-file-text', EquipesHasMembres::class);
-        yield MenuItem::linkToCrud('Slider Equipes', 'fa fa-file-text', EquipesHasSliders::class);
+        yield MenuItem::linkToCrud('Equipes', 'fa fa-user-group', Equipes::class);
+        yield MenuItem::linkToCrud('Equipes / Membres', 'fa fa-user', EquipesHasMembres::class);
+        yield MenuItem::linkToCrud('Equipes / Sliders', 'fa fa-file-powerpoint', EquipesHasSliders::class);
 
         yield MenuItem::section('Structure du laboratoire');
-        yield MenuItem::linkToCrud('Départements', 'fa fa-tags', Departements::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Membres', 'fa fa-file-text', MembresCrestic::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('plateformes', 'fa fa-file-text', Plateformes::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('MailingList', 'fa fa-file-text',MailingList::class);
+        yield MenuItem::linkToCrud('Membres', 'fa fa-user', MembresCrestic::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Listes de diffusion', 'fa fa-envelope',MailingList::class);
+        yield MenuItem::linkToCrud('Départements', 'fa fa-building', Departements::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Plateformes', 'fa fa-server', Plateformes::class)->setPermission('ROLE_ADMINISTRATEUR');
 
-        yield MenuItem::section('Site web')->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Pages', 'fa fa-file-text', Cms::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Sites', 'fa fa-file-text', Sites::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Slides', 'fa fa-file-text', Slider::class);
-        yield MenuItem::linkToCrud('Organigramme', 'fa fa-file-text', Organigramme::class)->setPermission('ROLE_ADMINISTRATEUR');
-        yield MenuItem::linkToCrud('Configuration', 'fa fa-file-text', Configuration::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::section('Sites web')->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Sites', 'fa fa-globe', Sites::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Pages', 'fa fa-file-lines', Cms::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Slides', 'fa fa-file-powerpoint', Slider::class);
+        yield MenuItem::linkToCrud('Organigrammes', 'fa fa-chart-line', Organigramme::class)->setPermission('ROLE_ADMINISTRATEUR');
+        yield MenuItem::linkToCrud('Configurations', 'fa fa-gear', Configuration::class)->setPermission('ROLE_ADMINISTRATEUR');
     }
 }
