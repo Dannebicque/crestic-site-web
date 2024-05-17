@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 <div align="center">
-  <img src="public/android-icon-192x192.png" alt="Logo CReSTIC" width="140"  height="auto" />
+  <img src="public/android-chrome-512x512.png" alt="Logo CReSTIC" width="140"  height="auto" />
   <br/>
   <h3><b>Site Web CReSTIC</b></h3>
 </div>
@@ -11,11 +11,12 @@
 - [👥 Auteur(s)](#auteur)
 - [🤝 Contributeur(s)](#contributeur)
 - [🛠️ Langages](#langages)
+- [🧰️ Installation](#installation)
 - [📂 Structure du Projet](#arborescence)
 
 ## 📝 Description <a name="description"></a>
 <div style="text-align: justify;">
-Le CReSTIC, Centre de Recherche en STIC de l'Université de Reims Champagne-Ardenne, rassemble plus de 60 enseignants-chercheurs dans cinq équipes de recherche couvrant divers domaines des sciences du numérique. Impliqué dans la recherche fondamentale et appliquée, il se concentre sur des secteurs tels que la santé, l'agriculture intelligente et la transition industrielle, collaborant activement avec des partenaires nationaux et internationaux pour favoriser l'innovation et le transfert technologique en Région Grand Est.
+Le CReSTIC, Centre de Recherche en Science et Technologie de l'Information et de la Communication de l'Université de Reims Champagne-Ardenne, rassemble plus de 60 enseignants-chercheurs dans cinq équipes de recherche couvrant divers domaines des sciences du numérique. Impliqué dans la recherche fondamentale et appliquée, il se concentre sur des secteurs tels que la santé, l'agriculture intelligente et la transition industrielle, collaborant activement avec des partenaires nationaux et internationaux pour favoriser l'innovation et le transfert technologique en Région Grand Est.
 </div>
 
 ## 👥 Auteur(s) <a name="auteur"></a>
@@ -34,6 +35,37 @@ Le CReSTIC, Centre de Recherche en STIC de l'Université de Reims Champagne-Arde
 - <code><img height="32" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" alt="CSS3"/></code> **CSS3**
 - <code><img height="32" src="https://sass-lang.com/assets/img/styleguide/seal-color.png" alt="SCSS"/></code> **SCSS**
 - <code><img height="32" width="32" src="https://twig.symfony.com/images/logo.png" alt="Twig"/></code> **Twig**
+
+## 🧰️ Installation <a name="installation"></a>
+1. **Clonage du dépôt GitHub sur votre machine locale :**
+    ```
+    git clone https://github.com/Veskroy/crestic-site-web-mode-dev.git
+    ```
+
+2. **Accès au répertoire du projet :**
+    ```
+    cd nom-repo
+    ```
+
+3. **Installation des dépendances PHP avec Composer :**
+    ```
+    composer install
+    ```
+
+4. **Installation des dépendances JavaScript avec npm :**
+    ```
+    npm install
+    ```
+
+5. **Construction et compilation des fichiers front-end :**
+    ```
+    npm run build
+    ```
+
+6. **Lancer votre serveur local avec la commande :**
+   ```
+   symfony serve
+   ```
 
 ## 📂 Structure du Projet <a name="arborescence"></a>
 ___php-crud-tvshow/___ ↴
