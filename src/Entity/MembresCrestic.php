@@ -235,7 +235,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      * @var Collection<int, MailingList>
      */
     #[ORM\ManyToMany(targetEntity: MailingList::class, mappedBy: 'MembreCrestic_id')]
-    private Collection $maillingLists;
+    private Collection $mailingLists;
 
     /**
      * Membres constructor.
@@ -254,7 +254,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         $this->setRoles(["ROLE_UTILISATEUR"]);
         $this->setCreated(new DateTime());
         $this->setUpdated(new DateTime());
-        $this->maillingLists = new ArrayCollection();
+        $this->mailingLists = new ArrayCollection();
     }
 
     /**
@@ -2128,23 +2128,23 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
      *
      * @return Collection<int, MailingList> Une collection de listes de diffusion.
      */
-    public function getMaillingLists(): Collection
+    public function getMailingLists(): Collection
     {
-        return $this->maillingLists;
+        return $this->mailingLists;
     }
 
     /**
      * Ajoute une liste de diffusion à l'utilisateur.
      *
-     * @param MailingList $maillingList La liste de diffusion à ajouter.
+     * @param MailingList $mailingList La liste de diffusion à ajouter.
      *
      * @return self L'instance actuelle pour permettre l'enchaînement.
      */
-    public function addMaillingList(MailingList $maillingList): static
+    public function addMailingList(MailingList $mailingList): static
     {
-        if (!$this->maillingLists->contains($maillingList)) {
-            $this->maillingLists->add($maillingList);
-            $maillingList->addMembreCresticId($this);
+        if (!$this->mailingLists->contains($mailingList)) {
+            $this->mailingLists->add($mailingList);
+            $mailingList->addMembreCresticId($this);
         }
 
         return $this;
@@ -2153,14 +2153,14 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * Retire une liste de diffusion de l'utilisateur.
      *
-     * @param MailingList $maillingList La liste de diffusion à retirer.
+     * @param MailingList $mailingList La liste de diffusion à retirer.
      *
      * @return self L'instance actuelle pour permettre l'enchaînement.
      */
-    public function removeMaillingList(MailingList $maillingList): static
+    public function removeMailingList(MailingList $mailingList): static
     {
-        if ($this->maillingLists->removeElement($maillingList)) {
-            $maillingList->removeMembreCresticId($this);
+        if ($this->mailingLists->removeElement($mailingList)) {
+            $mailingList->removeMembreCresticId($this);
         }
 
         return $this;

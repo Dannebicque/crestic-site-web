@@ -47,7 +47,7 @@ class EntityListener
 
         if ($entity instanceof MembresCrestic) {
             // Récupérer les listes de diffusion auxquelles l'utilisateur est inscrit
-            $mailingLists = $entity->getMaillingLists();
+            $mailingLists = $entity->getMailingLists();
 
             // Désinscrire l'utilisateur de chaque liste de diffusion et envoyer un e-mail de notification
             foreach ($mailingLists as $mailingList) {
@@ -56,7 +56,7 @@ class EntityListener
             }
 
             // Autres actions de nettoyage ou de gestion liées à la suppression de l'utilisateur
-            $this->DelEquipehasMembre($entity, $this->entityManager);
+            $this->delEquipeHasMembre($entity, $this->entityManager);
         }
 
         if ($entity instanceof EquipesHasMembres) {
@@ -65,8 +65,8 @@ class EntityListener
             $membre= $entity->getMembreCrestic();
 
             // Effectuer des actions spécifiques liées à la suppression d'une relation entre équipe et membre
-            $mailresult = $this->SelectMailbyMembreCrestic($membre->getStatus(),$equipe->getNom());
-            $this->DelMailingList($mailresult, $membre, $this->entityManager);
+            $mailresult = $this->selectMailByMembreCrestic($membre->getStatus(),$equipe->getNom());
+            $this->delMailingList($mailresult, $membre, $this->entityManager);
         }
     }
 
@@ -85,10 +85,10 @@ class EntityListener
         if ($entity instanceof MembresCrestic) {
             // Récupérer le statut et les informations de mailing associées au membre
             $status = $entity->getStatus();
-            $mailresult = $this->SelectMailbyMembreCrestic($status, "");
+            $mailresult = $this->selectMailByMembreCrestic($status, "");
 
             // Ajouter le membre aux listes de diffusion correspondantes et envoyer un e-mail de notification
-            $this->SetMailingList($mailresult, $entity, $this->entityManager);
+            $this->setMailingList($mailresult, $entity, $this->entityManager);
 
             $message = new MailerService($this->mailer);
             $message->Mailer_sent("ADD $mailresult {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist $mailresult .");
@@ -100,11 +100,11 @@ class EntityListener
             $membre = $entity->getMembreCrestic();
 
             // Mettre à jour les listes de diffusion pour l'équipe et l'utilisateur associés
-            $mailresult = $this->SelectMailbyMembreCrestic($membre->getStatus(), $equipe->getNom());
-            $maildelete = $this->SelectMailbyMembreCrestic($membre->getStatus(), "");
+            $mailresult = $this->selectMailByMembreCrestic($membre->getStatus(), $equipe->getNom());
+            $maildelete = $this->selectMailByMembreCrestic($membre->getStatus(), "");
 
-            $this->SetMailingList($mailresult, $membre, $this->entityManager);
-            $this->DelMailingList($maildelete, $membre, $this->entityManager);
+            $this->setMailingList($mailresult, $membre, $this->entityManager);
+            $this->delMailingList($maildelete, $membre, $this->entityManager);
         }
     }
 
@@ -122,7 +122,7 @@ class EntityListener
 
         if ($entity instanceof MembresCrestic) {
             // Récupérer les listes de diffusion auxquelles l'utilisateur est inscrit
-            $mailingLists = $entity->getMaillingLists();
+            $mailingLists = $entity->getMailingLists();
             // Récupérer les modifications apportées à l'utilisateur
             $changeset = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
 
@@ -144,18 +144,18 @@ class EntityListener
                 $oldstatus = $changeset['status'][0];
 
                 if ($boolequipe == "") {
-                    $mailresult = $this->SelectMailbyMembreCrestic($status, "");
-                    $oldmailresult = $this->SelectMailbyMembreCrestic($oldstatus, "");
+                    $mailresult = $this->selectMailByMembreCrestic($status, "");
+                    $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, "");
 
-                    $this->SetMailingList($mailresult, $entity, $this->entityManager);
-                    $this->DelMailingList($oldmailresult, $entity, $this->entityManager);
+                    $this->setMailingList($mailresult, $entity, $this->entityManager);
+                    $this->delMailingList($oldmailresult, $entity, $this->entityManager);
                 } else {
                     foreach ($boolequipe as $equipe) {
-                        $mailresult = $this->SelectMailbyMembreCrestic($status, $equipe->getEquipe());
-                        $oldmailresult = $this->SelectMailbyMembreCrestic($oldstatus, $equipe->getEquipe());
+                        $mailresult = $this->selectMailByMembreCrestic($status, $equipe->getEquipe());
+                        $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, $equipe->getEquipe());
 
-                        $this->SetMailingList($mailresult, $entity, $this->entityManager);
-                        $this->DelMailingList($oldmailresult, $entity, $this->entityManager);
+                        $this->setMailingList($mailresult, $entity, $this->entityManager);
+                        $this->delMailingList($oldmailresult, $entity, $this->entityManager);
                     }
                 }
             }
@@ -172,7 +172,7 @@ class EntityListener
      * @param mixed $entity L'entité à associer à la liste de diffusion.
      * @param EntityManagerInterface $entityManager L'interface du gestionnaire d'entités pour interagir avec la base de données.
      */
-    public function SetMailingList(string $nomlist, mixed $entity, EntityManagerInterface $entityManager ): void
+    public function setMailingList(string $nomlist, mixed $entity, EntityManagerInterface $entityManager ): void
     {
         // Rechercher la liste de diffusion par son nom
         $mailingList = $entityManager->getRepository(MailingList::class)->findOneBy(['nomlist' => $nomlist]);
@@ -233,7 +233,7 @@ class EntityListener
      * @param mixed $entity L'entité (utilisateur) à supprimer de la liste de diffusion.
      * @param EntityManagerInterface $entityManager L'interface du gestionnaire d'entités pour interagir avec la base de données.
      */
-    public function DelMailingList(string $nomlist, mixed $entity, EntityManagerInterface $entityManager): void
+    public function delMailingList(string $nomlist, mixed $entity, EntityManagerInterface $entityManager): void
     {
         // Rechercher la liste de diffusion par son nom
         $mailingList = $entityManager->getRepository(MailingList::class)->findOneBy(['nomlist' => $nomlist]);
@@ -255,7 +255,7 @@ class EntityListener
      * @param MembresCrestic $membreCrestic L'entité MembresCrestic à traiter.
      * @param EntityManagerInterface $entityManager L'interface du gestionnaire d'entités pour interagir avec la base de données.
      */
-    public function DelEquipehasMembre(MembresCrestic $membreCrestic, EntityManagerInterface $entityManager): void
+    public function delEquipeHasMembre(MembresCrestic $membreCrestic, EntityManagerInterface $entityManager): void
     {
         // Rechercher toutes les associations d'équipes pour le membre Crestic spécifié
         $equipes = $entityManager->getRepository(EquipesHasMembres::class)->findBy(['membreCrestic' => $membreCrestic]);
@@ -283,14 +283,9 @@ class EntityListener
      *
      * @throws InvalidArgumentException Si le statut spécifié n'est pas reconnu ou si l'équipe est vide et le statut est invalide.
      */
-    public function SelectMailbyMembreCrestic(string $status, string $equipe): string
+    public function selectMailByMembreCrestic(string $status, string $equipe): string
     {
         if ($equipe== "") {
-            // Sélection d'une adresse e-mail générique en fonction du statut
-            //if(empty($status)) {
-            //    return "crestic.divers";
-            //}
-
             return match ($status) {
                 "PR", "PU-PH" => "crestic.prof@univ-reims.fr",
                 "MCF", "MCU-PH", "PAST" => "crestic.mcf@univ-reims.fr",
