@@ -211,10 +211,6 @@ class EntityListener
             'membreCrestic' => $membreCrestic
         ]);
 
-        // Envoyer un e-mail de notification
-        $message = new MailerService($this->mailer);
-        $message->Mailer_sent("DEL", " {$equipes[1]->getEquipe()}.$equipes[0]");
-
         // Vérifier si des équipes ont été trouvées
         if(empty($equipes)) {
             return "";
