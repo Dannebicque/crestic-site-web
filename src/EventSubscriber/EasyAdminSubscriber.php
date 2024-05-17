@@ -10,23 +10,25 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class EasyAdminSubscriber implements EventSubscriberInterface
+readonly class EasyAdminSubscriber implements EventSubscriberInterface
 {
-    public function __construct(
-        private readonly SluggerInterface $slugger,
-        private readonly EntityManagerInterface $entityManager)
+    public function __construct(private SluggerInterface $slugger, private EntityManagerInterface $entityManager)
     {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            AfterEntityUpdatedEvent::class => ['setUpdateEquipeForMembre'],
-            BeforeEntityPersistedEvent::class => ['setSlug'],
+            AfterEntityUpdatedEvent::class => [
+                'setUpdateEquipeForMembre'
+            ],
+            BeforeEntityPersistedEvent::class => [
+                'setSlug'
+            ],
         ];
     }
 
-    public function setSlug(BeforeEntityPersistedEvent $event)
+    public function setSlug(BeforeEntityPersistedEvent $event): void
     {
         $entity = $event->getEntityInstance();
 
@@ -36,7 +38,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
 
         if ($entity instanceof MembresCrestic) {
-            $slug = explode('@',$entity->getEmail());
             $entity->setSlug();
         }
 
@@ -49,7 +50,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function setUpdateEquipeForMembre(AfterEntityUpdatedEvent $event)
+    public function setUpdateEquipeForMembre(AfterEntityUpdatedEvent $event): void
     {
         $entity = $event->getEntityInstance();
 
@@ -58,10 +59,10 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
 
         if ($entity->getAncienMembresCrestic() === true) {
-            foreach ($entity->getEquipesHasMembres() as $eqme)
-            {
+            foreach ($entity->getEquipesHasMembres() as $eqme) {
                 $this->entityManager->remove($eqme);
             }
+
             $this->entityManager->flush();
         }
     }
