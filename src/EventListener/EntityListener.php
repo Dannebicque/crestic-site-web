@@ -6,6 +6,7 @@ use App\Entity\EquipesHasMembres;
 use App\Entity\MailingList;
 use App\Services\Mailer\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\PostRemoveEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 use InvalidArgumentException;
@@ -45,15 +46,15 @@ class EntityListener
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof MembresCrestic) {
+        if ($entity instanceof MembresCrestic && !$entity->getAncienMembresCrestic()) {
             // Récupérer les listes de diffusion auxquelles l'utilisateur est inscrit
             $mailingLists = $entity->getMailingLists();
 
             // Désinscrire l'utilisateur de chaque liste de diffusion et envoyer un e-mail de notification
             foreach ($mailingLists as $mailingList) {
-                $message = new MailerService($this->mailer);
-                $message->Mailer_sent("DEL {$mailingList->getNomlist()} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailingList->getNomlist()} .");
-            }
+            $message = new MailerService($this->mailer);
+            $message->Mailer_sent("DEL {$mailingList->getNomlist()} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailingList->getNomlist()} .");
+             }
 
             // Autres actions de nettoyage ou de gestion liées à la suppression de l'utilisateur
             $this->delEquipeHasMembre($entity, $this->entityManager);
@@ -62,12 +63,18 @@ class EntityListener
         if ($entity instanceof EquipesHasMembres) {
             // Récupérer les informations sur l'équipe et le membre associé
             $equipe = $entity->getEquipe();
-            $membre= $entity->getMembreCrestic();
+            $membre = $entity->getMembreCrestic();
 
             // Effectuer des actions spécifiques liées à la suppression d'une relation entre équipe et membre
-            $mailresult = $this->selectMailByMembreCrestic($membre->getStatus(),$equipe->getNom());
+            $mailresult = $this->selectMailByMembreCrestic($membre->getStatus(), $equipe->getNom());
             $this->delMailingList($mailresult, $membre, $this->entityManager);
         }
+    }
+
+    public function postRemove(PostRemoveEventArgs $args):void
+    {
+        $this->delMailinglistEmpty($this->entityManager);
+
     }
 
     /**
@@ -82,7 +89,7 @@ class EntityListener
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof MembresCrestic) {
+        if ($entity instanceof MembresCrestic && !$entity->getAncienMembresCrestic()) {
             // Récupérer le statut et les informations de mailing associées au membre
             $status = $entity->getStatus();
             $mailresult = $this->selectMailByMembreCrestic($status, "");
@@ -91,7 +98,7 @@ class EntityListener
             $this->setMailingList($mailresult, $entity, $this->entityManager);
 
             //  Vérifie si le membre est  HDR
-            if ( $entity->getHdr() || in_array($entity->getStatus(), ["PR","PU-PH"]))
+            if ($entity->getHdr() || in_array($entity->getStatus(), ["PR", "PU-PH"]))
             {
                 $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
             }
@@ -141,22 +148,22 @@ class EntityListener
                 }
             }
 
-            if (array_key_exists('status', $changeset)) {
-                // Si le statut de l'utilisateur a été modifié, mettre à jour les listes de diffusion en conséquence
-                $boolequipe = $this->searchByEquipeForStatus($entity, $this->entityManager);
-                $status = $entity->getStatus();
-                $oldstatus = $changeset['status'][0];
+                if (array_key_exists('status', $changeset)) {
+                    // Si le statut de l'utilisateur a été modifié, mettre à jour les listes de diffusion en conséquence
+                    $boolequipe = $this->searchByEquipeForStatus($entity, $this->entityManager);
+                    $status = $entity->getStatus();
+                    $oldstatus = $changeset['status'][0];
 
-                if (in_array($changeset['status'][1],["PR","PU-PH"])) {
-                    $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+                    if (in_array($changeset['status'][1], ["PR", "PU-PH"])) {
+                        $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
 
                 } if(in_array($changeset['status'][0],["PR","PU-PH"])) {
                     $this->delMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
                 }
 
-                if ($boolequipe == "") {
-                    $mailresult = $this->selectMailByMembreCrestic($status, "");
-                    $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, "");
+                    if ($boolequipe == "") {
+                        $mailresult = $this->selectMailByMembreCrestic($status, "");
+                        $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, "");
 
                     $this->setMailingList($mailresult, $entity, $this->entityManager);
                     $this->delMailingList($oldmailresult, $entity, $this->entityManager);
@@ -231,7 +238,6 @@ class EntityListener
             'membreCrestic' => $membreCrestic
         ]);
 
-
         // Vérifier si des équipes ont été trouvées
         if(empty($equipes)) {
             return "";
@@ -257,7 +263,6 @@ class EntityListener
         if ($mailingList !== null) {
             // Supprimer l'entité de la liste de diffusion
             $mailingList->RemoveMembreCresticId($entity);
-
             // Persiste les modifications en base de données
             $entityManager->persist($mailingList);
             $entityManager->flush();
@@ -285,6 +290,27 @@ class EntityListener
         // Persiste les suppressions en base de données
         $entityManager->flush();
     }
+
+    public function delMailinglistEmpty( EntityManagerInterface $entityManager)
+    {
+        // Récupérer le repository de l'entité MailingList
+        $mailingLists = $entityManager->getRepository(MailingList::class)->findAll();
+        foreach ($mailingLists as $mailingList) {
+            // Vérifier si la liste de diffusion est vide
+            if ($mailingList->getMembreCresticId()->isEmpty()) {
+                // Supprimer la liste de diffusion vide
+                $entityManager->remove($mailingList);
+            }
+        }
+
+        echo('TVA');
+
+        // Appliquer les changements à la base de données
+        $entityManager->flush();
+
+    }
+
+
 
     /**
      * Sélectionne une adresse e-mail en fonction du statut et éventuellement de l'équipe d'un membre Crestic.
