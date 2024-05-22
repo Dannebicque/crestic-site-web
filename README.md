@@ -12,6 +12,7 @@
 - [🤝 Contributeur(s)](#contributeur)
 - [🛠️ Langages](#langages)
 - [🧰️ Installation](#installation)
+- [🔧️ Configuration .env.local](#configenv)
 - [📂 Structure du Projet](#arborescence)
 
 ## 📝 Description <a name="description"></a>
@@ -66,6 +67,13 @@ Le CReSTIC, Centre de Recherche en Science et Technologie de l'Information et de
    ```
    symfony serve
    ```
+
+## 🔧️ Configuration .env.local <a name="configenv"></a>
+**Configurer le fichier .env.local dans la racine du projet :**
+```
+MAILER_DSN=smtp://identifiant:motdepasse@smtps.univ-reims.fr:465/?encryption=tls&auth_model=login&verify_peer=0
+DATABASE_URL="mysql://identifiant:motdepasse@mysql:3306/identifiant_crestic?serverVersion=13&charset=utf8"
+```
 
 ## 📂 Structure du Projet <a name="arborescence"></a>
 ___php-crud-tvshow/___ ↴
