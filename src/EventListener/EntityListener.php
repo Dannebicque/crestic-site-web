@@ -147,13 +147,16 @@ class EntityListener
     {
         $entity = $args->getObject();
 
+
         if ($entity instanceof MembresCrestic) {
             // Récupérer les listes de diffusion auxquelles l'utilisateur est inscrit
             $mailingLists = $entity->getMailingLists();
+
             // Récupérer les modifications apportées à l'utilisateur
             $changeset = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
 
-            if (array_key_exists('email', $changeset)) {
+
+            if (array_key_exists('email', $changeset)&& !$entity->getAncienMembresCrestic()) {
                 // Si l'e-mail de l'utilisateur a été modifié, envoyer des notifications aux listes de diffusion concernées
                 foreach ($mailingLists as $mailingList) {
                     $message = new MailerService($this->mailer);
@@ -163,19 +166,19 @@ class EntityListener
                     $message2->Mailer_sent("ADD {$mailingList->getNomlist()} {$changeset['email'][1]}", "Modification d'email de l'utilisateur {$entity->getUsername()} ajout de la mailling list {$mailingList->getNomlist()} .");
                 }
             }
-            if (array_key_exists('status', $changeset)) {
+            if (array_key_exists('status', $changeset)&& !$entity->getAncienMembresCrestic()) {
                 // Si le statut de l'utilisateur a été modifié, mettre à jour les listes de diffusion en conséquence
                 $boolequipe = $this->searchByEquipeForStatus($entity, $this->entityManager);
                 $status = $entity->getStatus();
                 $oldstatus = $changeset['status'][0];
 
-                if (in_array($changeset['status'][1], ["PR", "PU-PH"])) {
+                if (in_array($changeset['status'][1], ["PR", "PU-PH"]) && !$entity->getHdr()) {
                     $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
                     $message1 = new MailerService($this->mailer);
                     $message1->Mailer_sent("ADD crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()}dans  la mailling list crestic.hdr@univ-reims.fr .");
 
                 }
-                if(in_array($changeset['status'][0],["PR","PU-PH"])) {
+                if (in_array($changeset['status'][0], ["PR", "PU-PH"]) && $entity->getHdr()) {
                     $this->delMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
                     $message1 = new MailerService($this->mailer);
                     $message1->Mailer_sent("DEL crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Suppresions de l'utilisateur {$entity->getUsername()} dans la mailling list crestic.hdr@univ-reims.fr .");
@@ -184,35 +187,52 @@ class EntityListener
                 if ($boolequipe == "") {
                     $mailresult = $this->selectMailByMembreCrestic($status, "");
                     $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, "");
+                    if ($oldmailresult != $mailresult) {
+                        $this->setMailingList($mailresult, $entity, $this->entityManager);
+                        $message = new MailerService($this->mailer);
+                        $message->Mailer_sent("ADD {$mailresult} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailresult} .");
 
-                    $this->setMailingList($mailresult, $entity, $this->entityManager);
-                    $message = new MailerService($this->mailer);
-                    $message->Mailer_sent("ADD {$mailresult} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailresult} .");
-
-                    $this->delMailingList($oldmailresult, $entity, $this->entityManager);
-                    $message = new MailerService($this->mailer);
-                    $message->Mailer_sent("DEL {$mailresult} {$entity->getEmail()}", "Suppresion de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailresult} .");
+                        $this->delMailingList($oldmailresult, $entity, $this->entityManager);
+                        $message = new MailerService($this->mailer);
+                        $message->Mailer_sent("DEL {$oldmailresult} {$entity->getEmail()}", "Suppresion de l'utilisateur {$entity->getUsername()} de la mailinglist {$oldmailresult} .");
+                    }
                 } else {
                     foreach ($boolequipe as $equipe) {
                         $mailresult = $this->selectMailByMembreCrestic($status, $equipe->getEquipe());
                         $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, $equipe->getEquipe());
+                        if ($oldmailresult != $mailresult) {
+                            $this->delMailingList($oldmailresult, $entity, $this->entityManager);
+                            $message = new MailerService($this->mailer);
+                            $message->Mailer_sent("ADD {$oldmailresult} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  {$oldmailresult} .");
 
                             $this->setMailingList($mailresult, $entity, $this->entityManager);
                             $message = new MailerService($this->mailer);
                             $message->Mailer_sent("ADD {$mailresult} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailresult} .");
-
-                            $this->delMailingList($oldmailresult, $entity, $this->entityManager);
-                            $message = new MailerService($this->mailer);
-                            $message->Mailer_sent("ADD {$oldmailresult} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  {$oldmailresult} .");
                         }
                     }
+                }
             }
-            if (array_key_exists('hdr', $changeset)) {
-                if ($changeset['hdr'][1]) {
+            if (array_key_exists('hdr', $changeset)&& !$entity->getAncienMembresCrestic()) {
+                if ($changeset['hdr'][1] && !$changeset['hdr'][0] && !in_array($entity->getStatus(), ["PR", "PU-PH"])) {
                     $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
                     $message = new MailerService($this->mailer);
                     $message->Mailer_sent("ADD crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist  crestic.hdr@univ-reims.fr .");
-                } else {
+                }
+                if ($changeset['hdr'][0] && !in_array($entity->getStatus(), ["PR", "PU-PH"])) {
+                    $this->delMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+                    $message = new MailerService($this->mailer);
+                    $message->Mailer_sent("DEL crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  crestic.hdr@univ-reims.fr .");
+                }
+            }
+
+            if (array_key_exists('hdr', $changeset) && array_key_exists('status', $changeset) && !$entity->getAncienMembresCrestic()) {
+                // gestion de la double ajout ou suppression de HDR
+                if ($changeset['hdr'][1] && in_array($changeset['status'][1], ["PR", "PU-PH"])) {
+                    $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
+                    $message = new MailerService($this->mailer);
+                    $message->Mailer_sent("ADD crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist crestic.hdr@univ-reims.fr .");
+                }
+                if (!$changeset['hdr'][1] && !in_array($changeset['status'][1], ["PR", "PU-PH"])) {
                     $this->delMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
                     $message = new MailerService($this->mailer);
                     $message->Mailer_sent("DEL crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  crestic.hdr@univ-reims.fr .");
@@ -226,11 +246,14 @@ class EntityListener
                         $message = new MailerService($this->mailer);
                         $message->Mailer_sent("DEL {$mailingList->getNomlist()} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailingList->getNomlist()} .");
                     }
-                    }
+                }
             }
-                $this->delMailinglistEmpty($this->entityManager);
-            }
+
+
         }
+        $this->delMailinglistEmpty($this->entityManager);
+    }
+
 
 
 
@@ -257,6 +280,8 @@ class EntityListener
             // Si la liste de diffusion n'existe pas, la créer
             $mailingList = new MailingList();
             $mailingList->setNomlist($nomlist);
+            // Persiste explicitement l'entité MailingList
+            $entityManager->persist($mailingList);
         }
 
         // Ajouter l'entité à la liste de diffusion
