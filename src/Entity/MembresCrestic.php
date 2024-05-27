@@ -234,7 +234,7 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
     /**
      * @var Collection<int, MailingList>
      */
-    #[ORM\ManyToMany(targetEntity: MailingList::class, mappedBy: 'MembreCrestic_id')]
+    #[ORM\ManyToMany(targetEntity: MailingList::class, mappedBy: 'MembreCrestic_id',cascade: ["persist"])]
     private Collection $mailingLists;
 
     /**

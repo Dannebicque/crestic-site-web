@@ -21,7 +21,7 @@ class MailingList
     /**
      * @var Collection<int, MembresCrestic>
      */
-    #[ORM\ManyToMany(targetEntity: MembresCrestic::class, inversedBy: 'maillingLists')]
+    #[ORM\ManyToMany(targetEntity: MembresCrestic::class, inversedBy: 'maillingLists', cascade: ["persist"])]
     private Collection $MembreCrestic_id;
 
     /**

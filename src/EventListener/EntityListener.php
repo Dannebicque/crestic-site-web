@@ -251,7 +251,6 @@ class EntityListener
 
 
         }
-        $this->delMailinglistEmpty($this->entityManager);
     }
 
 
