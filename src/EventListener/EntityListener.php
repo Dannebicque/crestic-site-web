@@ -62,7 +62,7 @@ class EntityListener
 
         }
 
-        if ($entity instanceof EquipesHasMembres && !in_array($entity->getMembreCrestic()->getStatus(),["ING", "ING-R", "TECH", "ADM"])) {
+        if ($entity instanceof EquipesHasMembres && !in_array($entity->getMembreCrestic()->getStatus(),["ING", "ING-R", "TECH", "ADM"]) && !$entity->getMembreCrestic()->getAncienMembresCrestic()) {
             // Récupérer les informations sur l'équipe et le membre associé
             $equipe = $entity->getEquipe();
             $membre = $entity->getMembreCrestic();
@@ -70,7 +70,7 @@ class EntityListener
             // Effectuer des actions spécifiques liées à la suppression d'une relation entre équipe et membre
             $mailresult = $this->selectMailByMembreCrestic($membre->getStatus(), $equipe->getNom());
             $this->delMailingList($mailresult, $membre, $this->entityManager);
-            if ($this->option) {
+            if (!$this->option) {
                 $message = new MailerService($this->mailer);
                 $message->Mailer_sent("DEL {$mailresult} {$membre->getEmail()}", "Suppression de l'utilisateur {$membre->getEmail()} de la mailinglist {$mailresult} .");
             }
@@ -104,7 +104,7 @@ class EntityListener
             // Ajouter le membre aux listes de diffusion correspondantes et envoyer un e-mail de notification
             $this->setMailingList($mailresult, $entity, $this->entityManager);
 
-            //  Vérifie si le membre est  HDR
+            //  Vérifie si le membre est HDR
             if ($entity->getHdr() || in_array($entity->getStatus(), ["PR", "PU-PH"]))
             {
                 $this->setMailingList("crestic.hdr@univ-reims.fr", $entity, $this->entityManager);
@@ -131,9 +131,12 @@ class EntityListener
 
             $this->delMailingList($maildelete, $membre, $this->entityManager);
 
-            $message1 = new MailerService($this->mailer);
-            $message1->Mailer_sent("DEL {$maildelete} {$membre->getEmail()}", "Suppression de l'utilisateur {$membre->getUsername()} de la mailinglist {$mailresult} .");
+            $firstequipes=$this->searchByEquipebyMembre($membre,$this->entityManager);
 
+            if(count($firstequipes) == 1) {
+                $message1 = new MailerService($this->mailer);
+                $message1->Mailer_sent("DEL {$maildelete} {$membre->getEmail()}", "Suppression de l'utilisateur {$membre->getUsername()} de la mailinglist {$mailresult} .");
+            }
         }
     }
 
@@ -199,13 +202,27 @@ class EntityListener
                         $message->Mailer_sent("DEL {$oldmailresult} {$entity->getEmail()}", "Suppresion de l'utilisateur {$entity->getUsername()} de la mailinglist {$oldmailresult} .");
                     }
                 } else {
+                    $count=0;
                     foreach ($boolequipe as $equipe) {
                         $mailresult = $this->selectMailByMembreCrestic($status, $equipe->getEquipe());
                         $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, $equipe->getEquipe());
                         if ($oldmailresult != $mailresult) {
-                            $this->delMailingList($oldmailresult, $entity, $this->entityManager);
-                            $message = new MailerService($this->mailer);
-                            $message->Mailer_sent("ADD {$oldmailresult} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  {$oldmailresult} .");
+                            $count+=1;
+
+                            if (!in_array($changeset['status'][1], ["ING", "ING-R", "TECH", "ADM"])) {
+                                $this->delMailingList($oldmailresult, $entity, $this->entityManager);
+                                $message = new MailerService($this->mailer);
+                                $message->Mailer_sent("DEL {$oldmailresult} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  {$oldmailresult} .");
+
+                                $this->setMailingList($mailresult, $entity, $this->entityManager);
+                                $message = new MailerService($this->mailer);
+                                $message->Mailer_sent("ADD {$mailresult} {$entity->getEmail()}", "Ajout de l'utilisateur {$entity->getUsername()} de la mailinglist {$mailresult} .");
+                            }
+                            elseif (in_array($changeset['status'][1], ["ING", "ING-R", "TECH", "ADM"])&& $count <2 )
+                            {
+                                $this->delMailingList($oldmailresult, $entity, $this->entityManager);
+                                $message = new MailerService($this->mailer);
+                                $message->Mailer_sent("DEL {$oldmailresult} {$entity->getEmail()}", "Suppression de l'utilisateur {$entity->getUsername()} de la mailinglist  {$oldmailresult} .");
 
                             $this->setMailingList($mailresult, $entity, $this->entityManager);
                             $message = new MailerService($this->mailer);
