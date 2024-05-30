@@ -188,7 +188,6 @@ class EntityListener
                     $message1 = new MailerService($this->mailer);
                     $message1->Mailer_sent("DEL crestic.hdr@univ-reims.fr {$entity->getEmail()}", "Suppresions de l'utilisateur {$entity->getUsername()} dans la mailling list crestic.hdr@univ-reims.fr .");
                 }
-
                 if ($boolequipe == "") {
                     $mailresult = $this->selectMailByMembreCrestic($status, "");
                     $oldmailresult = $this->selectMailByMembreCrestic($oldstatus, "");
