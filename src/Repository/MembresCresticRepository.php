@@ -7,8 +7,16 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-class MembresCresticRepository  extends ServiceEntityRepository
+/**
+ * @extends ServiceEntityRepository<MembresCrestic>
+ */
+class MembresCresticRepository extends ServiceEntityRepository
 {
+    /**
+     * Constructeur de la classe MembresCresticRepository.
+     *
+     * @param ManagerRegistry $registry Le registre de gestion des entités.
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MembresCrestic::class);
