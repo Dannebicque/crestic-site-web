@@ -29,7 +29,7 @@ class MailingListRepository extends ServiceEntityRepository
      *
      * @return MailingList[] Un tableau d'objets MailingList correspondant au critère de recherche.
      */
-    public function findByExampleField($value): array
+    public function findByExampleField(mixed $value): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')
@@ -50,7 +50,7 @@ class MailingListRepository extends ServiceEntityRepository
      *
      * @throws NonUniqueResultException
      */
-    public function findOneBySomeField($value): ?MailingList
+    public function findOneBySomeField(mixed $value): ?MailingList
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')
