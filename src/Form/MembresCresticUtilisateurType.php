@@ -32,7 +32,7 @@ class MembresCresticUtilisateurType extends AbstractType
                 ['attr' => ['placeholder' => 'Email Perso','class' => 'form-control'], 'required' => false])
             ->add('adresse', TextType::class,
                 ['attr' => ['placeholder' => 'Adresse professionnelle','class' => 'form-control'], 'required' => false])
-            ->add('imageFile', FileType::class, ['required' => false])
+//            ->add('imageFile', FileType::class, ['required' => false])
             ->add('dateNaissance', DateType::class, ['required' => false, 'widget'   => 'single_text', 'attr'     => ['placeholder' => 'dd/mm/aaaa','class' => 'form-control']])
             ->add('adressePerso', TextType::class,
                 ['attr' => ['placeholder' => 'Adresse personnelle','class' => 'form-control'], 'required' => false])

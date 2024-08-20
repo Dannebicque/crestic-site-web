@@ -1895,20 +1895,23 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         return mb_strtoupper($ini);
     }
 
-    public function serialize()
-    {
-        return serialize([$this->id, $this->username, $this->image]);
-    }
-
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
-    {
-        [
-            $this->id,
-            $this->username,
-            $this->image
-        ] = unserialize($serialized);
-    }
+//    public function serialize()
+//    {
+//        return array(
+//            $this->id,
+//            $this->email,
+//            $this->password,
+//        );
+//    }
+//
+//    public function unserialize($serialized)
+//    {
+//        list(
+//            $this->id,
+//            $this->email,
+//            $this->password,
+//            ) = unserialize($serialized);
+//    }
 
 
 

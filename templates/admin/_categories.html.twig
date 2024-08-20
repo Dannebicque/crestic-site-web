@@ -7,9 +7,28 @@
                 {{ categorie.libelle }}
             </a>
         </li>
+        {% if categorie.enfants|length > 0 %}
+            <li>
+            {% for cat in categorie.enfants %}
+                <li class="d-flex">
+                    <a href="#"
+                       class="ps-2"
+                            {{ stimulus_action('document', 'changeCategorie', 'click',{id:cat.id}) }}
+                    >
+                        {{ cat.libelle }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endif %}
+        <li {{ stimulus_target('document', 'add_categorie') }}>
+            <a href="#" {{ stimulus_action('document', 'add_categorie', 'click', {parent:categorie.id}) }} class="ps-2">
+                <i class="fas fa-plus-circle"></i> Ajouter une sous catégorie
+            </a>
+        </li>
+
     {% endfor %}
     <li {{ stimulus_target('document', 'add_categorie') }}>
-        <a href="#" {{ stimulus_action('document', 'add_categorie') }}>
+        <a href="#" {{ stimulus_action('document', 'add_categorie', 'click', {parent:null}) }}>
             <i class="fas fa-plus-circle"></i> Ajouter une catégorie
         </a>
     </li>

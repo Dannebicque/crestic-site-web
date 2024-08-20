@@ -19,7 +19,11 @@ class AppExtension extends AbstractExtension
 
     public function getFilters()
     {
-        return [new TwigFilter('linkMembre', $this->linkMembre(...)), new TwigFilter('tel_format', $this->telFormat(...)), new TwigFilter('moisfr', $this->moisfr(...))];
+        return [
+            new TwigFilter('linkMembre', $this->linkMembre(...)),
+            new TwigFilter('formatFichier', $this->formatFichier(...)),
+            new TwigFilter('tel_format', $this->telFormat(...)),
+            new TwigFilter('moisfr', $this->moisfr(...))];
     }
 
     public function getFunctions(): array
@@ -29,34 +33,42 @@ class AppExtension extends AbstractExtension
         ];
     }
 
+    public function formatFichier(string $fichier): string
+    {
+        //récupération de l'extension
+
+        $ext = pathinfo($fichier, PATHINFO_EXTENSION);
+        $ext = strtolower($ext);
+        return $ext;
+    }
+
     public function telFormat($number)
     {
         $str = '';
-        str_replace(['.', '-', ' '], '', (string) $number);
-        if (\strlen((string) $number) === 10)
-        {
-            $str = chunk_split((string) $number, 2, ' ');
-        } else
-        {
+        str_replace(['.', '-', ' '], '', (string)$number);
+        if (\strlen((string)$number) === 10) {
+            $str = chunk_split((string)$number, 2, ' ');
+        } else {
             $str = $number;
         }
 
         return $str;
     }
 
-    public function moisfr($date) {
-        $mois = ['01' =>'Jan',
-                 '02' =>'Fév',
-                 '03' =>'Mar',
-                 '04' =>'Avr',
-                 '05' =>'Mai',
-                 '06' =>'Jui',
-                 '07' =>'Jui',
-                 '08' =>'Aoû',
-                 '09' =>'Sep',
-                 '10' =>'Oct',
-                 '11' =>'Nov',
-                 '12' =>'Déc'];
+    public function moisfr($date)
+    {
+        $mois = ['01' => 'Jan',
+            '02' => 'Fév',
+            '03' => 'Mar',
+            '04' => 'Avr',
+            '05' => 'Mai',
+            '06' => 'Jui',
+            '07' => 'Jui',
+            '08' => 'Aoû',
+            '09' => 'Sep',
+            '10' => 'Oct',
+            '11' => 'Nov',
+            '12' => 'Déc'];
         return $mois[$date];
     }
 

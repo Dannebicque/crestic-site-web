@@ -2,7 +2,7 @@
 
 {% block page_content %}
     <div class="row" {{ stimulus_controller('document', {
-        url: path('admin_documents_liste'),
+        url: path('admin_show_categorie'),
         urlCategories: path('admin_documents_categories'),
     }) }}>
         <div class="col-3" {{ stimulus_target('document', 'categories') }}>

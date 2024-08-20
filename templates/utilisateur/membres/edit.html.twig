@@ -1,236 +1,249 @@
 {% extends 'base.html.twig' %}
 
 {% block breadcrumbs %}
-	Modification de vos informations
+    Modification de vos informations
 {% endblock %}
 
 {% block content %}
-	<div class="heading mb20">
-		<h3>
-			{{ membresCrestic.display|raw }} - {{ membresCrestic.statutLong|trans }}
-		</h3>
-	</div>
 
-	{{ form_start(edit_form) }}
-	<div class="row" style="text-align: right">
-		<div class="col-sm-3">&nbsp;</div>
-		<div class="col-sm-3"><a href="{{ path('homepage_utilisateur') }}">Retour / Annuler</a></div>
-        <div class="col-sm-3"><a href="{{ path('utilisateur_membres_edit_en') }}" target="_blank">Editer la version Anglaise (nouvel onglet)</a></div>
-		<div class="col-sm-3"><button type="submit" class="btn btn-block btn-primary">Enregistrer</button> </div>
-	</div>
-	<div class="row">
-		<div class="col-sm-4 text-center">
-			<div class="content-box-profile content-box-bordered no-margin">
-				<img src="{{ asset('uploads/membresCrestic/'~membresCrestic.image) }}" height="200px" alt="Photo actuelle" />
-				{{ form_widget(edit_form.imageFile) }}
-				<dl>
-					<dt>
-						Corps/Grade
-					</dt>
-					<dd>
-						{{ form_widget(edit_form.corpsgrade) }}
-					</dd>
-					<dt>
-						Date Nomination CReSTIC
-					</dt>
-					<dd>
-						{{ form_widget(edit_form.datenomination) }}
-					</dd>
-				</dl>
+    <div class="heading mb20">
+        <h3>
+            {{ membresCrestic.display|raw }} - {{ membresCrestic.statutLong|trans }}
+        </h3>
+    </div>
+    <div class="row" style="text-align: right">
+        <div class="col-sm-3">&nbsp;</div>
+        <div class="col-sm-3"><a href="{{ path('homepage_utilisateur') }}">Retour / Annuler</a></div>
+        <div class="col-sm-3"><a href="{{ path('utilisateur_membres_edit_en') }}" target="_blank">Editer la version
+                Anglaise (nouvel onglet)</a></div>
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
+        </div>
+    </div>
 
-				<h4 class="team-member-name-imgtop">
-					Contacts
-				</h4>
-				<dl>
-					<dt>
-						Email
-					</dt>
-					<dd>
-						{{ form_widget(edit_form.email) }}
-					</dd>
+    <div class="row" style="margin-top: 10px ">
+        <div class="col-sm-6">
+            <div class="content-box-profile content-box-bordered no-margin">
+                {{ component('UploadFiles', {membreCrestic: membresCrestic}) }}
+            </div>
+        </div>
+    </div>
+    {{ form_start(edit_form) }}
 
-					<dt>
-						Téléphone
-					</dt>
-					<dd>
-						{{ form_widget(edit_form.tel) }}
-					</dd>
-					<dt>
-						Téléphone portable
-					</dt>
-					<dd>
-						{{ form_widget(edit_form.telPortable) }}
-					</dd>
-					<dt>
-						Site Web
-					</dt>
-					<dd>
-						{{ form_widget(edit_form.url) }}
-					</dd>
-				</dl>
-			</div>
+    <div class="row" style="margin-top: 10px ">
+        <div class="col-sm-4 text-center">
+            <div class="content-box-profile content-box-bordered no-margin">
 
-		</div>
 
-		<div class="col-sm-8">
+                {#                {{ form_widget(edit_form.imageFile) }} #}
+                <dl>
+                    <dt>
+                        Corps/Grade
+                    </dt>
+                    <dd>
+                        {{ form_widget(edit_form.corpsgrade) }}
+                    </dd>
+                    <dt>
+                        Date Nomination CReSTIC
+                    </dt>
+                    <dd>
+                        {{ form_widget(edit_form.datenomination) }}
+                    </dd>
+                </dl>
 
-			<h4>
-				{% if membresCrestic.cnu != '' and membresCrestic.cnu != null %} CNU : {{ membresCrestic.cnu }}{% endif %}
-			</h4>
-			<br/>
-			<h4>Localisation</h4>
-			{{ form_widget(edit_form.adresse) }}
-			{{ form_widget(edit_form.site) }}
-			{{ form_widget(edit_form.batiment) }}
-			{{ form_widget(edit_form.bureau) }}
+                <h4 class="team-member-name-imgtop">
+                    Contacts
+                </h4>
+                <dl>
+                    <dt>
+                        Email
+                    </dt>
+                    <dd>
+                        {{ form_widget(edit_form.email) }}
+                    </dd>
 
-			<br/><br/><br/>
-			<h4>CV</h4>
-			{{ form_widget(edit_form.cv) }}
-			<br>
-			<h4>HAL</h4>
+                    <dt>
+                        Téléphone
+                    </dt>
+                    <dd>
+                        {{ form_widget(edit_form.tel) }}
+                    </dd>
+                    <dt>
+                        Téléphone portable
+                    </dt>
+                    <dd>
+                        {{ form_widget(edit_form.telPortable) }}
+                    </dd>
+                    <dt>
+                        Site Web
+                    </dt>
+                    <dd>
+                        {{ form_widget(edit_form.url) }}
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+
+        <div class="col-sm-8">
+
+            <h4>
+                {% if membresCrestic.cnu != '' and membresCrestic.cnu != null %} CNU : {{ membresCrestic.cnu }}{% endif %}
+            </h4>
+            <br/>
+            <h4>Localisation</h4>
+            {{ form_widget(edit_form.adresse) }}
+            {{ form_widget(edit_form.site) }}
+            {{ form_widget(edit_form.batiment) }}
+            {{ form_widget(edit_form.bureau) }}
+
+            <br/><br/><br/>
+            <h4>CV</h4>
+            {{ form_widget(edit_form.cv) }}
+            <br>
+            <h4>HAL</h4>
             <p>Identifiant Hal</p>
             {{ form_widget(edit_form.idhal) }}
-			<br/><br/>
-			<h4>Données personnelles (non diffusées)</h4>
-			<dl>
-				<dt>
-					Email perso (non diffusé)
-				</dt>
-				<dd>
-					{{ form_widget(edit_form.emailPerso) }}
-				</dd>
-				<dt>
-					Adresse perso (non diffusée)
-				</dt>
-				<dd>
-					{{ form_widget(edit_form.adressePerso) }}
-				</dd>
-				<dt>
-					Date de naissance (non diffusée)
-				</dt>
-				<dd>
-					{{ form_widget(edit_form.dateNaissance) }}
-				</dd>
-			</dl>
-		</div>
-	</div>
+            <br/><br/>
+            <h4>Données personnelles (non diffusées)</h4>
+            <dl>
+                <dt>
+                    Email perso (non diffusé)
+                </dt>
+                <dd>
+                    {{ form_widget(edit_form.emailPerso) }}
+                </dd>
+                <dt>
+                    Adresse perso (non diffusée)
+                </dt>
+                <dd>
+                    {{ form_widget(edit_form.adressePerso) }}
+                </dd>
+                <dt>
+                    Date de naissance (non diffusée)
+                </dt>
+                <dd>
+                    {{ form_widget(edit_form.dateNaissance) }}
+                </dd>
+            </dl>
+        </div>
+    </div>
 
-	<div class="heading mt30">
-		<h4>
-			{{ 'visiteur.MembresCrestic.activites'| trans }}
-		</h4>
-	</div>
+    <div class="heading mt30">
+        <h4>
+            {{ 'visiteur.MembresCrestic.activites'| trans }}
+        </h4>
+    </div>
 
-	<!-- Begin Tabs Justified -->
-	<ul id="membresTabActivites" class="nav nav-tabs nav-justified mt15" role="tablist">
-		<li>
-			<a href="#responsabilitesAdministratives" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.responsabilitesAdministratives'| trans }}
-			</a>
-		</li>
+    <!-- Begin Tabs Justified -->
+    <ul id="membresTabActivites" class="nav nav-tabs nav-justified mt15" role="tablist">
+        <li>
+            <a href="#responsabilitesAdministratives" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.responsabilitesAdministratives'| trans }}
+            </a>
+        </li>
 
-		<li>
-			<a href="#themes" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.themes'| trans }}
-			</a>
-		</li>
-		<li>
-			<a href="#responsabilitesScientifiques" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.responsabilitesScientifiques'| trans }}
-			</a>
-		</li>
-		<li>
-			<a href="#international" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.international'| trans }}
-			</a>
-		</li>
-		<li>
-			<a href="#editorial" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.editoriale'| trans }}
-			</a>
-		</li>
-		<li>
-			<a href="#valorisation" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.valorisation'| trans }}
-			</a>
-		</li>
-		<li>
-			<a href="#evaluation" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.evaluation'| trans }}
-			</a>
-		</li>
-		<li>
-			<a href="#vulgarisation" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.vulgarisation'| trans }}
-			</a>
-		</li>
+        <li>
+            <a href="#themes" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.themes'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#responsabilitesScientifiques" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.responsabilitesScientifiques'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#international" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.international'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#editorial" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.editoriale'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#valorisation" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.valorisation'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#evaluation" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.evaluation'| trans }}
+            </a>
+        </li>
+        <li>
+            <a href="#vulgarisation" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.vulgarisation'| trans }}
+            </a>
+        </li>
 
-		<li>
-			<a href="#enseignements" role="tab" data-toggle="tab">
-				{{ 'visiteur.MembresCrestic.enseignements'| trans }}
-			</a>
-		</li>
-
-
+        <li>
+            <a href="#enseignements" role="tab" data-toggle="tab">
+                {{ 'visiteur.MembresCrestic.enseignements'| trans }}
+            </a>
+        </li>
 
 
-	</ul>
+    </ul>
 
-	<div id="membresTabDivActivites" class="tab-content tab-default mb15">
-		<div class="tab-pane" id="responsabilitesAdministratives" style="height: 500px">
-			{{ form_widget(edit_form.responsabilitesAdministratives) }}
-		</div>
-		<div class="tab-pane" id="valorisation" style="height: 500px">
-			{{ form_widget(edit_form.valorisation) }}
-		</div>
-		<div class="tab-pane" id="vulgarisation" style="height: 500px">
-			{{ form_widget(edit_form.vulgarisation) }}
-		</div>
-		<div class="tab-pane" id="international" style="height: 500px">
-			{{ form_widget(edit_form.international) }}
-		</div>
-		<div class="tab-pane" id="enseignements" style="height: 500px">
-			{{ form_widget(edit_form.enseignements) }}
-		</div>
-		<div class="tab-pane" id="responsabilitesScientifiques" style="height: 500px">
-			{{ form_widget(edit_form.responsabilitesScientifiques) }}
-		</div>
-		<div class="tab-pane" id="themes" style="height: 500px">
-			{{ form_widget(edit_form.themes) }}
-		</div>
-		<div class="tab-pane" id="evaluation" style="height: 500px">
-			{{ form_widget(edit_form.evaluation) }}
-		</div>
-		<div class="tab-pane" id="editorial" style="height: 500px">
-			{{ form_widget(edit_form.editorial) }}
-		</div>
-	</div>
+    <div id="membresTabDivActivites" class="tab-content tab-default mb15">
+        <div class="tab-pane" id="responsabilitesAdministratives" style="height: 500px">
+            {{ form_widget(edit_form.responsabilitesAdministratives) }}
+        </div>
+        <div class="tab-pane" id="valorisation" style="height: 500px">
+            {{ form_widget(edit_form.valorisation) }}
+        </div>
+        <div class="tab-pane" id="vulgarisation" style="height: 500px">
+            {{ form_widget(edit_form.vulgarisation) }}
+        </div>
+        <div class="tab-pane" id="international" style="height: 500px">
+            {{ form_widget(edit_form.international) }}
+        </div>
+        <div class="tab-pane" id="enseignements" style="height: 500px">
+            {{ form_widget(edit_form.enseignements) }}
+        </div>
+        <div class="tab-pane" id="responsabilitesScientifiques" style="height: 500px">
+            {{ form_widget(edit_form.responsabilitesScientifiques) }}
+        </div>
+        <div class="tab-pane" id="themes" style="height: 500px">
+            {{ form_widget(edit_form.themes) }}
+        </div>
+        <div class="tab-pane" id="evaluation" style="height: 500px">
+            {{ form_widget(edit_form.evaluation) }}
+        </div>
+        <div class="tab-pane" id="editorial" style="height: 500px">
+            {{ form_widget(edit_form.editorial) }}
+        </div>
+    </div>
 
-	<div class="row" style="text-align: right">
-		<div class="col-sm-6">&nbsp;</div>
-		<div class="col-sm-3"><a href="{{ path('homepage_utilisateur') }}">Retour / Annuler</a></div>
-		<div class="col-sm-3"><button type="submit" class="btn btn-block btn-primary">Enregistrer</button> </div>
-	</div>
-	{{ form_rest(edit_form) }}
-	{{ form_end(edit_form) }}
+    <div class="row" style="text-align: right">
+        <div class="col-sm-6">&nbsp;</div>
+        <div class="col-sm-3"><a href="{{ path('homepage_utilisateur') }}">Retour / Annuler</a></div>
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
+        </div>
+    </div>
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		$(document).ready(function () {
-			var max_height = 0;
-			$('#membresTabActivites a:first').tab('show');
+    {{ parent() }}
+    <script>
+      $(document).ready(function () {
+        var max_height = 0
+        $('#membresTabActivites a:first').tab('show')
 
+        $('#membresTabActivites a').each(function () {
+          var id_tab = $(this).attr('href')
+          if (max_height < $(id_tab).height()) {
+            max_height = $(id_tab).height()
+          }
+        })
 
-			$('#membresTabActivites a').each(function () {
-				var id_tab = $(this).attr('href');
-				if (max_height < $(id_tab).height()) {
-					max_height = $(id_tab).height();
-				}
-			});
-
-			$("#membresTabDivActivites").height(max_height);
-		});
-	</script>
+        $('#membresTabDivActivites').height(max_height)
+      })
+    </script>
 {% endblock %}

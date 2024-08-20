@@ -26,6 +26,7 @@ class CategorieDocument implements \Stringable
     private ?self $categorieParent = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: DocumentsInternes::class)]
+    #[ORM\OrderBy(['fichier' => 'ASC'])]
     private Collection $documentsInternes;
 
     public function __construct()

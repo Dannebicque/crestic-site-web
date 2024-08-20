@@ -45,8 +45,6 @@
                 <div class="row mb15">
                     <div class="col-sm-2 dateactualite">
                         <p>{{ actualite.dateactu|date('d/m/Y') }}</p>
-{#                        <p>{{ actualite.dateactu|date('m')|moisfr }}</p>#}
-{#                        <p>{{ actualite.dateactu|date('Y') }}</p>#}
                     </div>
                     {% if actualite.image != '' and actualite.image != 'noimage.png' and not actualite.isPdf %}
                         <div class="col-sm-7">

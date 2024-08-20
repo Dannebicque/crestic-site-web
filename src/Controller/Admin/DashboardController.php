@@ -69,10 +69,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Documents', 'fa fa-file-text', Documents::class);
 
         yield MenuItem::section('Intranet');
-        yield MenuItem::linkToCrud('Documents Internes', 'fa fa-file-text', DocumentsInternes::class);
+       // yield MenuItem::linkToCrud('Documents Internes', 'fa fa-file-text', DocumentsInternes::class);
         yield MenuItem::linkToRoute('Documents Internes', 'fa fa-file-text', 'admin_documents');
 
-        yield MenuItem::linkToCrud('Catégories des documents', 'fa fa-file-text', CategorieDocument::class);
+       // yield MenuItem::linkToCrud('Catégories des documents', 'fa fa-file-text', CategorieDocument::class);
 
 
         yield MenuItem::section('Publications')->setPermission('ROLE_ADMINISTRATEUR');

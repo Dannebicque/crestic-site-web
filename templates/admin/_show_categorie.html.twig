@@ -1,0 +1,40 @@
+<div {{ stimulus_controller('liste_documents', {
+    urlListeDocuments: path('admin_documents_liste', {categorie:categorie.id}),
+    urlAddDocument: path('admin_documents_add', {categorie:categorie.id}),
+}) }}>
+    <h2>{{ categorie.libelle }}</h2>
+
+    <div {{ stimulus_target('liste_documents','listeDocuments' ) }}>
+
+    </div>
+
+    <div>
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        <button type="submit"
+                value="Ajouter"
+                class="btn btn-success mt-1"
+                {{ stimulus_action('liste_documents', 'addDocument', 'click') }}
+        >
+            Ajouter le fichier
+        </button>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="alert alert-danger mt-2">
+        <h3>Zone de danger...</h3>
+        {% if categorie.categorieParent != null %}
+        <p>Supprimer la catégorie et les documents qu'elle contient</p>
+        <a href="{{ path('admin_categorie_document_delete', {id:categorie.id}) }}" class="btn btn-danger"
+                {{ stimulus_action('liste_documents', 'deleteCategorie', 'click') }} >
+            <i class="fas fa-trash"></i> Supprimer la catégorie
+        </a>
+        {% else %}
+            <p>Supprimer la catégorie et les documents et sous-catégories qu'elle contient</p>
+            <a href="{{ path('admin_categorie_document_delete', {id:categorie.id}) }}" class="btn btn-danger"
+                    {{ stimulus_action('liste_documents', 'deleteCategorie', 'click') }} >
+                <i class="fas fa-trash"></i> Supprimer la catégorie
+            </a>
+        {% endif %}
+    </div>
+</div>

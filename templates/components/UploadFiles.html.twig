@@ -1,0 +1,34 @@
+<div {{ attributes }}>
+        <div class="form-group mb-3">
+            {% if this.membreCrestic.image != null and this.membreCrestic.image != '' %}
+        <img src="{{ asset('uploads/membresCrestic/'~this.membreCrestic.image) }}" height="200px"
+             alt="Photo actuelle"/>
+        {% else %}
+            Pas d'image actuellement
+            {% endif %}<br>
+            <label for="single-file" class="form-label">Nouvelle photo :</label>
+            <input
+                    type="file"
+                    name="single"
+                    autocomplete="off"
+                    id="single-file"
+                    class="form-control-file {{ singleFileUploadError ? 'is-invalid' : '' }}"
+            >
+            <div class="form-text text-muted">Current file:
+                {% if singleUploadFilename %}
+                    {{ singleUploadFilename }}
+                {% else %}
+                    none
+                {% endif %}
+            </div>
+            {% if singleFileUploadError %}
+                <div class="invalid-feedback">{{ singleFileUploadError }}</div>
+            {% endif %}
+        </div>
+        <button
+                data-action="live#action"
+                data-live-action-param="files|uploadFiles"
+                class="btn btn-primary"
+        >Mettre à jour la photo
+        </button>
+</div>

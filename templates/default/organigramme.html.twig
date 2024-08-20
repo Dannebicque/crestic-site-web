@@ -57,13 +57,7 @@
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="panel panel-default">
-								<div class="panel-heading">{{ 'visiteur.organigramme.conseil'|trans }} (16 membres)</div>
-							</div>
-						</div>
-					</div>
+
 				</div>
 
 				<div class="col-sm-3 text-center">
@@ -76,6 +70,18 @@
 								{{ technicien|linkMembre|raw }}
 								<br/>
 							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading text-center">{{ 'visiteur.organigramme.conseil.laboratoire'|trans }}</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading text-center">{{ 'visiteur.organigramme.conseil.scientifique'|trans }}</div>
 						</div>
 					</div>
 				</div>

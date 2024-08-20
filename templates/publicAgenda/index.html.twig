@@ -13,7 +13,7 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
           locale: 'fr',
           events: {
-            url: 'https://caldav.univ-reims.fr/URCA/cache/QQ3PTCJY5117.ics',
+            url: '{{ path('public_agenda_ics') }}',
             format: 'ics'
           }
         });
@@ -62,7 +62,7 @@
             </div>
             <div class="row">
                 <div id="calendar"></div>
-{#                <iframe width="400" height="215" src="https://caldav.univ-reims.fr/remote.php/dav/calendars/annebi01/d.annebicque/?export"></iframe>#}
+{#                <iframe width="400" height="215" src="https://caldav.univ-reims.fr/remote.php/dav/calendars/lami0012/vnements-crestic/?export"></iframe>#}
             </div>
         </div>
     </div>

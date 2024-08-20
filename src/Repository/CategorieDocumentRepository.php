@@ -11,7 +11,6 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method CategorieDocument|null find($id, $lockMode = null, $lockVersion = null)
  * @method CategorieDocument|null findOneBy(array $criteria, array $orderBy = null)
- * @method CategorieDocument[]    findAll()
  * @method CategorieDocument[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CategorieDocumentRepository extends ServiceEntityRepository
@@ -19,6 +18,11 @@ class CategorieDocumentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CategorieDocument::class);
+    }
+
+    public function findAll(): array
+    {
+        return $this->findBy([], ['libelle' => 'ASC']);
     }
 
     public function save(CategorieDocument $entity, bool $flush = false): void
