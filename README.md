@@ -1,36 +1,65 @@
-
 # Site institutionnel du CReSTIC
 
-Site institutionnel du CReSTIC (Centre de Recherche en STIC) de l'unviersité de Reims Champagne Ardenne.
+Site institutionnel du CReSTIC (Centre de Recherche en STIC) de l'université de Reims Champagne Ardenne.
 
-## Authors
+## Auteurs
 
 - [@dannebicque](https://www.github.com/dannebicque)
 
+## Licence
 
-## Badges
-
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+[![MPL 2.0 License](https://img.shields.io/badge/License-MPL2.0-green.svg)](https://choosealicense.com/licenses/mpl-2.0/)
 
 
 ## Installation
 
-Install my-project with npm
+### Cloner le projet
 
 ```bash
-  npm install my-project
-  cd my-project
+  git clone https://github.com/Dannebicque/crestic-site-web.git
 ```
-    
-## Contributing
 
-Contributions are always welcome!
+### Installer les dépendances back (Symfony)
 
-See `contributing.md` for ways to get started.
+```bash
+cd crestic-site-web
+composer install 
+// ou update pour forcer la mise à jour
+```
 
-Please adhere to this project's `code of conduct`.
+### Installer les dépendances front (Js/Stimulus)
+
+```bash
+yarn install //ou avec npm
+```
+
+### Compiler les assets
+
+```bash
+yarn build
+```
+
+### Configurer le projet
+
+```bash
+cp .env .env.local
+```
+
+Mettre à jour les informations de connexion à la base de données dans le fichier `.env.local`
+
+### Configurer la base de données
+
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update -f
+```
+
+### Lancer le serveur
+
+```bash
+symfony serve //(ou via un serveur web type MAMP/LAMP)
+```
+
+L'accès se fait par exemple sur http://localhost:8888/index.php ou http://localhost:8888/public/index.php ou avec le répertoire selon la configuration de votre serveur.
+
 
