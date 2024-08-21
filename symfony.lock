@@ -528,6 +528,9 @@
     "symfony/uid": {
         "version": "v5.2.2"
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.19.3"
+    },
     "symfony/ux-dropzone": {
         "version": "v2.16.0"
     },

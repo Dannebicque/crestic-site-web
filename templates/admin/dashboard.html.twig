@@ -12,5 +12,36 @@
         <a href="{{ path('admin_membres_crestic_export') }}" class="btn btn-primary">Télécharger une liste des membres (xlsx)</a>
     </div>
 
+    <div>
+        {{ render_chart(chart) }}
+    </div>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Effectif</th>
+                <th>%</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, item in data %}
+                <tr>
+                    <td>{{ key|trans }}</td>
+                    <td>{{ item }}</td>
+                    <td>{{ (item/totalMembres*100)|number_format(2) }} %</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>{{ totalMembres }}</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
 
 {% endblock %}

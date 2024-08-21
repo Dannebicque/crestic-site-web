@@ -42,11 +42,11 @@ class MembresCresticExportController extends AbstractController
                     $myExcelWriter->writeCellName('A' . $row, $membre->getNom());
                     $myExcelWriter->writeCellName('B' . $row, $membre->getPrenom());
                     $myExcelWriter->writeCellName('C' . $row, $membre->getStatus());
-                    $myExcelWriter->writeCellName('D' . $row, $membre->getHdr());
+                    $myExcelWriter->writeCellName('D' . $row, ($membre->getHdr() === true || $membre->getHdr() === 1) ? 'Oui' : 'Non');
                     $myExcelWriter->writeCellName('E' . $row, $equipeHasMembre->getEquipe()->getNom());
                     $myExcelWriter->writeCellName('F' . $row, $membre->getIdHal());
                     $myExcelWriter->writeCellName('G' . $row, $membre->getDateDepart()?->format('d/m/Y'));
-                    $myExcelWriter->writeCellName('H' . $row, $membre->getAncienMembresCrestic());
+                    $myExcelWriter->writeCellName('H' . $row, ($membre->getAncienMembresCrestic() === true || $membre->getAncienMembresCrestic() === 1) ? 'Oui' : 'Non');
                     $myExcelWriter->writeCellName('I' . $row, $membre->getEmail());
                     $row++;
                 }
@@ -54,11 +54,11 @@ class MembresCresticExportController extends AbstractController
                 $myExcelWriter->writeCellName('A' . $row, $membre->getNom());
                 $myExcelWriter->writeCellName('B' . $row, $membre->getPrenom());
                 $myExcelWriter->writeCellName('C' . $row, $membre->getStatus());
-                $myExcelWriter->writeCellName('D' . $row, $membre->getHdr());
+                $myExcelWriter->writeCellName('D' . $row, ($membre->getHdr() === true || $membre->getHdr() === 1) ? 'Oui' : 'Non');
                 $myExcelWriter->writeCellName('E' . $row, '-');
                 $myExcelWriter->writeCellName('F' . $row, $membre->getIdHal());
                 $myExcelWriter->writeCellName('G' . $row, $membre->getDateDepart()?->format('d/m/Y'));
-                $myExcelWriter->writeCellName('H' . $row, $membre->getAncienMembresCrestic());
+                $myExcelWriter->writeCellName('H' . $row, ($membre->getAncienMembresCrestic() === true || $membre->getAncienMembresCrestic() === 1) ? 'Oui' : 'Non');
                 $myExcelWriter->writeCellName('I' . $row, $membre->getEmail());
                 $row++;
             }
