@@ -308,6 +308,4 @@ class MembresCresticRepository  extends ServiceEntityRepository
     {
         return $this->findMembreAncienBuilder($data)->getQuery()->getResult();
     }
-
-
 }

@@ -1,5 +1,16 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content %}
-<h1>Nouvelle interface d'administration.</h1>
+{% block page_title %}Interface d'administration{% endblock %}
+{% block content_title %}Interface d'administration{% endblock %}
+
+
+{% block main %}
+
+<p>Bienvenue sur l'interface d'administration du site web du CReSTIC.</p>
+
+    <div>
+        <a href="{{ path('admin_membres_crestic_export') }}" class="btn btn-primary">Télécharger une liste des membres (xlsx)</a>
+    </div>
+
+
 {% endblock %}
