@@ -2090,38 +2090,33 @@ class MembresCrestic implements UserInterface, Stringable, PasswordAuthenticated
         // TODO: Implement eraseCredentials() method.
     }
 
-    /**
-     * Sérialise les informations de l'utilisateur.
-     *
-     * @return string La chaîne sérialisée représentant l'objet utilisateur.
-     */
-    public function serialize(): string
+
+    public function setUsername(string $username): self
     {
-        return serialize([
-            $this->id,
-            $this->username,
-            $this->image
-            ]
-        );
+        $this->username = $username;
+
+        return $this;
     }
 
-    /**
-     * Désérialise les informations de l'utilisateur.
-     *
-     * @param string $serialized La chaîne sérialisée représentant l'objet utilisateur.
-     *
-     * @return void
-     *
-     * @see \Serializable::unserialize()
-     */
-    public function unserialize(string $serialized): void
+    public function getEmail(): ?string
     {
-        [
-            $this->id,
-            $this->username,
-            $this->image
-        ] = unserialize($serialized);
+        return $this->email;
     }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function initiales()
+    {
+        $ini = substr($this->prenom, 0, 1) . substr($this->nom, 0, 1);
+
+        return mb_strtoupper($ini);
+    }
+
 
     /**
      * Obtient les listes de diffusion auxquelles l'utilisateur appartient.

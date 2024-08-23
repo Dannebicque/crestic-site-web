@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 // gallery zoom
 $('.popup-gallery').each(function() {
-     $(this).magnificPopup({ 
+     $(this).magnificPopup({
         delegate: '.gallery-zoom',
         type:'image',
         gallery: {
@@ -56,16 +56,16 @@ $(function() {
     $("[data-toggle='popover']").popover();
 });
 
-//activate skrollr.js
-skrollr.init({
-    forceHeight: false,
-    smoothScrolling: true,
-    smoothScrollingDuration: 1500,
-        mobileCheck: function() {
-        //hack - forces mobile version to be off
-        return false;
-    }
-});
+// //activate skrollr.js
+// skrollr.init({
+//     forceHeight: false,
+//     smoothScrolling: true,
+//     smoothScrollingDuration: 1500,
+//         mobileCheck: function() {
+//         //hack - forces mobile version to be off
+//         return false;
+//     }
+// });
 
 //carousel subnav slider
 $(document).ready(function() {
@@ -165,7 +165,7 @@ $(document).ready(function(){
         console.log('loader off');
         $('#load-page').hide();
 	});
-	
+
     var percent = 0, bar = $('.transition-timer-carousel-progress-bar'), crsl = $('#carouselHome');
     function progressBarCarousel() {
       bar.css({width:percent+'%'});
@@ -173,7 +173,7 @@ $(document).ready(function(){
       if (percent>100) {
           percent=0;
           crsl.carousel('next');
-      }      
+      }
     }
     crsl.carousel({
         interval: false,

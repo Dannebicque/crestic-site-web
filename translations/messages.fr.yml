@@ -198,12 +198,13 @@ visiteur:
         direction: Direction du CReSTIC
         directeur: Directeur
         directeurAdjoint: Directeur Adjoint
-        conseil: Conseil de Laboratoire
+        conseil.laboratoire: Conseil de Laboratoire
+        conseil.scientifique: Conseil scientifique
         departement: Département
         equipe: Équipe
-        administratif: Service administratif
+        administratif: Service administratif & assistance à la Direction
         responsable: Responsable
-        technicien: Service technique
+        technicien: Service d’appui à la recherche
     rechercher:
         publications: Rechercher des publications du CReSTIC
     offre:

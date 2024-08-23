@@ -1,0 +1,36 @@
+<h3>{{ categorie.libelle }} <a href="{{ path('utilisateur_intranet_documents') }}" class="small">Retour aux
+        catégories</a></h3>
+<div class="row">
+    {% for cat in categorie.enfants %}
+        <div class="col-sm-12 col-md-4">
+            <div class="card-document">
+                <h3> > {{ cat.libelle }}</h3>
+                <a href="#" {{ stimulus_action('docs', 'voirDocuments', 'click', {categorie:cat.id}) }}>Voir les
+                    documents</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<h3>Documents disponibles ({{ categorie.documentsInternes|length }})</h3>
+<div class="row mb15">
+    {% for document in categorie.documentsInternes %}
+        <div class="col-sm-4">
+        <div class="card-document">
+            <h4 class="titre">
+                <i class="ion-android-download"></i>
+                <a href="{{ asset('uploads/documentsInternes/'~document.fichier) }}"
+                   target="_blank">{{ document.fichier }}</a>
+            </h4>
+            <p>
+                Version du {{ document.created|date('d/m/Y H:i') }}
+            </p>
+        </div>
+        </div>
+
+    {% else %}
+        <div class="col-sm-12">
+            <p>Aucun document disponible pour cette catégorie</p>
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,33 @@
+<div class="row">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Fichier</th>
+            <th>Format</th>
+            <th>Ajouté le</th>
+            <th>Poids</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for document in documents %}
+            <tr>
+                <td>{{ document.fichier }}</td>
+                <td>{{ document.fichier|formatFichier }}</td>
+                <td>{{ document.created|date('d/m/Y H:i') }}</td>
+                <td>{{ document.size }}</td>
+                <td>
+                    <a href="{{ asset('uploads/documentsInternes/'~document.fichier) }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-download"></i>
+                    </a>
+                    <a href="{{ path('admin_document_delete', {id:document.id}) }}" class="btn btn-danger"
+                        {{ stimulus_action('liste_documents', 'deleteDocument', 'click') }}
+                    >
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

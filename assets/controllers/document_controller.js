@@ -1,14 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
 
-/*
- * This is an example Stimulus controller!
- *
- * Any element with a data-controller="hello" attribute will cause
- * this controller to be executed. The name "hello" comes from the filename:
- * hello_controller.js -> "hello"
- *
- * Delete this file or adapt it for your use!
- */
 export default class extends Controller {
   static targets = ['documents', 'categories']
   static values = {
@@ -21,17 +12,19 @@ export default class extends Controller {
     this._loadCategories()
   }
 
-  add_categorie () {
+  add_categorie (event) {
     // ajouter un champs input + un bouton avec stimulus action pour ajouter une catégorie
     const html = `<input type="text" name="categorie" class="form-control" placeholder="Ajouter une catégorie">
-<button data-action="click->document#save_categorie" class="btn btn-primary mt-1">Ajouter</button>`
+<button data-action="click->document#save_categorie" class="btn btn-primary mt-1" data-parent="${event.params.parent}">Ajouter</button>`
     this.categoriesTarget.insertAdjacentHTML('beforeend', html)
   }
 
   async save_categorie (event) {
+    console.log(event.currentTarget.dataset)
     const input = event.target.previousElementSibling
     const form = new FormData()
     form.append('categorie', input.value)
+    form.append('parent', event.currentTarget.dataset.parent)
     const response = await fetch(this.urlCategoriesValue, {
       method: 'POST',
       body: form

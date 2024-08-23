@@ -343,6 +343,27 @@ class MembresCresticRepository extends ServiceEntityRepository
         $qb->orderBy('a.nom', 'ASC');
         $qb->where('a.ancienMembresCrestic = 0');
 
+        $nom = array_key_exists('nom', $data) ? $data['nom'] : '';
+        if ($nom != '')
+        {
+            $qb->andWhere('a.nom LIKE :nom');
+            $qb->setParameter('nom',"%".$nom."%");
+        }
+
+        $prenom = array_key_exists('prenom', $data) ? $data['prenom'] : '';
+        if ($prenom != '')
+        {
+            $qb->andWhere('a.prenom LIKE :prenom');
+            $qb->setParameter('prenom',"%".$prenom."%");
+        }
+
+        $keywords = array_key_exists('keywords', $data) ? $data['keywords'] : '';
+        if ($keywords != '')
+        {
+            $qb->andWhere('a.url LIKE :keywords OR a.cv LIKE :keywords OR a.themes LIKE :keywords OR a.pointsForts LIKE :keywords OR a.responsabilitesScientifiques LIKE :keywords OR a.responsabilitesAdministratives LIKE :keywords OR a.valorisation LIKE :keywords  OR a.enseignements LIKE :keywords OR a.responsabiliteFonction LIKE :keywords');
+            $qb->setParameter('keywords',"%".$keywords."%");
+        }
+
         return $this->extracted($data, $qb);
     }
 
@@ -422,4 +443,10 @@ class MembresCresticRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function findMembreAncien ($data)
+    {
+        return $this->findMembreAncienBuilder($data)->getQuery()->getResult();
+    }
+
 }

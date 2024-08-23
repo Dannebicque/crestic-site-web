@@ -14,12 +14,6 @@ class DocumentsInternes
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 150, nullable: true)]
-    private ?string $titre = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
-
     #[ORM\Column(length: 255)]
     private ?string $fichier = null;
 
@@ -28,9 +22,6 @@ class DocumentsInternes
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updated = null;
 
     #[ORM\ManyToOne(inversedBy: 'documentsInternes')]
     private ?CategorieDocument $categorie = null;
@@ -43,31 +34,6 @@ class DocumentsInternes
     public function __construct()
     {
         $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
-
-    public function getTitre(): ?string
-    {
-        return $this->titre;
-    }
-
-    public function setTitre(?string $titre): self
-    {
-        $this->titre = $titre;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
     }
 
     public function getFichier(): ?string
@@ -102,18 +68,6 @@ class DocumentsInternes
     public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
-
-        return $this;
-    }
-
-    public function getUpdated(): ?\DateTimeInterface
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated(\DateTimeInterface $updated): self
-    {
-        $this->updated = $updated;
 
         return $this;
     }

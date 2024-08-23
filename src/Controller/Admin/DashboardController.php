@@ -8,6 +8,7 @@ use App\Entity\CategorieDocument;
 use App\Entity\CategorieProjet;
 use App\Entity\Cms;
 use App\Entity\Configuration;
+use App\Entity\Data;
 use App\Entity\Departements;
 use App\Entity\Documents;
 use App\Entity\DocumentsInternes;
@@ -27,19 +28,62 @@ use App\Entity\ProjetsHasMembres;
 use App\Entity\ProjetsHasSliders;
 use App\Entity\Sites;
 use App\Entity\Slider;
+use App\Repository\MembresCresticRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route(path: '/administration', name: 'admin')]
-    public function index(): Response
+    public function __construct(
+        protected MembresCresticRepository $membresCresticRepository,
+        protected ChartBuilderInterface $chartBuilder)
     {
-        return $this->render('admin/dashboard.html.twig');
+    }
+    #[Route(path: '/administration', name: 'admin')]
+    public function index(
+
+    ): Response
+    {
+        $membres = $this->membresCresticRepository->findMembreCrestic([]);
+        $keys = Data::TAB_STATUS_FORM;
+        unset($keys['']);
+        $keys = array_values($keys);
+
+        $data = [];
+        $total = 0;
+        foreach ($keys as $status) {
+            $data[$status] = 0;
+        }
+
+        foreach ($membres as $membre) {
+            $data[$membre->getStatus()]++;
+            $total ++;
+        }
+
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+
+        $chart->setData([
+            'labels' => $keys,
+            'datasets' => [
+                [
+                    'label' => 'Membres du CReSTIC',
+                    'data' => array_values($data),
+                ],
+            ],
+        ]);
+
+        return $this->render('admin/dashboard.html.twig',
+            [
+                'chart' => $chart,
+                'data' => $data,
+                'totalMembres' => $total
+            ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -67,9 +111,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Documents', 'fa fa-book', Documents::class);
 
         yield MenuItem::section('Intranet');
-        yield MenuItem::linkToCrud('Documents internes', 'fa fa-file-text', DocumentsInternes::class);
-        yield MenuItem::linkToRoute('Gestion des documents', 'fa fa-list-check', 'admin_documents');
-        yield MenuItem::linkToCrud('Catégories des documents', 'fa fa-list', CategorieDocument::class);
+
+        yield MenuItem::linkToRoute('Documents Internes', 'fa fa-file-text', 'admin_documents');
 
         yield MenuItem::section('Publications')->setPermission('ROLE_ADMINISTRATEUR');
         yield MenuItem::linkToRoute('Statistiques de publication','fa fa-chart-simple', 'admin_statistiques_publications')->setPermission('ROLE_ADMINISTRATEUR');
